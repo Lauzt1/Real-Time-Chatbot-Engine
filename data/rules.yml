@@ -11,3 +11,19 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+# old faq
+- rule: Answer FAQ by selection
+  steps:
+  - intent: select_faq
+  - action: action_answer_faq
+
+# - rule: Answer FAQ by selection
+#   steps:
+#   - intent: select_faq
+#   - action: action_answer_faq
+
+# - rule: Show FAQ on session start
+#   steps:
+#   - event: session_started
+#   - action: action_show_faqs
