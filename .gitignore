@@ -1,0 +1,14 @@
+# Virtual environment
+.venv/
+
+# Trained models and artifacts
+models/
+.rasa/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# OS-specific files (optional)
+.DS_Store
+Thumbs.db
