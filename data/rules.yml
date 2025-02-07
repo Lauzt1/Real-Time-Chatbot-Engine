@@ -27,3 +27,9 @@ rules:
 #   steps:
 #   - event: session_started
 #   - action: action_show_faqs
+
+#fallback
+- rule: Fallback rule
+  steps:
+  - intent: nlu_fallback
+  - action: utter_fallback
