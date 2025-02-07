@@ -98,3 +98,25 @@ nlu:
     - 3
     - 4
 
+# for "hello can you help me with something"
+- intent: greet
+  examples: |
+    - Hello, can you help me with something?
+    - Hi there, I need assistance.
+    - Hey, I have a question.
+    - Good morning
+
+# for product comparing
+- intent: compare_products
+  examples: |
+    - Compare between LHR15 and LHR21.
+    - Can you compare LHR15 and LHR21?
+    - What is the difference between LHR15 and LHR21?
+
+- intent: product_info
+  examples: |
+    - tell me about LHR15
+    - I need info on LHR15
+    - give me product details for LHR15
+
+

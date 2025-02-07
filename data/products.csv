@@ -1,0 +1,3 @@
+product_name,backing_pad,orbit,power,rpm,weight,electronic_speed_control,spindle_thread,electrical_cord
+LHR21 MarkIII/STD,"150 mm - 6""","21 mm - 13/16""","500 W","3000 - 4500","2.7 kg - 5.95 lbs",Yes,"M8 - F","9 m - 30 ft"
+LHR15 MarkIII/STD,"125 mm - 5""","15 mm - 19/32""","500 W","3000 - 5200","2.6 kg - 5.73 lbs",Yes,"M8 - F","9 m - 30 ft"
