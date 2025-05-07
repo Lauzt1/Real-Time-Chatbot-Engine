@@ -1,4 +1,4 @@
-.\.venv\Scripts\Activate
+.\rasa\.venv\Scripts\activate
 
 rasa train
 
