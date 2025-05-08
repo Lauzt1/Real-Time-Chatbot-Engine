@@ -2,34 +2,16 @@ version: "3.1"
 
 rules:
 
-- rule: Say goodbye anytime the user says goodbye
-  steps:
-  - intent: goodbye
-  - action: utter_goodbye
+  - rule: Greet user
+    steps:
+      - intent: greet
+      - action: utter_greet
 
-- rule: Say 'I am a bot' anytime the user challenges
-  steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
-
-# old faq
-- rule: Answer FAQ by selection
-  steps:
-  - intent: select_faq
-  - action: action_answer_faq
-
-# - rule: Answer FAQ by selection
-#   steps:
-#   - intent: select_faq
-#   - action: action_answer_faq
-
-# - rule: Show FAQ on session start
-#   steps:
-#   - event: session_started
-#   - action: action_show_faqs
-
-#fallback
-- rule: Fallback rule
-  steps:
-  - intent: nlu_fallback
-  - action: utter_fallback
+  - rule: Fallback whenever confidence is low
+    condition:
+      - active_loop: null
+    steps:
+      - intent: nlu_fallback
+      - action: action_default_fallback
+      - active_loop: null
+      

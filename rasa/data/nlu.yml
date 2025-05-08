@@ -16,6 +16,17 @@ nlu:
     - goodmorning
     - goodevening
     - good afternoon
+    - hi there
+    - Hello, can you help me with something?
+    - Hi there, I need assistance.
+    - Hey, I have a question.
+    - Good morning
+    - good day
+    - greetings
+    - howdy
+    - hiya
+    - how are you
+    - how's it going
 
 - intent: goodbye
   examples: |
@@ -118,5 +129,24 @@ nlu:
     - tell me about LHR15
     - I need info on LHR15
     - give me product details for LHR15
+
+- intent: out_of_scope #for fallback
+  examples: |
+    - asdfasdf
+    - qwertyuiop
+    - slslslsl
+    - zxczxczxc
+    - what am i
+    - what is this?
+    - random text
+    - ;;;???
+    - 123456
+    - foobar
+    - 1234567890
+    - 0987654321
+    - 123456789
+    - 0987654321
+    - 12345678901234567890
+    - 09876543210987654321
 
 
