@@ -1,35 +1,189 @@
 version: "3.1"
-
 nlu:
 - intent: greet
   examples: |
-    - hey
-    - hello
     - hi
-    - hello there
+    - hello
+    - hey
+    - yo
+    - salam
+    - hi lah
+    - hello lah
     - good morning
-    - good evening
-    - moin
+    - good afternoon lah
     - hey there
-    - let's go
-    - hey dude
-    - goodmorning
-    - goodevening
-    - good afternoon
-    - hi there
-    - Hello, can you help me with something?
-    - Hi there, I need assistance.
-    - Hey, I have a question.
-    - Good morning
+    - hi bro lah
     - good day
     - greetings
     - howdy
     - hiya
-    - how are you
-    - how's it going
+    - salam, how are you?
+    - morning mah
+    - hi there lah
+    - hello dude
+    - hey friend mah
+    - goodmorning
+    - goodevening
+    - good afternoon
+    - Hello
+    - hola
+    - bonjour
+    - Bom dia
+    - wesh bien ou quoi
+    - wesh
+    - wesh le s
+    - wesh le sang
+    - cousin!
+    - Bonjour
+    - Good Morning
+    - Good morning
+    - Good mourning
+    - Guten Morgen
+    - HELLO
+    - HEY
+    - HEllo
+    - HI
+    - Hallo
+    - Hei
+    - Hellllooooooo
+    - Hello
+    - Hello Bot
+    - Hello!
+    - Hey
+    - Hey bot
+    - Heya
+    - Heylo
+    - Hi
+    - Hi bot
+    - Hi man
+    - Hi there
+    - Hi!
+    - Hi'
+    - Hi,
+    - Hi, bot
+    - Hieee
+    - Hieeeeeeeeeeeee
+    - Hola
+    - I said, helllllloooooO!!!!
+    - Well hello there ;)
+    - What is up?
+    - Whats up
+    - Whats up my bot
+    - Whats up?
+    - ayyyy whaddup
+    - bonjour
+    - ey boss
+    - good evening
+    - good moring
+    - good morning
+    - greet
+    - greetings
+    - hai
+    - hallo
+    - halloo
+    - halloooo
+    - halo
+    - heeey
+    - heelio
+    - hell9o
+    - hellio
+    - hello
+    - hello everybody
+    - hello friend
+    - hello hi
+    - hello is anybody there
+    - hello it is me again
+    - hello robot
+    - hello sweatheart
+    - hello sweet boy
+    - hello there
+    - hello world
+    - hello?
+    - hello]
+    - hellooo
+    - helloooo
+    - helo
+    - hey
+    - hey bot
+    - hey bot!
+    - hey dude
+    - hey hey
+    - hey let's talk
+    - hey rasa
+    - hey ther
+    - hey there
+    - hey there boy
+    - hey there..
+    - hey, let's talk
+    - heya
+    - heyho
+    - heyo
+    - hhola
+    - hi
+    - hi !
+    - hi Mister
+    - hi again
+    - hi can you speak ?
+    - hi folks
+    - hi friend
+    - hi friends
+    - hi hi
+    - hi pal!
+    - hi there
+    - hi there it's me
+    - hi!
+    - hi.........................................................
+    - hi?
+    - hieee
+    - hii
+    - hiihihi
+    - hiii
+    - hlo
+    - hola
+    - howdy
+    - jojojo
+    - jop
+    - konichiwa
+    - merhaba
+    - salam
+    - salem
+    - selem
+    - ola
+    - rasa hello
+    - salut
+    - sup
+    - wasssup
+    - wasssup!
+    - what up
+    - whats popping
+    - whats up
+    - yo
+    - yoo
+    - ssup?
+    - helleo
+    - ahoy
+    - Ahoy
+    - Ahoy!
 
 - intent: goodbye
   examples: |
+    - bye
+    - goodbye
+    - see ya
+    - see you later
+    - catch you later lah
+    - bye lah
+    - good night
+    - night lah
+    - c u later
+    - peace mah
+    - cheers lah
+    - take care lah
+    - ttyl
+    - later mah
+    - have a good one lah
+    - catch you
+    - okay bye
     - cu
     - good by
     - cee you later
@@ -40,113 +194,838 @@ nlu:
     - see you around
     - bye bye
     - see you later
+    - Bye
+    - Bye bye
+    - adios
+    - adios?
+    - bye .
+    - bye :P
+    - bye bot
+    - bye bye
+    - bye bye bot
+    - bye for now
+    - bye udo
+    - bye was nice talking to you
+    - bye!
+    - byee
+    - catch you later
+    - ciao
+    - cya
+    - farewell
+    - good bye
+    - good bye rasa bot!
+    - good night
+    - goodbye
+    - goodbye.
+    - goodnight
+    - gotta go
+    - k byyye #slay
+    - ok Bye
+    - ok bye
+    - ok, bye
+    - ok.bye
+    - see u later
+    - see ya
+    - see you
+    - see you . bye
+    - take care
+    - then bye
+    - tlak to you later
+    - Exit
+    - Close this talk
+    - byr
 
 - intent: affirm
   examples: |
     - yes
-    - y
+    - yep
+    - yeah lah
+    - sure mah
+    - of course lah
+    - can mah
+    - alright
+    - okay lah
+    - ok mah
+    - right lah
+    - correct
+    - sounds good
+    - sure thing lah
+    - yepp
+    - okep
+    - okeps
+    - yup
+    - yupp
     - indeed
     - of course
     - that sounds good
     - correct
+    - ok
+    - okay
+    - k
+    - alright
+    - go on
+    - proceed
+    - go
+    - keep going
+    - continue
+    - continu
+    - Accept
+    - Awesome!
+    - Good
+    - Great
+    - I accept
+    - I accept.
+    - I agree
+    - I am using it
+    - I changed my mind. I want to accept it
+    - I do
+    - I get it
+    - I guess so
+    - I have used it in the past
+    - I will
+    - I'd absolutely love that
+    - I'm sure I will!
+    - Nice
+    - OK
+    - Ofcourse
+    - Oh yes
+    - Oh, ok
+    - Ok
+    - Ok let's start
+    - Ok.
+    - Okay
+    - Okay!
+    - PLEASE
+    - SURE
+    - Sure
+    - Sweet
+    - That would be great
+    - YES
+    - YUP
+    - Yea
+    - Yeah
+    - Yeah sure
+    - Yep
+    - Yep that's fine
+    - Yep!
+    - Yepp
+    - Yes
+    - Yes I do
+    - Yes please
+    - Yes please!
+    - Yes, I accept
+    - Yes.
+    - Yup
+    - a little
+    - absolutely
+    - accept
+    - accepted
+    - agreed
+    - ah ok
+    - alright
+    - alright, cool
+    - amayzing
+    - amazing!
+    - awesome
+    - awesome!
+    - confirm
+    - cool story bro
+    - definitely yes without a doubt
+    - done
+    - fair enough
+    - fcourse
+    - fine
+    - fuck yeah!
+    - go
+    - go ahead
+    - go for it
+    - going super well
+    - good.
+    - great
+    - great lets do that
+    - great!
+    - hell yeah
+    - hell yes
+    - hm, i'd like that
+    - how nice!
+    - i accept
+    - i agree
+    - i am!
+    - i want that
+    - i will!
+    - it is ok
+    - its okay
+    - ja
+    - ja cool
+    - ja thats great
+    - jo
+    - k
+    - kk
+    - lets do it
+    - lets do this
+    - not bad
+    - of course
+    - ofcoure i do
+    - ofcourse
+    - oh awesome!
+    - oh cool
+    - oh good !!
+    - oh super
+    - ok
+    - ok cool
+    - ok fine
+    - ok friend
+    - ok good
+    - ok great
+    - ok i accept
+    - ok sara
+    - ok, I behave now
+    - ok, I understood
+    - ok...
+    - okay
+    - okay cool
+    - okay sure
+    - okay..
+    - oki doki
+    - okie
+    - ook
+    - oui
+    - perfect
+    - please
+    - si
+    - sort of
+    - sure
+    - sure thing
+    - sure!
+    - that is cool
+    - that ok
+    - that sounds fine
+    - that's great
+    - thats fine
+    - thats good
+    - thats great
+    - top
+    - uh-huh
+    - very much
+    - well yes
+    - y
+    - ya
+    - ya cool
+    - ya go for it
+    - ya i want
+    - ya please
+    - ya thats cool
+    - yaah
+    - yap
+    - yaps
+    - yas
+    - yay
+    - ye
+    - ye splease
+    - yea
+    - yeah
+    - yeah do that
+    - yeah sure
+    - yeah'=
+    - yeah, why not
+    - yeeeeezzzzz
+    - yeeees
+    - yep
+    - yep i want that
+    - yep if i have to
+    - yep please
+    - yep that's nice
+    - yep thats cool
+    - yep, will do thank you
+    - yep. :/
+    - yes
+    - yes ...
+    - yes I do
+    - yes accept please
+    - yes baby
+    - yes cool
+    - yes give me information
+    - yes go ahead
+    - yes go for it
+    - yes great
+    - yes i accept
+    - yes i agree
+    - yes i have!
+    - yes it is
+    - yes it was okay
+    - yes of course
+    - yes pleae
+    - yes please
+    - yes please!
+    - yes pls
+    - yes sirfr
+    - yes that's great
+    - yes that's what i want
+    - yes you can
+    - yes'
+    - yes, I'd love to
+    - yes, cool
+    - yes, give me information, please
+    - yes,i am
+    - yes.
+    - yesh
+    - yess
+    - yessoo
+    - yesss
+    - yesssss
+    - yesyestyes
+    - yesyesyes
+    - yez
+    - yop
+    - you asked me a yes or no question, which i answered with yes
+    - you got me, I accept, if you want me to
+    - yres
+    - ys
+    - yup
+    - yyeeeh
+    - Okay cool
+    - ok..
+    - considering
+    - More a less
+    - cool beans
+    - sounds good!
+    - really
 
 - intent: deny
   examples: |
     - no
-    - n
+    - nope
+    - nah lah
+    - cannot mah
+    - no way lah
+    - not really
+    - don’t think so mah
+    - nah
+    - nope mah
+    - no lah
     - never
     - I don't think so
     - don't like that
     - no way
     - not really
+    - i don't want
+    - i don't want to
+    - nah
+    - nahh
+    - nein
+    - nop
+    - nopp
+    - I don't want to
+    - I don't want to give it to you
+    - I don't want to say
+    - I dont want to tell
+    - I'm not giving you my email address
+    - I'm not going to give it to you
+    - NEIN
+    - NO
+    - NO DON"T WANT THIS!
+    - Nah
+    - Neither
+    - Never
+    - Nevermind
+    - No
+    - No thank you
+    - No, not really.
+    - No, thank you
+    - No.
+    - Nopes
+    - Not really
+    - absolutely not
+    - decline
+    - definitely not
+    - deny
+    - i decline
+    - i don not like this
+    - i don't think so
+    - i don't want either of those
+    - i don't want to
+    - i don't want to give you my email
+    - i dont want to
+    - i dont want to accept :P lol
+    - i guess it means - no
+    - i'm afraid not
+    - i'm not sure
+    - it is going pretty badly
+    - it sucks
+    - it sux
+    - na
+    - nah
+    - nah I'm good
+    - nah not for me
+    - nah, first time
+    - nah, i'm good
+    - nehi
+    - nein
+    - neither
+    - never
+    - never mind
+    - no
+    - no :(
+    - no I dont want
+    - no I haven't decided yet if I want to sign up
+    - no and no again
+    - no bots at all
+    - no go
+    - no i can't
+    - no i don't accept
+    - no i dont want to
+    - no i dont want to accept :P lol
+    - no i won't
+    - no ma'am
+    - no sir
+    - no sorry
+    - no thank s
+    - no thank you
+    - no thanks
+    - no way
+    - no you did it wrong
+    - no!!!!
+    - no, i hate it
+    - no, my frst time
+    - no, thank you
+    - no, thanks
+    - no, thankyou
+    - no. u r idiot
+    - non
+    - noooooooooo
+    - noooooooooooooooooooooooooooooooooooooooo
+    - nop
+    - nope
+    - nope!
+    - nope. i am good
+    - not going well at all
+    - not really
+    - not right now
+    - not yet
+    - nö
+    - sorry not right now
+    - still dont want to tell
+    - thanks but no thanks
+    - this sucks
+    - very bad
+    - I do not need help
+    - no stop
+    - stop it, i do not care!!!
+    - none of them
+    - I don't agree
+    - it's okay
+    - it's ok
 
-- intent: mood_great
+- intent: ask_product_info
   examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
+    - Tell me about the LHR15 lah
+    - Can you give me specs of LHR21 mah?
+    - I want info on Polisher X lah
+    - Product details for LHR15 mah please
+    - What’s the power rating of LHR21 lah?
+    - Specs of Polisher X mah?
+    - Info on Model Y lah
+    - Explain LHR15 mah
+    - Let me know about LHR21 lah
+    - May I have product info for Polisher X mah?
+    - Details on LHR15 lah please
+    - How heavy is Polisher X mah?
+    - I need details on LHR15 lah
+    - Give me info on LHR21 mah
+    - What does LHR21 do lah?
 
-- intent: mood_unhappy
+- intent: ask_quote
   examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
+    - Can I get a quote lah?
+    - Quotation for LHR15 mah
+    - Please send me a quote for Polisher X lah
+    - Need quote for LHR21 mah
+    - Quote me price lah
+    - Get me a quotation mah
+    - Price quote for LHR15 lah
+    - How much for Polisher X mah?
+    - What’s the price of LHR21 lah?
+    - I want a quote for LHR15 mah
+    - Quote please mah
+    - Send quotation lah
+    - Provide quote mah
+    - Quotation please lah
 
-- intent: bot_challenge
+- intent: ask_faq
   examples: |
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
+    - What is your warranty policy lah?
+    - Can you tell me about returns mah?
+    - FAQ on shipping lah
+    - Do you offer warranty mah?
+    - How long is the warranty lah?
+    - Return policy mah?
+    - FAQs on delivery lah
+    - Tell me about support mah
+    - Shipping info lah?
+    - Delivery times mah?
+    - Maintenance FAQs lah
 
-#old faq
-- intent: select_faq
-  examples: |
-    - 1
-    - 2
-    - 3
-    - 4
-
-# for "hello can you help me with something"
-- intent: greet
-  examples: |
-    - Hello, can you help me with something?
-    - Hi there, I need assistance.
-    - Hey, I have a question.
-    - Good morning
-
-# for product comparing
-- intent: compare_products
-  examples: |
-    - Compare between LHR15 and LHR21.
-    - Can you compare LHR15 and LHR21?
-    - What is the difference between LHR15 and LHR21?
-
-- intent: product_info
-  examples: |
-    - tell me about LHR15
-    - I need info on LHR15
-    - give me product details for LHR15
-
-- intent: out_of_scope #for fallback
+- intent: out_of_scope
   examples: |
     - asdfasdf
     - qwertyuiop
     - slslslsl
-    - zxczxczxc
-    - what am i
-    - what is this?
-    - random text
-    - ;;;???
-    - 123456
     - foobar
-    - 1234567890
-    - 0987654321
-    - 123456789
-    - 0987654321
-    - 12345678901234567890
-    - 09876543210987654321
+    - random text lah
+    - 123123 mah
+    - ??? lah
+    - what am i?
+    - nonsense mah
+    - lalala lah
+    - zzzz mah
+    - i am asking you an out of scope question
+    - 4 + 2 = ?
+    - 4 + 2
+    - 1 + 1 = ?
+    - 1 + 1
+    - can i die
+    - can YouTube talk?
+    - can you call me back ?
+    - can you give me your datacenter's password
+    - can you give me your datacenter's password?
+    - can you please send me an uber
+    - do i have to accept?
+    - have we met before?
+    - i already told you! i'm a shitmuncher
+    - i am User
+    - i am an opioid addic
+    - i am an opioid addict
+    - i am trying to build one, and did some research before, but I have not do hand-on work yet
+    - i ned a GP in 94301
+    - i need a GP in 94301
+    - i need a girl friend!
+    - i wan to buy a plane
+    - i wanna marry you
+    - i want a new laptop
+    - i want book a hotel
+    - i want to die
+    - i want to use pipe
+    - i will check
+    - i'm a shitmuncher
+    - is today saturday?
+    - NLW
+    - nice name
+    - now?
+    - recharge
+    - the Try it out is not working
+    - the weather is good
+    - today
+    - try it out broken
+    - what day is it today?
+    - what do you prefer?
+    - what is todays date
+    - what is your hobbies?
+    - what's 1 + 1?
+    - what's do YouTube do
+    - what's your backend system?
+    - Who are your customers
+    - Why don’t you answer?
+    - won't you ask me how I am?
+    - you'r blue.
+    - a tamed mouse will arrive at your doorstep in the next couple of days
+    - again?
+    - are the newsletter worth the subscription?
+    - are u facebook
+    - are u, facebook?
+    - are you single?
+    - are you dev?
+    - are you russian?
+    - are you sick
+    - are you vegan
+    - better than you
+    - book a ticket
+    - but I just told you that :(
+    - call me father
+    - can you cheer me up
+    - can you give me a cup of coffee
+    - can you help me with the docs?
+    - can you help me with your docs
+    - can you help me with your docs?
+    - can you learn from our conversation?
+    - can you speak about politic ?
+    - can you understand ?
+    - cannot see
+    - chgfhgh
+    - colder
+    - common, just try
+    - connect to alexa
+    - cr
+    - custom service
+    - did i break you
+    - do you believe in god?
+    - do you have a phone number?
+    - do you have your photo?
+    - do you know me
+    - do you know ras
+    - do you like football
+    - do you like movies
+    - do you sell vacuum robots?
+    - do you want to marry me?
+    - docs
+    - doctor
+    - everything
+    - genocide
+    - get me a club mate
+    - give me a girl friend
+    - go back
+    - google?
+    - great, I'd like to buy a house
+    - hang on let me find it
+    - help with my life
+    - hey little mama let em whisper in your ear
+    - how about NYC
+    - how are the kids
+    - how can i get them?
+    - how can i test this
+    - how come you say ok ?
+    - how do you learn
+    - how many lines of codes
+    - how much is 10 + 89 ?
+    - how much is 10 + 89
+    - how to get rasa studio
+    - how to go to newyork ?
+    - i am hungry, what should i do?
+    - i am not a developer but need this for business
+    - i am qq
+    - i can't deal with _your_ request
+    - i hope you will be better
+    - i immediately need help with implementing the coolest bot you can imagine
+    - i m looking for job
+    - i told you already
+    - i wanna party
+    - i want good flycam
+    - i want more of you in my life!
+    - i want to book a hotel
+    - i want to buy a roomba for my grandson
+    - i want to find new friends
+    - i want to find out what you can build with rasa
+    - i want to fly
+    - i want to know current situtation in pakistan
+    - i want to see your happy customers
+    - i will tame a mouse for you
+    - is it a wasteland full of broken robot parts?
+    - is it allow to
+    - is rasa a studio?
+    - is rasa any good
+    - is that any of your business
+    - isn't the newsletter just spam?
+    - it's a pity
+    - license
+    - ljljl
+    - mascot means?
+    - more
+    - mountain
+    - my name k
+    - oh my god, not again!
+    - ok one then
+    - on wiche nlp based system are you build?
+    - only that?
+    - personal or work?
+    - please play music
+    - really? you're so touchy?
+    - refresh
+    - region with no. of records
+    - search wikipedia
+    - shitmuncher
+    - show me a picture of a chicken
+    - silly bot
+    - sing me a song
+    - some thing else
+    - someone call the police i think the bot died
+    - sorry, i cannot rephrase
+    - tell me about yourself
+    - tell me more about next best action
+    - that doesn't sound like a joke
+    - the one that is better than you
+    - tricked ya
+    - turn off my stove
+    - umm
+    - wait a bit i am still reading
+    - what about wheather
+    - what are you doing now?
+    - what are your uses for universities
+    - what did you eat for lunch?
+    - what does your soul feel my friend
+    - what doing
+    - what else?
+    - what films do you like
+    - what is a discourse?
+    - what is a mascot
+    - what is adlingo
+    - what is evolution ?
+    - what is google rcs
+    - what is machine learning
+    - what is nice?
+    - what is the capital of delhi
+    - what is the capital of india
+    - what is the current petrol price
+    - what is the day ?
+    - what is the real use case where we can use this one
+    - what is your address?
+    - what is your purpose
+    - what lnu mean?
+    - what the latest news ?
+    - what you ate today?
+    - what's 5 + 5
+    - what's a newsletter?
+    - what's gingerale
+    - what's your wife doing this weekend
+    - what?
+    - whats that
+    - whats the sign
+    - when is the next train is coming?
+    - where do i get install files for mac?
+    - where is Oslo?
+    - where is mexico?
+    - wheres the party?
+    - which city are you talking about?
+    - which is the LNU asynchronism ?
+    - which kind
+    - who are they?
+    - who is the MD of samsung bangalore ?
+    - who is the president of india ?
+    - who is your favourite robot?
+    - who let the dogs out
+    - who's Bill Gates?
+    - whta you think about gdpr?
+    - why do you need that?
+    - will u kill me
+    - will u kill me?
+    - winter is already leaving
+    - with you recommend me?
+    - yeah, my dog was drinking a couple of litres of water per day and tried drinking the swimming pool
+    - you already have that
+    - you can learn how to make a coffe
+    - you have children?
+    - you have job opening
+    - you lock sweety
+    - you should learn to count
+    - you will know it from the single red rose it carries between its teeth
+    - ı am learning python
+    - CALL THE POLICE
+    - tertyryutyi
+    - wsdrcftvgybhnj
+    - why sky is blue?
+    - what kind of bird are you?
+    - contextua
+    - contextual
+    - talk to me about voulette
+    - voulette voulette
+    - do you have a demo?
+    - cars
+    - please voulette
+    - out of scope question.
+    - i need money
+    - no, i need cash, money! do you have it ?
+    - the beatles
+    - Hi i want to go palghar
+    - I want to go palghar
+    - gsaf
+    - expert of rasa
+    - i want play ball
+    - flight catch up
+    - coronavirus
+    - have you heard of corona?
+    - where do i type in commandy
+    - where to type in commands
+    - kiss me
+    - you have to
+    - sfasd
+    - asdkjasdhjkasd
+    - j  bhbhj
+    - eshdtjfjfyk
+    - drhdtjfjfyj
+    - sudo reboot
+    - asdfgasd
+    - asdfgasdas
 
-
+- intent: agent_fallback
+  examples: |
+    - I want a human
+    - can I speak to an agent
+    - real agent please
+    - real human
+    - chat with a live agent
+    - give me a person please
+    - i want to talk to a human
+    - can you transfer me to a human?
+    - handoff
+    - talk to a human
+    - i need to talk to a human
+    - human please
+    - i need help from a human
+    - i need help from a real human
+    - give me a human
+    - i want to talk to human
+    - i want a representative
+    - i want to talk to a person
+    - I don't wanna talk to a bot
+    - I dont like to talk to a machine
+    - I want to talk to a human
+    - I want to talk to the founders
+    - are there also humans working for your company?
+    - can I speak to a person?
+    - can i please speak to a human?
+    - can you forward me to your team
+    - can you please connect me to a real rasa employee?
+    - can you put me in touch with a human?
+    - do you have human support ?
+    - gimme a proper human
+    - give me a human now
+    - human handoff
+    - i dont wanna talk to a bot
+    - i want to speak to a real person
+    - i want to speak to customer service
+    - i want to talk to a human
+    - i want to talk to a person
+    - i want to talk to human
+    - i want to talk to someone at rasa
+    - i want to talk to someone else
+    - i want to talk to someone who is smarter than you
+    - i would like to speak to a person
+    - i'd rather speak with a real rasa employee
+    - id like to talk to a real rasa employee
+    - let me speak with a real person please
+    - let me talk to a human
+    - let me talk to a real person
+    - please give me a human
+    - service agent
+    - someone from customer care
+    - speak to a real person
+    - talking to a bot is stupid
+    - that's annoying I'd like to speak to someone real
+    - thats not helping, can i talk to human?
+    - wrong i want to speak to a human
+    - can i speak to human
+    - can i speak to your human
+    - i want to chat with human
+    - How do I talk to a human
+    - talk with a human
+    - Can i talk to a human instead
+    - nevermind.... you're not human ... I need to talk to a live person
+    - Can you get a human to assist me?
+    - Can i talk to a human?
+    - Can I talk to a human
+    - Can I speak to a human?
+    - can i speak to a human
+    - no, i want to talk to human
+    - can you hand a conversation over to a human?
+    - can I talk to human?
+    - can I talk to human
+    - talk to human
+    - i want human :(
+    - can i talk to human
+    - i want to talk to a human
+    - i want to speak to human
+    - can i talk to a real person?
+    - connect me to a real person
+    - I need a real person
+    - can i took with a real person
+    - let me speak to a real person
+    - let me speak to a real person please
+    - i want to talk to a real person

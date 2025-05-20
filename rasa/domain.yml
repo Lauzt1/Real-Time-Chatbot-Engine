@@ -1,26 +1,23 @@
 version: "3.1"
 
-session_config:
-  session_expiration_time: 60
-  carry_over_slots_to_new_session: true
-
 intents:
   - greet
   - goodbye
   - affirm
   - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
-  - compare_products
-  - product_info
-  - out_of_scope        # ← new
-  - nlu_fallback
+  - ask_product_info
+  - ask_quote
+  - ask_faq
+  - out_of_scope
 
 responses:
   utter_greet:
-    - text: "Hello! I'm an AI assistant here to help you with any product information. How can I assist you today?"
-  utter_default:
-    - text: "I’m sorry, I don’t have an answer for that. Is there something else I can help you with?"
+    - text: "Hi there lah – ask me anything about our products or quotes!"
+  utter_goodbye:
+    - text: "Bye lah! Feel free to ping me again."
+  utter_fallback:
+    - text: "Sorry, I can’t help with that. Would you like to talk to a human?"
 
-
+actions:
+  - action_rag_answer
+  - action_save_conversation
