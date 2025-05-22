@@ -1,35 +1,43 @@
 version: "3.1"
-
 rules:
 
-- rule: Say goodbye anytime the user says goodbye
+- rule: Greet
   steps:
-  - intent: goodbye
-  - action: utter_goodbye
+    - intent: greet
+    - action: utter_greet
 
-- rule: Say 'I am a bot' anytime the user challenges
+- rule: Goodbye
   steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+    - intent: goodbye
+    - action: utter_goodbye
 
-# old faq
-- rule: Answer FAQ by selection
+- rule: Fetch single product info
   steps:
-  - intent: select_faq
-  - action: action_answer_faq
+    - intent: ask_product_info
+    - action: action_fetch_product_info
 
-# - rule: Answer FAQ by selection
-#   steps:
-#   - intent: select_faq
-#   - action: action_answer_faq
-
-# - rule: Show FAQ on session start
-#   steps:
-#   - event: session_started
-#   - action: action_show_faqs
-
-#fallback
-- rule: Fallback rule
+- rule: Compare two products
   steps:
-  - intent: nlu_fallback
-  - action: utter_fallback
+    - intent: compare_products
+    - action: action_compare_products
+
+- rule: Quote Request → RAG
+  steps:
+    - intent: ask_quote
+    - action: action_rag_answer
+
+- rule: FAQ → RAG
+  steps:
+    - intent: ask_faq
+    - action: action_rag_answer
+
+- rule: Out-of-Scope → Fallback
+  steps:
+    - intent: out_of_scope
+    - action: utter_fallback
+
+- rule: Save conversation on session end
+  condition:
+    - active_loop: null
+  steps:
+    - action: action_save_conversation
