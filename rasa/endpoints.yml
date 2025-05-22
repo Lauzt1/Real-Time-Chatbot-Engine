@@ -40,3 +40,8 @@
 #  username: username
 #  password: password
 #  queue: queue
+
+# rasa/endpoints.yml
+action_endpoint:
+  url: "http://localhost:5055/webhook"
+

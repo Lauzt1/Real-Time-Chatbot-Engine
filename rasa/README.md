@@ -11,6 +11,7 @@ python -m venv .venv
 # Activate the virtual environment
 .\.venv\Scripts\activate
 pip install rasa
+pip install pymongo python-dotenv
 rasa init
 
 rasa train
@@ -18,5 +19,3 @@ rasa train
 rasa run actions
 
 rasa shell --endpoints endpoints.yml
-
-rasa shell --debug

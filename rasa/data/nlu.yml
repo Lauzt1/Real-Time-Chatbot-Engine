@@ -1029,3 +1029,42 @@ nlu:
     - let me speak to a real person
     - let me speak to a real person please
     - i want to talk to a real person
+
+- intent: ask_product_info
+  examples: |
+    - specs for LHR21 MarkV lah
+    - specs for lhr15 markiii mah
+    - give me specs of LHR21ES
+    - info on LHR15ES lah
+    - what are the specs of LH19E?
+    - tell me about LHR15
+    - specs for lhr21
+    - product info LHR15 MarkV
+    - details lhr15es lah
+    - specs of lhr21 markiii
+    - info on lhr21es mah
+    - tell me about lh19e lah
+    - specs lhr15es mah
+
+- intent: compare_products
+  examples: |
+    - compare LHR15 MarkV and LHR21 MarkV
+    - LHR15 MarkIII vs LHR21 MarkIII
+    - which is lighter LHR15ES or LHR21ES
+    - compare LH19E and LHR15ES lah
+    - compare lhr21 and lh19e
+    - lhr15 vs lhr21 mah
+    - compare lhr15 and lhr15es
+    - compare lhr15 markv with lhr15 markiii
+    - lhr21es vs lhr15es lah
+    - compare lh19e and lhr21es mah
+
+- lookup: product_model
+  examples: |
+    - LHR21 MarkV
+    - LHR15 MarkV
+    - LHR21 MarkIII
+    - LHR15 MarkIII
+    - LHR21ES
+    - LHR15ES
+    - LH19E

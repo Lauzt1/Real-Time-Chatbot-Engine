@@ -11,10 +11,15 @@ rules:
     - intent: goodbye
     - action: utter_goodbye
 
-- rule: Product Info → RAG
+- rule: Fetch single product info
   steps:
     - intent: ask_product_info
-    - action: action_rag_answer
+    - action: action_fetch_product_info
+
+- rule: Compare two products
+  steps:
+    - intent: compare_products
+    - action: action_compare_products
 
 - rule: Quote Request → RAG
   steps:

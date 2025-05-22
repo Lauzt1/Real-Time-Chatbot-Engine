@@ -9,6 +9,25 @@ intents:
   - ask_quote
   - ask_faq
   - out_of_scope
+  - compare_products
+
+entities:
+  - product_model
+  - second_model
+
+slots:
+  product_model:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: product_model
+      - type: from_text
+  second_model:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: second_model
+      - type: from_text
 
 responses:
   utter_greet:
@@ -17,7 +36,14 @@ responses:
     - text: "Bye lah! Feel free to ping me again."
   utter_fallback:
     - text: "Sorry, I can’t help with that. Would you like to talk to a human?"
+  utter_ask_model:
+    - text: "Which model you want info for? e.g. LHR15 MarkV lah."
+  utter_ask_two_models:
+    - text: "Please mention two models to compare lah. e.g. LHR15 MarkV vs LHR21 MarkV."
 
 actions:
   - action_rag_answer
   - action_save_conversation
+  - action_fetch_product_info
+  - action_compare_products
+
