@@ -41,3 +41,8 @@ rules:
     - active_loop: null
   steps:
     - action: action_save_conversation
+
+- rule: ignore empty page‐context call
+  steps:
+    - intent: nlu_fallback
+    - action: action_noop

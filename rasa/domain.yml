@@ -40,10 +40,13 @@ responses:
     - text: "Which model you want info for? e.g. LHR15 MarkV lah."
   utter_ask_two_models:
     - text: "Please mention two models to compare lah. e.g. LHR15 MarkV vs LHR21 MarkV."
+  utter_noop:
+    - text: ""
 
 actions:
   - action_rag_answer
   - action_save_conversation
   - action_fetch_product_info
   - action_compare_products
+  - action_noop
 

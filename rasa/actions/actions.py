@@ -16,6 +16,14 @@ uri = os.getenv("MONGODB_URI")
 client = MongoClient(uri, tls=True, tlsCAFile=certifi.where())
 db = client["test"]
 
+class ActionNoop(Action):
+    def name(self):
+        return "action_noop"
+
+    def run(self, dispatcher, tracker, domain):
+        # do nothing
+        return []
+
 class ActionFetchProductInfo(Action):
     def name(self) -> Text:
         return "action_fetch_product_info"
