@@ -8,7 +8,7 @@ intents:
   - ask_product_info
   - ask_quote
   - ask_faq
-  - out_of_scope
+  - agent_fallback
   - compare_products
 
 entities:
@@ -36,10 +36,6 @@ responses:
     - text: "Bye lah! Feel free to ping me again."
   utter_fallback:
     - text: "Sorry, I can’t help with that. Would you like to talk to a human?"
-  utter_ask_model:
-    - text: "Which model you want info for? e.g. LHR15 MarkV lah."
-  utter_ask_two_models:
-    - text: "Please mention two models to compare lah. e.g. LHR15 MarkV vs LHR21 MarkV."
   utter_noop:
     - text: ""
 

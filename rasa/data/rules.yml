@@ -44,5 +44,11 @@ rules:
 
 - rule: ignore empty page‐context call
   steps:
-    - intent: nlu_fallback
     - action: action_noop
+
+- rule: Handle low-confidence inputs
+  steps:
+  - intent: nlu_fallback
+  - action: utter_fallback
+  - action: action_listen
+
