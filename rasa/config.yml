@@ -18,13 +18,13 @@ pipeline:
   - name: DIETClassifier
   - name: EntitySynonymMapper
   - name: ResponseSelector
-  - name: FallbackClassifier
-    threshold: 0.30
+  - name: FallbackClassifier    # ← raised from 0.30
+    threshold: 0.70
     ambiguity_threshold: 0.10
 
 policies:
   - name: RulePolicy
-    core_fallback_threshold: 0.30
+    core_fallback_threshold: 0.70   # ← raised from 0.30
     core_fallback_action_name: utter_fallback
     enable_fallback_prediction: true
     wait_for_user_input_after_fallback: true

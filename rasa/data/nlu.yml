@@ -477,17 +477,10 @@ nlu:
     - yesyesyes
     - yez
     - yop
-    - you asked me a yes or no question, which i answered with yes
-    - you got me, I accept, if you want me to
-    - yres
     - ys
     - yup
     - yyeeeh
     - Okay cool
-    - ok..
-    - considering
-    - More a less
-    - cool beans
     - sounds good!
     - really
 
@@ -616,26 +609,16 @@ nlu:
     - it's okay
     - it's ok
 
-- intent: ask_product_info
-  examples: |
-    - Tell me about the LHR15 lah
-    - Can you give me specs of LHR21 mah?
-    - I want info on Polisher X lah
-    - Product details for LHR15 mah please
-    - What’s the power rating of LHR21 lah?
-    - Specs of Polisher X mah?
-    - Info on Model Y lah
-    - Explain LHR15 mah
-    - Let me know about LHR21 lah
-    - May I have product info for Polisher X mah?
-    - Details on LHR15 lah please
-    - How heavy is Polisher X mah?
-    - I need details on LHR15 lah
-    - Give me info on LHR21 mah
-    - What does LHR21 do lah?
 
 - intent: ask_quote
   examples: |
+    - quote
+    - quotation
+    - price
+    - price quote
+    - i would like to buy
+    - i want to buy
+    - i am interested
     - Can I get a quote lah?
     - Quotation for LHR15 mah
     - Please send me a quote for Polisher X lah
@@ -651,19 +634,148 @@ nlu:
     - Provide quote mah
     - Quotation please lah
 
-- intent: ask_faq
+- intent: agent_fallback
   examples: |
-    - What is your warranty policy lah?
-    - Can you tell me about returns mah?
-    - FAQ on shipping lah
-    - Do you offer warranty mah?
-    - How long is the warranty lah?
-    - Return policy mah?
-    - FAQs on delivery lah
-    - Tell me about support mah
-    - Shipping info lah?
-    - Delivery times mah?
-    - Maintenance FAQs lah
+    - agent
+    - human agent
+    - I want a human
+    - can I speak to an agent
+    - real agent please
+    - real human
+    - chat with a live agent
+    - give me a person please
+    - i want to talk to a human
+    - can you transfer me to a human?
+    - handoff
+    - talk to a human
+    - i need to talk to a human
+    - human please
+    - i need help from a human
+    - i need help from a real human
+    - give me a human
+    - i want to talk to human
+    - i want a representative
+    - i want to talk to a person
+    - I don't wanna talk to a bot
+    - I dont like to talk to a machine
+    - I want to talk to a human
+    - I want to talk to the founders
+    - are there also humans working for your company?
+    - can I speak to a person?
+    - can i please speak to a human?
+    - can you forward me to your team
+    - can you please connect me to a real rasa employee?
+    - can you put me in touch with a human?
+    - do you have human support ?
+    - gimme a proper human
+    - give me a human now
+    - human handoff
+    - i dont wanna talk to a bot
+    - i want to speak to a real person
+    - i want to speak to customer service
+    - i want to talk to a human
+    - i want to talk to a person
+    - i want to talk to human
+    - i want to talk to someone at rasa
+    - i want to talk to someone else
+    - i want to talk to someone who is smarter than you
+    - i would like to speak to a person
+    - i'd rather speak with a real rasa employee
+    - id like to talk to a real rasa employee
+    - let me speak with a real person please
+    - let me talk to a human
+    - let me talk to a real person
+    - please give me a human
+    - service agent
+    - someone from customer care
+    - speak to a real person
+    - talking to a bot is stupid
+    - that's annoying I'd like to speak to someone real
+    - thats not helping, can i talk to human?
+    - wrong i want to speak to a human
+    - can i speak to human
+    - can i speak to your human
+    - i want to chat with human
+    - How do I talk to a human
+    - talk with a human
+    - Can i talk to a human instead
+    - nevermind.... you're not human ... I need to talk to a live person
+    - Can you get a human to assist me?
+    - Can i talk to a human?
+    - Can I talk to a human
+    - Can I speak to a human?
+    - can i speak to a human
+    - no, i want to talk to human
+    - can you hand a conversation over to a human?
+    - can I talk to human?
+    - can I talk to human
+    - talk to human
+    - i want human :(
+    - can i talk to human
+    - i want to talk to a human
+    - i want to speak to human
+    - can i talk to a real person?
+    - connect me to a real person
+    - I need a real person
+    - can i took with a real person
+    - let me speak to a real person
+    - let me speak to a real person please
+    - i want to talk to a real person
+
+- lookup: product_model
+  examples: |
+    - LHR15 MarkV
+    - LHR21 MarkV
+    - LHR15ES
+    - LHR21ES
+    - LH19E
+    - LHR15 MarkIII
+    - LHR21 MarkIII
+    - lhr15 markv
+    - lhr21 markv
+    - lhr15es
+    - lhr21es
+    - lh19e
+    - lhr15 markiii
+    - lhr21 markiii
+    - lhr15 mark5
+    - lhr21 mark5
+    - lhr15 mark3
+    - lhr21 mark3
+
+- intent: ask_product_info
+  examples: |
+    - Tell me about the LHR15 MarkV
+    - Specs for LHR21 MarkIII lah
+    - I want info on LHR21ES
+    - What’s the power rating of LH19E?
+    - Details for LHR15ES please
+    - Show me specs for LHR21 mah
+    - Tell me about the LHR15 MarkV
+    - LHR15
+    - LHR21ES
+    - What’s LHR21?
+    - Specs for LH19E
+    - Tell me about the [LHR15 MarkV](product_model)
+    - What are the specs of [LHR21ES](product_model)?
+    - Give me info on [LH19E](product_model)
+    - [LHR15ES](product_model)
+    - [LHR21 MarkIII](product_model)
+
+
+# - intent: ask_faq
+#   examples: |
+#     - What is your warranty policy lah?
+#     - Can you tell me about returns mah?
+#     - FAQ on shipping lah
+#     - Do you offer warranty mah?
+#     - How long is the warranty lah?
+#     - Return policy mah?
+#     - FAQs on delivery lah
+#     - Tell me about support mah
+#     - Shipping info lah?
+#     - Delivery times mah?
+#     - Maintenance FAQs lah
 
 # - intent: out_of_scope
 #   examples: |
@@ -943,128 +1055,3 @@ nlu:
 #     - sudo reboot
 #     - asdfgasd
 #     - asdfgasdas
-
-- intent: agent_fallback
-  examples: |
-    - I want a human
-    - can I speak to an agent
-    - real agent please
-    - real human
-    - chat with a live agent
-    - give me a person please
-    - i want to talk to a human
-    - can you transfer me to a human?
-    - handoff
-    - talk to a human
-    - i need to talk to a human
-    - human please
-    - i need help from a human
-    - i need help from a real human
-    - give me a human
-    - i want to talk to human
-    - i want a representative
-    - i want to talk to a person
-    - I don't wanna talk to a bot
-    - I dont like to talk to a machine
-    - I want to talk to a human
-    - I want to talk to the founders
-    - are there also humans working for your company?
-    - can I speak to a person?
-    - can i please speak to a human?
-    - can you forward me to your team
-    - can you please connect me to a real rasa employee?
-    - can you put me in touch with a human?
-    - do you have human support ?
-    - gimme a proper human
-    - give me a human now
-    - human handoff
-    - i dont wanna talk to a bot
-    - i want to speak to a real person
-    - i want to speak to customer service
-    - i want to talk to a human
-    - i want to talk to a person
-    - i want to talk to human
-    - i want to talk to someone at rasa
-    - i want to talk to someone else
-    - i want to talk to someone who is smarter than you
-    - i would like to speak to a person
-    - i'd rather speak with a real rasa employee
-    - id like to talk to a real rasa employee
-    - let me speak with a real person please
-    - let me talk to a human
-    - let me talk to a real person
-    - please give me a human
-    - service agent
-    - someone from customer care
-    - speak to a real person
-    - talking to a bot is stupid
-    - that's annoying I'd like to speak to someone real
-    - thats not helping, can i talk to human?
-    - wrong i want to speak to a human
-    - can i speak to human
-    - can i speak to your human
-    - i want to chat with human
-    - How do I talk to a human
-    - talk with a human
-    - Can i talk to a human instead
-    - nevermind.... you're not human ... I need to talk to a live person
-    - Can you get a human to assist me?
-    - Can i talk to a human?
-    - Can I talk to a human
-    - Can I speak to a human?
-    - can i speak to a human
-    - no, i want to talk to human
-    - can you hand a conversation over to a human?
-    - can I talk to human?
-    - can I talk to human
-    - talk to human
-    - i want human :(
-    - can i talk to human
-    - i want to talk to a human
-    - i want to speak to human
-    - can i talk to a real person?
-    - connect me to a real person
-    - I need a real person
-    - can i took with a real person
-    - let me speak to a real person
-    - let me speak to a real person please
-    - i want to talk to a real person
-
-- intent: ask_product_info
-  examples: |
-    - specs for LHR21 MarkV lah
-    - specs for lhr15 markiii mah
-    - give me specs of LHR21ES
-    - info on LHR15ES lah
-    - what are the specs of LH19E?
-    - tell me about LHR15
-    - specs for lhr21
-    - product info LHR15 MarkV
-    - details lhr15es lah
-    - specs of lhr21 markiii
-    - info on lhr21es mah
-    - tell me about lh19e lah
-    - specs lhr15es mah
-
-- intent: compare_products
-  examples: |
-    - compare LHR15 MarkV and LHR21 MarkV
-    - LHR15 MarkIII vs LHR21 MarkIII
-    - which is lighter LHR15ES or LHR21ES
-    - compare LH19E and LHR15ES lah
-    - compare lhr21 and lh19e
-    - lhr15 vs lhr21 mah
-    - compare lhr15 and lhr15es
-    - compare lhr15 markv with lhr15 markiii
-    - lhr21es vs lhr15es lah
-    - compare lh19e and lhr21es mah
-
-- lookup: product_model
-  examples: |
-    - LHR21 MarkV
-    - LHR15 MarkV
-    - LHR21 MarkIII
-    - LHR15 MarkIII
-    - LHR21ES
-    - LHR15ES
-    - LH19E

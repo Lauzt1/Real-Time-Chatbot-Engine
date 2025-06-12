@@ -80,7 +80,7 @@ export default function ChatbotWidget() {
       {isOpen && (
         <div
           className="p-4 bg-white shadow-lg rounded-lg flex flex-col"
-          style={{ width: '30vw', height: '75vh' }}
+          style={{ width: '30vw', minWidth: '400px', height: '75vh' }}
         >
           <div
             ref={messagesContainerRef}

@@ -6,28 +6,19 @@ intents:
   - affirm
   - deny
   - ask_product_info
-  - ask_quote
-  - ask_faq
   - agent_fallback
-  - compare_products
+  - ask_quote
 
 entities:
   - product_model
-  - second_model
 
 slots:
   product_model:
     type: text
+    influence_conversation: false
     mappings:
-      - type: from_entity
-        entity: product_model
-      - type: from_text
-  second_model:
-    type: text
-    mappings:
-      - type: from_entity
-        entity: second_model
-      - type: from_text
+    - type: from_entity
+      entity: product_model
 
 responses:
   utter_greet:
@@ -40,9 +31,9 @@ responses:
     - text: ""
 
 actions:
-  - action_rag_answer
-  - action_save_conversation
-  - action_fetch_product_info
-  - action_compare_products
+  - action_product_info
   - action_noop
 
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

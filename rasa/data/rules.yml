@@ -11,37 +11,6 @@ rules:
     - intent: goodbye
     - action: utter_goodbye
 
-- rule: Fetch single product info
-  steps:
-    - intent: ask_product_info
-    - action: action_fetch_product_info
-
-- rule: Compare two products
-  steps:
-    - intent: compare_products
-    - action: action_compare_products
-
-- rule: Quote Request → RAG
-  steps:
-    - intent: ask_quote
-    - action: action_rag_answer
-
-- rule: FAQ → RAG
-  steps:
-    - intent: ask_faq
-    - action: action_rag_answer
-
-- rule: Out-of-Scope → Fallback
-  steps:
-    - intent: out_of_scope
-    - action: utter_fallback
-
-- rule: Save conversation on session end
-  condition:
-    - active_loop: null
-  steps:
-    - action: action_save_conversation
-
 - rule: ignore empty page‐context call
   steps:
     - action: action_noop
@@ -51,4 +20,15 @@ rules:
   - intent: nlu_fallback
   - action: utter_fallback
   - action: action_listen
+
+- rule: Handle product info requests
+  steps:
+  - intent: ask_product_info
+  - action: action_product_info
+  - action: action_listen
+
+- rule: respond with product info
+  steps:
+  - intent: ask_product_info
+  - action: action_product_info
 
