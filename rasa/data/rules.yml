@@ -32,3 +32,12 @@ rules:
   - intent: ask_product_info
   - action: action_product_info
 
+- rule: Quote request
+  steps:
+    - intent: ask_quote
+    - action: utter_ask_quote
+
+- rule: Human handoff
+  steps:
+    - intent: agent_fallback
+    - action: utter_agent_fallback

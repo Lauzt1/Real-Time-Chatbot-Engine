@@ -29,6 +29,10 @@ responses:
     - text: "Sorry, I can’t help with that. Would you like to talk to a human?"
   utter_noop:
     - text: ""
+  utter_ask_quote:      # ← placeholder quote link
+    - text: "Sure thing lah – you can request your price quote here: https://example.com/quote"
+  utter_agent_fallback: # ← placeholder human-handoff link
+    - text: "No problem lah – our human support is ready. Please click: https://example.com/human-support"
 
 actions:
   - action_product_info
