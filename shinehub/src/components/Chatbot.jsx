@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import { HiChat } from 'react-icons/hi'
 
 export default function ChatbotWidget() {
   const pathname = usePathname();
@@ -70,10 +71,10 @@ export default function ChatbotWidget() {
       {/* Toggle Button */}
       <div
         onClick={() => setIsOpen((open) => !open)}
-        className="h-12 w-12 bg-blue-600 rounded-full flex items-center justify-center text-white cursor-pointer shadow-lg"
+        className="h-12 w-12 bg-purple-600 rounded-full flex items-center justify-center text-white cursor-pointer shadow-lg"
       >
         {/* Placeholder icon */}
-        <span className="text-2xl">💬</span>
+        <HiChat className="text-2xl"/>
       </div>
 
       {/* Chat Window */}
@@ -93,7 +94,7 @@ export default function ChatbotWidget() {
               >
                 <span
                   className={`inline-block p-2 my-1 rounded ${
-                    m.from === "user" ? "bg-blue-100" : "bg-gray-100"
+                    m.from === "user" ? "bg-purple-100" : "bg-gray-100"
                   }`}
                 >
                   {m.text}
@@ -118,7 +119,7 @@ export default function ChatbotWidget() {
             />
             <button
               type="submit"
-              className="bg-blue-600 text-white p-2 rounded-r"
+              className="bg-purple-600 text-white p-2 rounded-r"
             >
               Send
             </button>
