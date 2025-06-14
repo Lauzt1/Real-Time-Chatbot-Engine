@@ -5,49 +5,39 @@ intents:
   - goodbye
   - affirm
   - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
-  #faq
-  - select_faq
-  #query
-  - compare_products
-  - fallback
-  - product_info
+  - ask_product_info
+  - agent_fallback
+  - ask_quote
+
+entities:
+  - product_model
+
+slots:
+  product_model:
+    type: text
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: product_model
 
 responses:
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
-
-  utter_did_that_help:
-  - text: "Did that help you?"
-
-  utter_happy:
-  - text: "Great, carry on!"
-
-  utter_goodbye:
-  - text: "Bye"
-
-  utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
-
-  #query
   utter_greet:
-    - text: "Hello! I'm an AI assistant here to help you with any product information. How can I assist you today?"
+    - text: "Hi there lah – ask me anything about our products or quotes!"
+  utter_goodbye:
+    - text: "Bye lah! Feel free to ping me again."
   utter_fallback:
-    - text: "I don't have an answer for that. Is there something else I can help you with?"
+    - text: "Sorry, I can’t help with that. Would you like to talk to a human?"
+  utter_noop:
+    - text: ""
+  utter_ask_quote:      # ← placeholder quote link
+    - text: "Sure thing lah – you can request your price quote here: https://example.com/quote"
+  utter_agent_fallback: # ← placeholder human-handoff link
+    - text: "No problem lah – our human support is ready. Please click: https://example.com/human-support"
+
+actions:
+  - action_product_info
+  - action_noop
 
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
-
-actions:
-  # old faq
-  - action_session_start
-  - action_show_faqs
-  - action_answer_faq
-  # query
-  - action_compare_products
-  - action_product_info
-

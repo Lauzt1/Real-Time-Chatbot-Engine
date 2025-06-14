@@ -6,12 +6,3 @@ stories:
   - intent: greet
   - action: utter_greet
 
-- story: compare products path
-  steps:
-  - intent: compare_products
-  - action: action_compare_products
-
-- story: product info path
-  steps:
-  - intent: product_info
-  - action: action_product_info
