@@ -12,7 +12,7 @@ const getPolisher = async () => {
         }
     };
 
-export default async function ProductCard() {
+export default async function PolisherDetail() {
     const { polisher } = await getPolisher();
     return (
         <>
