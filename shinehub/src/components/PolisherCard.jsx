@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const getPolisher = async () => {
     try {
-        const res = await fetch("http://localhost:3000/api/product/polisher", {
+        const res = await fetch("http://localhost:3000/api/polisher", {
             cache: "no-store",
         });
         if (!res.ok) {
@@ -20,7 +20,7 @@ export default async function ProductCard() {
         <>
             {polisher.map((t) => (
                 <div
-                    key={t._id} 
+                    key={t._id}
                     className="block bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
                 >
                     <Link href={`/product/polisher/${t._id}`}>
