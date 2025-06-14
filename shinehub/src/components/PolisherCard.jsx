@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const getPolisher = async () => {
     try {
-        const res = await fetch("http://localhost:3000/api/polisher", {
+        const res = await fetch("http://localhost:3000/api/product/polisher", {
             cache: "no-store",
         });
         if (!res.ok) {
