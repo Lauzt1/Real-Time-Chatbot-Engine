@@ -10,12 +10,12 @@ export async function PUT(request, { params }) {
         newOrbit: orbit,
         newPower: power,
         newRpm: rpm,
-        newWeight, weight,
+        newWeight: weight,
         newDescription: description,
         newImageUrl: imageUrl
     } = await request.json();
     await connectMongoDB();
-    await Topic.findByIdAndUpdate(id, { name, backingpad, orbit, power, rpm, weight, description, imageUrl });
+    await Polisher.findByIdAndUpdate(id, { name, backingpad, orbit, power, rpm, weight, description, imageUrl });
     return NextResponse.json({ message: "Polisher Added" }, { status: 200 });
 }
 
