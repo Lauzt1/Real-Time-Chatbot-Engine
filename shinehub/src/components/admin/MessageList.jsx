@@ -32,7 +32,7 @@ export default async function MessageList() {
                     </div>
 
                     <div className="flex gap-2">
-                        <RemoveBtn id={t._id} />
+                        <RemoveBtn id={t._id} resource="message" />
                     </div>
                 </div>
             ))}

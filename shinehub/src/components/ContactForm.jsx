@@ -28,7 +28,12 @@ export default function ContactForm () {
             });
 
             if (res.ok) {
-                router.push("/contactUs/success");
+                window.alert("The message has been sent successfully.");
+                setName("");
+                setEmail("");
+                setPhoneNumber("");
+                setCompanyName("");
+                setMessage("");
             } else {
                 throw new Error("Failed to send message");
             }
