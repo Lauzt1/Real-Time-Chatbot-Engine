@@ -1,4 +1,4 @@
-import PolisherCard from "@/components/PolisherCard";
+import EditPolisherForm from '@/components/admin/EditPolisherForm';
 
 const getPolisherById = async (id) => {
     try {
@@ -14,12 +14,12 @@ const getPolisherById = async (id) => {
     }
 }
 
-export default async function ViewPolisher({ params }) {
+export default async function EditPolisher({ params }) {
     const { id } = params;
     const { polisher } = await getPolisherById(id);
     const { name, backingpad, orbit, power, rpm, weight, description, imageUrl } = polisher;
     return (
-        <PolisherCard
+        <EditPolisherForm
             id={id}
             name={name}
             backingpad={backingpad}
