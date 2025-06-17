@@ -1,7 +1,9 @@
-import ProductCard from "@/components/admin/PolisherCard";
+import CategorySidebar from "@/components/admin/CategorySidebar";
 
 export default function ProductManagement() {
     return (
-        <ProductCard />
+        <>
+            <CategorySidebar />
+        </>
     )
 }

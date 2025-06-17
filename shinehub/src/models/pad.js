@@ -12,5 +12,5 @@ const padSchema = new Schema(
     }
 );
 
-const Pad = models.Pad || mongoose.model("Polishing Pad", padSchema);
+const Pad = models.Pad || mongoose.model("Pad", padSchema);
 export default Pad;

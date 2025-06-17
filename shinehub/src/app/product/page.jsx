@@ -1,14 +1,9 @@
-import Link from "next/link";
+import CategorySidebar from "@/components/CategorySidebar";
 
-export default function ProductCategory() {
+export default function ProductPage() {
     return (
-        <div>
-            "Product Category"
         <>
-        <Link href="/product/polisher">
-            "Polishers"
-        </Link>
+            <CategorySidebar />
         </>
-        </div>
     )
 }

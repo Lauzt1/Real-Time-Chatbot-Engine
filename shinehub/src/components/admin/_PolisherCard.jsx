@@ -1,4 +1,6 @@
 import RemoveBtn from './RemoveBtn';
+import { HiPencilAlt } from 'react-icons/hi';
+import Link from 'next/link';
 
 const getPolisher = async () => {
     try {
@@ -36,6 +38,9 @@ export default async function ProductCard() {
 
                     <div className="flex gap-2">
                         <RemoveBtn id={t._id} />
+                        <Link href={`/editPolisher/${t._id}`}>
+                            <HiPencilAlt size={23} />
+                        </Link>
                     </div>
                 </div>
             ))}

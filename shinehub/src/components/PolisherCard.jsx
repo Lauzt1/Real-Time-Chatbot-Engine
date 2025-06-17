@@ -20,7 +20,7 @@ export default async function ProductCard() {
         <>
             {polisher.map((t) => (
                 <div
-                    key={t._id} 
+                    key={t._id}
                     className="block bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
                 >
                     <Link href={`/product/polisher/${t._id}`}>
