@@ -1,13 +1,13 @@
 // src/app/admin/productManagement/[category]/page.jsx
 import CategorySidebar from "@/components/CategorySidebar"
 import Link from "next/link"
-
-// import your models (or your helper functions that call your /api routes)
+import connectMongoDB from "@/libs/mongodb"
 import Polisher from "@/models/polisher"
 import Pad       from "@/models/pad"
 import Compound  from "@/models/compound"
 
 async function getproductFor(category) {
+  await connectMongoDB()
   switch (category) {
     case "polisher":
       return Polisher.find().lean()
