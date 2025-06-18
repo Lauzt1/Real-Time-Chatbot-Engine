@@ -37,7 +37,8 @@ export default async function DetailPage({ params }) {
               <dt>Backing Pad:</dt><dd>{item.backingpad}"</dd>
               <dt>Orbit:</dt><dd>{item.orbit} mm</dd>
               <dt>Power:</dt><dd>{item.power} W</dd>
-              {/* …etc… */}
+              <dt>R.P.M.:</dt><dd>{item.power}</dd>
+              <dt>Weight:</dt><dd>{item.power} kg</dd>
             </>
           )}
           {/* handle pad & compound fields similarly */}

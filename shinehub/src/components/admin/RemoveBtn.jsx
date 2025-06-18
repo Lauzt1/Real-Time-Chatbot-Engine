@@ -10,7 +10,7 @@ export default function RemoveBtn({ id, resource }) {
   const handleDelete = async () => {
     if (!confirm("Are you sure you want to delete this?")) return;
 
-    const res = await fetch(`/api/${resource}?id=${id}`, {
+    const res = await fetch(`/api/${resource}/${id}`, {
       method: 'DELETE',
     });
 
