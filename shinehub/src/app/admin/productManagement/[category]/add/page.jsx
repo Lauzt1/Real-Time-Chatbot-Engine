@@ -1,115 +1,268 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import CategorySidebar from "@/components/admin/CategorySidebar";
 
-export default function Add() {
-    const [name, setName] = useState("");
-    const [backingpad, setBackingpad] = useState("");
-    const [orbit, setOrbit] = useState("");
-    const [power, setPower] = useState("");
-    const [rpm, setRpm] = useState("");
-    const [weight, setWeight] = useState("");
-    const [description, setDescription] = useState("");
-    const [imageUrl, setImageUrl] = useState("");
+export default function AddItemPage() {
+  const { category } = useParams();
+  const router = useRouter();
 
-    const router = useRouter();
+  // Human-friendly titles
+  const pretty = {
+    polisher: "Polisher",
+    pad:      "Pad",
+    compound: "Compound",
+  }[category] || "Item";
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!name || !backingpad || !orbit || !power || !rpm || !weight || !description || !imageUrl ) {
-            alert("All fields are required.");
-            return;
-        }
-        try {
-            const res = await fetch('http://localhost:3000/api/polisher', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, backingpad, orbit, power, rpm, weight, description, imageUrl }),
-            });
+  // Initial form state per category
+  const getInitial = (cat) => {
+    switch (cat) {
+      case "polisher":
+        return {
+          name: "",
+          backingpad: "",
+          orbit: "",
+          power: "",
+          rpm: "",
+          weight: "",
+          description: "",
+          imageUrl: "",
+        };
+      case "pad":
+        return {
+          name: "",
+          code: "",
+          size: "",
+          colour: "",
+          description: "",
+        };
+      case "compound":
+        return {
+          name: "",
+          code: "",
+          size: "",
+          description: "",
+        };
+      default:
+        return {};
+    }
+  };
 
-            if (res.ok) {
-                router.push("/admin/productManagement");
-            } else {
-                throw new Error("Failed to add a product");
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
+  const [form, setForm] = useState(getInitial(category));
 
-    return (
-        <>
-        <CategorySidebar />
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow space-y-4">
-        <h2 className="text-2xl font-semibold">Add a new polisher</h2>
-            <input
-                onChange={(e) => setName(e.target.value)}
-                value={name}
-                className="w-full border px-3 py-2 rounded text-black"
-                type="text"
-                placeholder="Polisher Name"    
-            />
-            <input
-                onChange={(e) => setBackingpad(e.target.value)}
-                value={backingpad}
-                className="w-full border px-3 py-2 rounded text-black"
-                type="text"
-                placeholder="Backing Pad (inch)"    
-            />
-            <input
-                onChange={(e) => setOrbit(e.target.value)}
-                value={orbit}
-                className="w-full border px-3 py-2 rounded text-black"
-                type="text"
-                placeholder="Orbit (mm)"    
-            />
-            <input
-                onChange={(e) => setPower(e.target.value)}
-                value={power}
-                className="w-full border px-3 py-2 rounded text-black"
-                type="text"
-                placeholder="Power (W)"    
-            />
-            <input
-                onChange={(e) => setRpm(e.target.value)}
-                value={rpm}
-                className="w-full border px-3 py-2 rounded text-black"
-                type="text"
-                placeholder="R.P.M."    
-            />
-            <input
-                onChange={(e) => setWeight(e.target.value)}
-                value={weight}
-                className="w-full border px-3 py-2 rounded text-black"
-                type="text"
-                placeholder="Weight (kg)"    
-            />
-            <input
-                onChange={(e) => setDescription(e.target.value)}
-                value={description}
-                className="w-full border px-3 py-2 rounded text-black"
-                type="text"
-                placeholder="Polisher Description"    
-            />
-            <input
-                onChange={(e) => setImageUrl(e.target.value)}
-                value={imageUrl}
-                className="w-full border px-3 py-2 rounded text-black"
-                type="text"
-                placeholder="asd"    
-            />
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
-            <button
-                type="submit"
-                className="bg-purple-600 font-bold text-white py-3 px-6 w-fit"
-            >
-                Add Polisher
-            </button>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // simple required-fields check
+    for (let key in form) {
+      if (form[key] === "") {
+        alert("All fields are required.");
+        return;
+      }
+    }
+
+    // convert numeric fields
+    let body = { ...form };
+    if (category === "polisher") {
+      body = {
+        ...body,
+        backingpad: parseFloat(body.backingpad),
+        orbit:      parseFloat(body.orbit),
+        power:      parseFloat(body.power),
+        weight:     parseFloat(body.weight),
+      };
+    } else if (category === "pad" || category === "compound") {
+      body = {
+        ...body,
+        size: parseFloat(body.size),
+      };
+    }
+
+    const res = await fetch(`/api/${category}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (res.ok) {
+      window.alert(`${pretty} added successfully.`);
+      router.push(`/admin/productManagement/${category}`);
+    } else {
+      const err = await res.json();
+      console.error(err);
+      alert("Failed to add item.");
+    }
+  };
+
+  return (
+    <div className="flex">
+      <CategorySidebar active={category} />
+
+      <main className="flex-1 p-6 bg-purple-50">
+        <h1 className="text-2xl font-semibold mb-4">Add a new {pretty}</h1>
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white p-6 rounded-lg shadow space-y-4 max-w-lg"
+        >
+          {/* Polisher fields */}
+          {category === "polisher" && (
+            <>
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Name"
+              />
+              <input
+                name="backingpad"
+                value={form.backingpad}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Backing Pad (inch)"
+                type="number"
+              />
+              <input
+                name="orbit"
+                value={form.orbit}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Orbit (mm)"
+                type="number"
+              />
+              <input
+                name="power"
+                value={form.power}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Power (W)"
+                type="number"
+              />
+              <input
+                name="rpm"
+                value={form.rpm}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="RPM"
+              />
+              <input
+                name="weight"
+                value={form.weight}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Weight (kg)"
+                type="number"
+              />
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Description"
+                rows={3}
+              />
+              <input
+                name="imageUrl"
+                value={form.imageUrl}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Image URL"
+              />
+            </>
+          )}
+
+          {/* Pad fields */}
+          {category === "pad" && (
+            <>
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Name"
+              />
+              <input
+                name="code"
+                value={form.code}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Code"
+              />
+              <input
+                name="size"
+                value={form.size}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Size (mm)"
+                type="number"
+              />
+              <input
+                name="colour"
+                value={form.colour}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Colour"
+              />
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Description"
+                rows={3}
+              />
+            </>
+          )}
+
+          {/* Compound fields */}
+          {category === "compound" && (
+            <>
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Name"
+              />
+              <input
+                name="code"
+                value={form.code}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Code"
+              />
+              <input
+                name="size"
+                value={form.size}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Size (g)"
+                type="number"
+              />
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Description"
+                rows={3}
+              />
+            </>
+          )}
+
+          <button
+            type="submit"
+            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+          >
+            Add {pretty}
+          </button>
         </form>
-        </>
-    )
+      </main>
+    </div>
+  );
 }

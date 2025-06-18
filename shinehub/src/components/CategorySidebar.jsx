@@ -11,7 +11,7 @@ const categories = [
 export default function CategorySidebar({ active }) {
   return (
     <aside className="w-48 bg-purple-200 p-4">
-      <h2 className="text-purple-700 text-lg font-medium mb-4">Products</h2>
+      <h2 className="text-purple-700 text-lg font-medium mb-4">Product Category</h2>
       <ul className="space-y-2">
         {categories.map((cat) => {
           const isActive = cat.slug === active

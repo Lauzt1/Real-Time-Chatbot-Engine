@@ -45,7 +45,7 @@ export default async function CategoryPage({ params }) {
         <h1 className="text-2xl mb-4">{pretty}</h1>
 
         <Link
-          href={`/admin/productManagement/${pretty}/add`}
+          href={`/admin/productManagement/${category}/add`}
           className="mb-6 inline-block bg-purple px-4 py-2 rounded shadow"
         >
           Add {pretty.slice(0, -1)}
@@ -60,7 +60,7 @@ export default async function CategoryPage({ params }) {
               </div>
               <div className="flex justify-center gap-4 p-2">
                 <RemoveBtn id={item._id} resource={category} />
-                <Link href={`/admin/productManagement/${pretty}/edit/${item._id}`}>
+                <Link href={`/admin/productManagement/${category}/edit/${item._id}`}>
                   <HiPencilAlt size={23} />
                 </Link>
               </div>

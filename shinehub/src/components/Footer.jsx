@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="bg-purple-200 py-8 text-gray-800 text-sm">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
         <div>
-          <h3 className="font-semibold mb-2">Products</h3>
+          <h3 className="font-semibold mb-2">Product Category</h3>
           <ul className="space-y-1">
             <Link href={`/product/polisher`}><li>Polisher</li></Link>
             <li>Polishing Pads</li>
