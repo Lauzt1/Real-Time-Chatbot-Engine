@@ -9,7 +9,7 @@ from bson import ObjectId, DBRef, Decimal128
 from dotenv import load_dotenv
 
 # === CONFIG ===
-DB_NAME = "shinehub"   # your target database
+DB_NAME = "FYP"   # your target database
 
 # Load MONGODB_URI from .env
 load_dotenv()
