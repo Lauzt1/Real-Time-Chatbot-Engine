@@ -9,6 +9,16 @@ intents:
   - agent_fallback
   - ask_quote
 
+# — ATTRIBUTE INTENTS —
+  - ask_weight
+  - ask_power
+  - ask_orbit
+  - ask_backingpad
+  - ask_size
+  - ask_code
+  - ask_colour
+  - ask_description
+
 entities:
   - product_model
 
@@ -16,9 +26,32 @@ slots:
   product_model:
     type: text
     influence_conversation: false
+    # fill the slot either from the annotated entity *or* (fallback)
+    # from the whole user message if no entity was recognised
     mappings:
-    - type: from_entity
-      entity: product_model
+      - type: from_entity        # ← when entity is annotated
+        entity: product_model
+      - type: from_text          # ← e.g. “tell me about lhr15 markv”
+
+  page:
+    type: text
+    influence_conversation: false
+    mappings: []          # ← we set this from the front-end event
+
+  product_id:
+    type: text
+    influence_conversation: false
+    mappings: []          # ← set by actions only
+
+  product_category:
+    type: text
+    influence_conversation: false
+    mappings: []
+
+  product_doc:
+    type: any
+    influence_conversation: false
+    mappings: []
 
 responses:
   utter_greet:
@@ -37,6 +70,8 @@ responses:
 actions:
   - action_product_info
   - action_noop
+  - action_set_product_context
+  - action_query_product_attribute
 
 session_config:
   session_expiration_time: 60

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { HiChat } from 'react-icons/hi'
+import { HiChat } from "react-icons/hi";
 
 export default function ChatbotWidget() {
   const pathname = usePathname();
@@ -15,7 +15,7 @@ export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const messagesContainerRef = useRef(null);
 
-  // Send page context only once on mount
+  // Send (or re-send) page context whenever the URL changes
   useEffect(() => {
     fetch(
       `${process.env.NEXT_PUBLIC_RASA_URL}/conversations/${sessionId}/events`,
@@ -28,60 +28,66 @@ export default function ChatbotWidget() {
           value: pathname,
         }),
       }
+    ).catch((err) =>
+      console.error("Failed to send page context slot:", err)
     );
-  }, []);
+  }, [sessionId, pathname]);
 
-  // Auto-scroll to bottom on new messages
+  // Scroll to bottom on new messages
   useEffect(() => {
     if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
-  async function sendMessage(text, metadata = {}) {
-    const fullMeta = { ...metadata, page: pageRef.current };
+  async function sendMessage(text) {
+    const fullMeta = { page: pageRef.current };
 
     if (text.trim()) {
       setMessages((prev) => [...prev, { from: "user", text }]);
     }
 
-    const res = await fetch("/api/chatbot", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        sender: sessionId,
-        message: text,
-        metadata: fullMeta,
-      }),
-    });
+    try {
+      const res = await fetch("/api/chatbot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sender: sessionId,
+          message: text,
+          metadata: fullMeta,
+        }),
+      });
 
-    if (!res.ok) {
-      console.error("NextAPI /api/chat failed:", await res.text());
-      return;
+      if (!res.ok) {
+        console.error("NextAPI /api/chatbot failed:", await res.text());
+        return;
+      }
+
+      const botReplies = await res.json();
+      botReplies.forEach((bot) => {
+        setMessages((prev) => [...prev, { from: "bot", text: bot.text }]);
+      });
+    } catch (err) {
+      console.error("Error sending message:", err);
     }
-
-    const botReplies = await res.json();
-    botReplies.forEach((bot) => {
-      setMessages((prev) => [...prev, { from: "bot", text: bot.text }]);
-    });
   }
 
   return (
     <div className="fixed bottom-4 right-4 flex flex-col-reverse items-end gap-2">
       {/* Toggle Button */}
       <div
-        onClick={() => setIsOpen((open) => !open)}
+        onClick={() => setIsOpen((o) => !o)}
         className="h-12 w-12 bg-purple-600 rounded-full flex items-center justify-center text-white cursor-pointer shadow-lg"
       >
-        {/* Placeholder icon */}
-        <HiChat className="text-2xl"/>
+        <HiChat className="text-2xl" />
       </div>
 
       {/* Chat Window */}
       {isOpen && (
         <div
           className="p-4 bg-white shadow-lg rounded-lg flex flex-col"
-          style={{ width: '30vw', minWidth: '400px', height: '75vh' }}
+          style={{ width: "30vw", minWidth: "400px", height: "75vh" }}
         >
           <div
             ref={messagesContainerRef}
