@@ -11,10 +11,6 @@ rules:
     - intent: goodbye
     - action: utter_goodbye
 
-- rule: ignore empty page‐context call
-  steps:
-    - action: action_noop
-
 - rule: Handle low-confidence inputs
   steps:
   - intent: nlu_fallback
@@ -41,3 +37,78 @@ rules:
   steps:
     - intent: agent_fallback
     - action: utter_agent_fallback
+
+# -------------------------------------------------
+#  Homepage query – no product context yet
+# -------------------------------------------------
+- rule: Product lookup (anywhere)
+  steps:
+    - intent: ask_product_info
+    - action: action_product_info
+    - action: action_listen
+
+  # 1) Whenever the `page` slot is set (i.e. on every route change),
+  #    pull in the new product context
+- rule: Update product context on page change
+  condition:
+    - slot_was_set:
+        - page
+  steps:
+    - action: action_set_product_context
+    - action: action_listen
+
+# — On a product page, answer attribute questions —
+- rule: Answer description questions on product page
+  steps:
+    - intent: ask_description
+    - action: action_query_product_attribute
+    - action: action_listen
+
+- rule: Answer weight questions on product page
+  steps:
+    - intent: ask_weight
+    - action: action_query_product_attribute
+    - action: action_listen
+
+- rule: Answer power questions on product page
+  steps:
+    - intent: ask_power
+    - action: action_query_product_attribute
+    - action: action_listen
+
+- rule: Answer orbit questions on product page
+  steps:
+    - intent: ask_orbit
+    - action: action_query_product_attribute
+    - action: action_listen
+
+- rule: Answer backing pad questions on product page
+  steps:
+    - intent: ask_backingpad
+    - action: action_query_product_attribute
+    - action: action_listen
+
+- rule: Answer size questions on product page
+  steps:
+    - intent: ask_size
+    - action: action_query_product_attribute
+    - action: action_listen
+
+- rule: Answer code questions on product page
+  steps:
+    - intent: ask_code
+    - action: action_query_product_attribute
+    - action: action_listen
+
+- rule: Answer colour questions on product page
+  steps:
+    - intent: ask_colour
+    - action: action_query_product_attribute
+    - action: action_listen
+
+# -------------------------
+# Fallback/no-op for unexpected page-context events
+# -------------------------
+- rule: ignore empty page-context call
+  steps:
+    - action: action_noop

@@ -12,7 +12,7 @@ rasa run --enable-api --cors "*"
 rasa run --enable-api --cors "*" --debug
 
 # test the mongodb database
-python "C:\Users\lauzt\Documents\Rasa Projects\Real-Time-Chatbot-Engine\rasa\scripts\show_products.py"
+python "C:\Users\lauzt\Documents\Rasa Projects\Real-Time-Chatbot-Engine\rasa\scripts\print_collections.py"
 
 # when you start fresh
 # (dont use this) Create new virtual environment

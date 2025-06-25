@@ -1,35 +1,31 @@
-import os
-import re
-import json
-import certifi
-import datetime
+import os, re, datetime, certifi
 from pymongo import MongoClient
 from bson import ObjectId, DBRef, Decimal128
 from dotenv import load_dotenv
 from typing import Any, Text, Dict, List
+
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import (
+    SessionStarted,
+    ActionExecuted,
+    SlotSet,
+)
 
-# Load .env from project root
+# Load environment variables
 env_path = os.path.join(os.path.dirname(__file__), "..", ".env")
 load_dotenv(env_path)
 
-# --- CONNECT TO MONGODB ---
-MONGO_URI = os.getenv("MONGODB_URI")
-if not MONGO_URI:
-    raise RuntimeError("MONGODB_URI not set in .env")
-
+# Connect to MongoDB
 client = MongoClient(
-    MONGO_URI,
+    os.getenv("MONGODB_URI"),
     tls=True,
     tlsCAFile=certifi.where(),
-    tlsAllowInvalidCertificates=True,
-    serverSelectionTimeoutMS=5000
+    tlsAllowInvalidCertificates=True
 )
-db = client["shinehub"]
+db = client[os.getenv("DB_NAME", client.get_default_database().name)]
 
-# --- HANDLE BSON → JSON (for any future dumps) ---
+
 def bson_to_json(obj):
     if isinstance(obj, ObjectId):
         return str(obj)
@@ -45,87 +41,169 @@ def bson_to_json(obj):
         return [bson_to_json(v) for v in obj]
     return obj
 
-# --- NO-OP ACTION (unchanged) ---
 class ActionNoop(Action):
-    def name(self):
+    def name(self) -> Text:
         return "action_noop"
 
-    def run(self, dispatcher, tracker, domain):
+    def run(self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[SlotSet]:
         return []
 
-# --- PRODUCT INFO (now supporting 3 collections) ---
 class ActionProductInfo(Action):
-    def name(self) -> str:
+    def name(self) -> Text:
         return "action_product_info"
 
-    def run(self, dispatcher: CollectingDispatcher,
+    def run(self,
+            dispatcher: CollectingDispatcher,
             tracker: Tracker,
-            domain: Dict[Text, Any]) -> List:
-
+            domain: Dict[Text, Any]) -> List[SlotSet]:
+        # Use raw user message to match against name or code
         user_msg = tracker.latest_message.get("text", "").lower()
+        # search only in the three product collections
+        for coll in ["polishers", "pads", "compounds"]:
+            for doc in db[coll].find():
+                name = doc.get("name", "").lower()
+                code = doc.get("code", "").lower()
+                if (name and re.search(rf"\b{re.escape(name)}\b", user_msg)) or \
+                   (code and re.search(rf"\b{re.escape(code)}\b", user_msg)):
+                    serial = bson_to_json(doc)
+                    # utter description
+                    dispatcher.utter_message(serial.get("description", "No description."))
+                    # set context slots
+                    return [
+                        SlotSet("product_doc", serial),
+                        SlotSet("product_id", str(doc.get("_id"))),
+                        SlotSet("product_category", coll),
+                        SlotSet("product_model", name),
+                    ]
+        dispatcher.utter_message("Sorry, I couldn’t find that product.")
+        return []
 
-        # 1) load from all collections
-        polisher_docs = list(db.polishers.find({}))
-        pad_docs      = list(db.pads.find({}))
-        comp_docs     = list(db.compounds.find({}))
+class ActionSetProductContext(Action):
+    def name(self) -> Text:
+        return "action_set_product_context"
 
-        # 2) build unified catalog [(name, doc, category), ...]
-        catalog = []
-        for d in polisher_docs:
-            catalog.append((d["name"].lower(), d, "polisher"))
-        for d in pad_docs:
-            catalog.append((d["name"].lower(), d, "pad"))
-        for d in comp_docs:
-            catalog.append((d["name"].lower(), d, "compound"))
-
-        # 3) find first match by name word‐boundary
-        match = None
-        for name, doc, cat in catalog:
-            if re.search(rf"\b{re.escape(name)}\b", user_msg):
-                match = (doc, cat)
-                break
-
-        if not match:
-            dispatcher.utter_message(
-                text="Sorry, I couldn’t find that item. Please specify the exact model or product name."
-            )
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[SlotSet]:
+        page = tracker.get_slot("page") or ""
+        m = re.match(r"^/product/(?P<cat>[^/]+)/(?P<id>[0-9a-f]{24})$", page)
+        if not m:
             return []
 
-        doc, category = match
+        raw_cat, pid = m.group("cat"), m.group("id")
 
-        # 4) format according to category
-        if category == "polisher":
-            specs = (
-                f"**{doc['name']}** (Polisher) specs:\n"
-                f"- Backing pad: {doc['backingpad']} in  \n"
-                f"- Orbit diameter: {doc['orbit']} mm  \n"
-                f"- Power: {doc['power']} W  \n"
-                f"- RPM: {doc.get('rpm', 'n/a')}  \n"
-                f"- Weight: {doc['weight']} kg  \n"
-                f"- Description: {doc.get('description', '')}\n"
-            )
+        # normalize URL segment to your Mongo collections
+        if raw_cat in ["polishers", "pads", "compounds"]:
+            coll = raw_cat
+        elif raw_cat + "s" in ["polishers", "pads", "compounds"]:
+            coll = raw_cat + "s"
+        else:
+            return []
 
-        elif category == "pad":
-            specs = (
-                f"**{doc['name']}** (Pad) specs:\n"
-                f"- Code: {doc['code']}  \n"
-                f"- Size: {doc['size']} mm  \n"
-                f"- Colour: {doc.get('colour', 'n/a')}  \n"
-                f"- Description: {doc.get('description', '')}\n"
-            )
+        # fetch the document
+        doc = db[coll].find_one({"_id": ObjectId(pid)}) or {}
+        serial = bson_to_json(doc)
 
-        else:  # compound
-            specs = (
-                f"**{doc['name']}** (Compound) specs:\n"
-                f"- Code: {doc['code']}  \n"
-                f"- Size: {doc['size']} g  \n"
-                f"- Description: {doc.get('description', '')}\n"
-            )
+        return [
+            SlotSet("product_category", coll),
+            SlotSet("product_id", pid),
+            SlotSet("product_doc", serial),
+        ]
 
-        # optional product page link
-        safe_name = doc['name'].replace(" ", "%20")
-        link = f"https://example.com/products/{safe_name}"
-        dispatcher.utter_message(text=specs + f"\n🔗 [View product page]({link})")
 
-        # set slot so you remember which model was asked
-        return [SlotSet("product_model", doc["name"])]
+class ActionQueryProductAttribute(Action):
+    def name(self) -> Text:
+        return "action_query_product_attribute"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[SlotSet]:
+        slot_events: List[SlotSet] = []
+
+        # 1) Pull the current page out of metadata
+        meta = tracker.latest_message.get("metadata", {}) or {}
+        page = meta.get("page", "")
+
+        # 2) If it's a product URL, fetch fresh doc from Mongo
+        m = re.match(r"^/product/(?P<cat>[^/]+)/(?P<id>[0-9a-f]{24})$", page)
+        if m:
+            raw_cat, pid = m.group("cat"), m.group("id")
+            if raw_cat in ["polishers", "pads", "compounds"]:
+                coll = raw_cat
+            elif raw_cat + "s" in ["polishers", "pads", "compounds"]:
+                coll = raw_cat + "s"
+            else:
+                coll = None
+
+            if coll:
+                db_doc = db[coll].find_one({"_id": ObjectId(pid)}) or {}
+                doc = bson_to_json(db_doc)
+                slot_events += [
+                    SlotSet("product_category", coll),
+                    SlotSet("product_id", pid),
+                    SlotSet("product_doc", doc),
+                ]
+            else:
+                doc = {}
+        else:
+            # 3) Fallback to whatever's in the slot (if any)
+            doc = tracker.get_slot("product_doc") or {}
+
+        # 4) Map intent → field + unit
+        intent = tracker.get_intent_of_latest_message()
+        attr_map = {
+            "ask_description": ("description", ""),
+            "ask_weight":      ("weight", " kg"),
+            "ask_power":       ("power", " W"),
+            "ask_orbit":       ("orbit", " mm"),
+            "ask_backingpad":  ("backingpad", ""),
+            "ask_size":        ("size", ""),
+            "ask_code":        ("code", ""),
+            "ask_colour":      ("colour", ""),
+        }
+
+        if intent not in attr_map:
+            dispatcher.utter_message("Sorry, I’m not sure what you want to know.")
+            return slot_events
+
+        field, unit = attr_map[intent]
+        value = doc.get(field)
+        name  = doc.get("name", "This product")
+
+        if value is None:
+            dispatcher.utter_message("I don’t have that detail right now.")
+        else:
+            dispatcher.utter_message(f"**{name}** {field} is {value}{unit}.")
+
+        return slot_events
+    
+    
+class ActionSessionStart(Action):
+    def name(self) -> Text:
+        return "action_session_start"
+
+    def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+    ) -> List:
+        """Store the page URL (if any) in the `page` slot when the web-chat opens."""
+        events = [SessionStarted()]
+
+        meta     = tracker.latest_message.get("metadata", {}) or {}
+        page_url = meta.get("page")
+        if page_url:
+            events.append(SlotSet("page", page_url))
+            # immediately pull in the product from that page URL
+            events.append(ActionExecuted("action_set_product_context"))
+
+        # hand control back to the rule
+        events.append(ActionExecuted("action_listen"))
+        return events

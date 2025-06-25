@@ -609,7 +609,6 @@ nlu:
     - it's okay
     - it's ok
 
-
 - intent: ask_quote
   examples: |
     - quote
@@ -761,8 +760,93 @@ nlu:
     - Give me info on [LH19E](product_model)
     - [LHR15ES](product_model)
     - [LHR21 MarkIII](product_model)
+    - Describe [DA01-250](product_model)
+    - Info on [D-A COARSE 1000](product_model)
+    - Tell me about [D-A FINE 250](product_model)
+    - Give me details on [9.DA40H/6](product_model)
+    - Tell me about the foam pad [9.DA40M/6](product_model)
+    - I need specs for [9.DA70H/4](product_model)
+    - What’s the description of [9.DA40S/6](product_model)?
+    - Show me details on [DA02-500](product_model)
+    - Info on compound [DA01-1000](product_model)
+    - Describe product [D-A COARSE 250](product_model)
 
+- intent: ask_weight
+  examples: |
+    - how heavy is the [LHR21 MarkV](product) 
+    - whats the weight of [LHR15 MarkV](product)?
+    - weight?
 
+## intent:ask_power
+- intent: ask_power
+  examples: |
+    - whats the power of [LHR21ES](product)?
+    - how many watts does [LHR15 MarkIII](product) have?
+    - power?
+
+## intent:ask_orbit
+- intent: ask_orbit
+  examples: |
+    - whats the orbit on [LHR21 MarkIII](product)?
+    - how big is the orbit of [LH19E](product)?
+    - orbit?
+
+## intent:ask_backingpad
+- intent: ask_backingpad
+  examples: |
+    - whats the backing pad size of [LHR21ES](product)?
+    - backing pad?
+    - how large is the pad on [LHR15ES](product)?
+
+# — COMPOUNDS — 
+## intent:ask_size
+- intent: ask_size
+  examples: |
+    - whats the size of [DA01-500](product)?
+    - how many ml is [D-A COARSE 1000](product)?
+    - size?
+
+## intent:ask_code
+- intent: ask_code
+  examples: |
+    - whats the code for [D-A FINE 250](product)?
+    - code?
+    - product code?
+
+# — PADS — 
+## intent:ask_size
+- intent: ask_size
+  examples: |
+    - whats the size of [9.DA40H/6](product)?
+    - pad size?
+    - how big is the pad?
+
+## intent:ask_colour
+- intent: ask_colour
+  examples: |
+    - what color is [9.DA40M/6](product)?
+    - pad colour?
+    - colour?
+
+## intent:ask_code
+- intent: ask_code
+  examples: |
+    - whats the code for [9.DA70H/4](product)?
+    - pad code?
+    - code?
+
+# — ALL PRODUCTS — 
+## intent:ask_description
+- intent: ask_description
+  examples: |
+    - what is this product?
+    - tell me about it
+    - tell me about this product
+    - describe this
+    - what is this product
+    - what can you tell me about this?
+    - give me the description
+    
 # - intent: ask_faq
 #   examples: |
 #     - What is your warranty policy lah?
