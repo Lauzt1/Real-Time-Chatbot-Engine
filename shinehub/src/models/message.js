@@ -6,7 +6,7 @@ const messageSchema = new Schema(
         email:          {type: String, required: true},
         phoneNumber:    {type: Number, required: true},
         companyName:    {type: String, required: true},
-        message:        {type: String, required: false},
+        message:        {type: String, required: true},
     }, {
         timestamps: true,
     }

@@ -5,8 +5,9 @@ const padSchema = new Schema(
         name:           {type: String, required: true},
         code:           {type: String, required: true},
         size:           {type: Number, required: true},
-        colour:         {type: String, required: false},
+        colour:         {type: String, required: true},
         description:    {type: String, required: true},
+        imageUrl:       {type: String, required: true},
     }, {
         timestamps: true,
     }

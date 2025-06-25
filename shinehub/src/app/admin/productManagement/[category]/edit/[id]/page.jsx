@@ -1,9 +1,10 @@
-// src/app/admin/productManagement/[category]/edit/[id]/page.jsx
 "use client";
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import CategorySidebar from "@/components/admin/CategorySidebar";
+import { CldUploadButton } from "next-cloudinary";
+import Image from "next/image";
 
 export default function EditItemPage() {
   const router = useRouter();
@@ -20,13 +21,11 @@ export default function EditItemPage() {
   const getInitial = (cat) => {
     switch (cat) {
       case "polisher":
-        return {
-          name: "", backingpad: "", orbit: "", power: "", rpm: "", weight: "", description: "", imageUrl: "",
-        };
+        return { name: "", backingpad: "", orbit: "", power: "", rpm: "", weight: "", description: "", imageUrl: "" };
       case "pad":
-        return { name: "", code: "", size: "", colour: "", description: "" };
+        return { name: "", code: "", size: "", colour: "", description: "", imageUrl: "" };
       case "compound":
-        return { name: "", code: "", size: "", description: "" };
+        return { name: "", code: "", size: "", description: "", imageUrl: "" };
       default:
         return {};
     }
@@ -35,6 +34,15 @@ export default function EditItemPage() {
   const [form, setForm] = useState(getInitial(category));
   const [loading, setLoading] = useState(true);
 
+  const [publicId, setPublicId] = useState("");
+  const handleImageUpload = (result) => {
+    const info = result.info;
+    if (info.secure_url) {
+      setForm(prev => ({ ...prev, imageUrl: info.secure_url }));
+      if (info.public_id) setPublicId(info.public_id);
+    }
+  };
+
   // fetch existing data
   useEffect(() => {
     async function load() {
@@ -42,13 +50,9 @@ export default function EditItemPage() {
         const res = await fetch(`/api/${category}/${id}`);
         if (res.ok) {
           const data = await res.json();
-          // data might be { name, code, … } or { _id, … }
-          // if your API wraps it (e.g. { polisher: {...} }) adjust accordingly
           const item = data[category] || data;
-          setForm({
-            ...getInitial(category),
-            ...item,
-          });
+          setForm({ ...getInitial(category), ...item });
+          if (item.imageUrl) setPublicId(item.publicId || '');
         } else {
           console.error("Failed to load item");
         }
@@ -63,20 +67,18 @@ export default function EditItemPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // basic required check
     for (let key in form) {
       if (form[key] === "") {
         alert("All fields are required.");
         return;
       }
     }
-
-    // coerce numbers
+    
     let body = { ...form };
     if (category === "polisher") {
       body = {
@@ -123,6 +125,20 @@ export default function EditItemPage() {
         >
           {category === "polisher" && (
             <>
+              {form.imageUrl && (
+                <div className="relative w-full h-48 mb-4">
+                  <Image src={form.imageUrl} alt={`${pretty} image`} fill className="object-cover rounded" />
+                </div>
+              )}
+              <div className="mb-4 text-sm text-center">
+                <CldUploadButton
+                  uploadPreset="polisher"
+                  onSuccess={handleImageUpload}
+                  className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+                >
+                  Update Image
+                </CldUploadButton>
+              </div>
               <input
                 name="name"
                 value={form.name}
@@ -177,18 +193,25 @@ export default function EditItemPage() {
                 rows={3}
                 className="w-full border px-3 py-2 rounded"
               />
-              <input
-                name="imageUrl"
-                value={form.imageUrl}
-                onChange={handleChange}
-                placeholder="Image URL"
-                className="w-full border px-3 py-2 rounded"
-              />
             </>
           )}
 
           {category === "pad" && (
             <>
+              {form.imageUrl && (
+                <div className="relative w-full h-48 mb-4">
+                  <Image src={form.imageUrl} alt={`${pretty} image`} fill className="object-cover rounded" />
+                </div>
+              )}
+              <div className="mb-4">
+                <CldUploadButton
+                  uploadPreset="polishingpad"
+                  onSuccess={handleImageUpload}
+                  className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+                >
+                  Upload New Image
+                </CldUploadButton>
+              </div>
               <input
                 name="name"
                 value={form.name}
@@ -231,6 +254,20 @@ export default function EditItemPage() {
 
           {category === "compound" && (
             <>
+              {form.imageUrl && (
+                <div className="relative w-full h-48 mb-4">
+                  <Image src={form.imageUrl} alt={`${pretty} image`} fill className="object-cover rounded" />
+                </div>
+              )}
+              <div className="mb-4">
+                <CldUploadButton
+                  uploadPreset="compound"
+                  onSuccess={handleImageUpload}
+                  className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+                >
+                  Upload New Image
+                </CldUploadButton>
+              </div>
               <input
                 name="name"
                 value={form.name}
@@ -263,13 +300,14 @@ export default function EditItemPage() {
               />
             </>
           )}
-
-          <button
-            type="submit"
-            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
-          >
-            Save Changes
-          </button>
+          <div className="text-center">
+            <button
+              type="submit"
+              className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+            >
+              Save Changes
+            </button>
+          </div>
         </form>
       </main>
     </div>
