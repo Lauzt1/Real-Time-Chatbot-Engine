@@ -26,8 +26,6 @@ slots:
   product_model:
     type: text
     influence_conversation: false
-    # fill the slot either from the annotated entity *or* (fallback)
-    # from the whole user message if no entity was recognised
     mappings:
       - type: from_entity        # ← when entity is annotated
         entity: product_model
@@ -36,7 +34,9 @@ slots:
   page:
     type: text
     influence_conversation: false
-    mappings: []          # ← we set this from the front-end event
+    mappings:
+      - type: from_metadata
+        metadata: page
 
   product_id:
     type: text
@@ -72,6 +72,7 @@ actions:
   - action_noop
   - action_set_product_context
   - action_query_product_attribute
+  - action_session_start
 
 session_config:
   session_expiration_time: 60

@@ -18,7 +18,7 @@ export default function ChatbotWidget() {
   // Send (or re-send) page context whenever the URL changes
   useEffect(() => {
     fetch(
-      `${process.env.NEXT_PUBLIC_RASA_URL}/conversations/${sessionId}/events`,
+      `${process.env.NEXT_PUBLIC_RASA_URL}/conversations/${sessionId}/tracker/events`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

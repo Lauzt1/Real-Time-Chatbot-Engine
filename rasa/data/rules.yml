@@ -41,91 +41,66 @@ rules:
 # -------------------------------------------------
 #  Homepage query – no product context yet
 # -------------------------------------------------
-- rule: Handle product info requests
+- rule: Product lookup (anywhere)
   steps:
     - intent: ask_product_info
     - action: action_product_info
     - action: action_listen
-    
-# -------------------------
-# Page-context awareness
-# -------------------------
-- rule: Set product context from page URL
-  steps:
-    - slot_was_set:
-        - page
-    - action: action_set_product_context
 
-# -------------------------
-# Dynamic attribute queries on product pages
-# -------------------------
-- rule: Answer description on product page
+  # 1) Whenever the `page` slot is set (i.e. on every route change),
+  #    pull in the new product context
+- rule: Update product context on page change
   condition:
     - slot_was_set:
-        - product_id
+        - page
+  steps:
+    - action: action_set_product_context
+    - action: action_listen
+
+# — On a product page, answer attribute questions —
+- rule: Answer description questions on product page
   steps:
     - intent: ask_description
     - action: action_query_product_attribute
     - action: action_listen
 
-- rule: Answer weight on product page
-  condition:
-    - slot_was_set:
-        - product_id
+- rule: Answer weight questions on product page
   steps:
     - intent: ask_weight
     - action: action_query_product_attribute
     - action: action_listen
 
-- rule: Answer power on product page
-  condition:
-    - slot_was_set:
-        - product_id
+- rule: Answer power questions on product page
   steps:
     - intent: ask_power
     - action: action_query_product_attribute
     - action: action_listen
 
-- rule: Answer orbit on product page
-  condition:
-    - slot_was_set:
-        - product_id
+- rule: Answer orbit questions on product page
   steps:
     - intent: ask_orbit
     - action: action_query_product_attribute
     - action: action_listen
 
-- rule: Answer backing pad on product page
-  condition:
-    - slot_was_set:
-        - product_id
+- rule: Answer backing pad questions on product page
   steps:
     - intent: ask_backingpad
     - action: action_query_product_attribute
     - action: action_listen
 
-- rule: Answer size on product page
-  condition:
-    - slot_was_set:
-        - product_id
+- rule: Answer size questions on product page
   steps:
     - intent: ask_size
     - action: action_query_product_attribute
     - action: action_listen
 
-- rule: Answer code on product page
-  condition:
-    - slot_was_set:
-        - product_id
+- rule: Answer code questions on product page
   steps:
     - intent: ask_code
     - action: action_query_product_attribute
     - action: action_listen
 
-- rule: Answer colour on product page
-  condition:
-    - slot_was_set:
-        - product_id
+- rule: Answer colour questions on product page
   steps:
     - intent: ask_colour
     - action: action_query_product_attribute
