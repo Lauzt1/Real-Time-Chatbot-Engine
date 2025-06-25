@@ -34,9 +34,7 @@ slots:
   page:
     type: text
     influence_conversation: false
-    mappings:
-      - type: from_metadata
-        metadata: page
+    mappings: [] 
 
   product_id:
     type: text

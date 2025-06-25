@@ -127,38 +127,38 @@ class ActionQueryProductAttribute(Action):
         tracker: Tracker,
         domain: Dict[Text, Any],
     ) -> List[SlotSet]:
-        # try to get already-loaded document
-        doc = tracker.get_slot("product_doc") or {}
         slot_events: List[SlotSet] = []
 
-        if not doc:
-            # fallback: pull from metadata.page
-            meta = tracker.latest_message.get("metadata", {}) or {}
-            page = meta.get("page", "")
-            m = re.match(r"^/product/(?P<cat>[^/]+)/(?P<id>[0-9a-f]{24})$", page)
-            if m:
-                raw_cat, pid = m.group("cat"), m.group("id")
-                if raw_cat in ["polishers", "pads", "compounds"]:
-                    coll = raw_cat
-                elif raw_cat + "s" in ["polishers", "pads", "compounds"]:
-                    coll = raw_cat + "s"
-                else:
-                    coll = None
+        # 1) Pull the current page out of metadata
+        meta = tracker.latest_message.get("metadata", {}) or {}
+        page = meta.get("page", "")
 
-                if coll:
-                    db_doc = db[coll].find_one({"_id": ObjectId(pid)}) or {}
-                else:
-                    db_doc = {}
+        # 2) If it's a product URL, fetch fresh doc from Mongo
+        m = re.match(r"^/product/(?P<cat>[^/]+)/(?P<id>[0-9a-f]{24})$", page)
+        if m:
+            raw_cat, pid = m.group("cat"), m.group("id")
+            if raw_cat in ["polishers", "pads", "compounds"]:
+                coll = raw_cat
+            elif raw_cat + "s" in ["polishers", "pads", "compounds"]:
+                coll = raw_cat + "s"
+            else:
+                coll = None
 
-                serial = bson_to_json(db_doc)
-                doc = serial
-                slot_events = [
+            if coll:
+                db_doc = db[coll].find_one({"_id": ObjectId(pid)}) or {}
+                doc = bson_to_json(db_doc)
+                slot_events += [
                     SlotSet("product_category", coll),
                     SlotSet("product_id", pid),
-                    SlotSet("product_doc", serial),
+                    SlotSet("product_doc", doc),
                 ]
+            else:
+                doc = {}
+        else:
+            # 3) Fallback to whatever's in the slot (if any)
+            doc = tracker.get_slot("product_doc") or {}
 
-        # map intents → field + unit
+        # 4) Map intent → field + unit
         intent = tracker.get_intent_of_latest_message()
         attr_map = {
             "ask_description": ("description", ""),
@@ -176,8 +176,8 @@ class ActionQueryProductAttribute(Action):
             return slot_events
 
         field, unit = attr_map[intent]
-        value = doc.get(field) if isinstance(doc, dict) else None
-        name  = doc.get("name", "This product") if isinstance(doc, dict) else "This product"
+        value = doc.get(field)
+        name  = doc.get("name", "This product")
 
         if value is None:
             dispatcher.utter_message("I don’t have that detail right now.")
@@ -185,7 +185,8 @@ class ActionQueryProductAttribute(Action):
             dispatcher.utter_message(f"**{name}** {field} is {value}{unit}.")
 
         return slot_events
-
+    
+    
 class ActionSessionStart(Action):
     def name(self) -> Text:
         return "action_session_start"
