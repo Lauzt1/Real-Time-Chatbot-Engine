@@ -7,7 +7,7 @@ export default function EnquiryMgt () {
 
       {/* Nav links */}
       <div className="flex items-center space-x-6">
-        <Link href="/admin/enquiryMgt">
+        <Link href="/admin/enquiryMgt/enquiry">
           <span className="hover:underline cursor-pointer">Product's Enquiries</span>
         </Link>
         <Link href="/admin/enquiryMgt/message">
