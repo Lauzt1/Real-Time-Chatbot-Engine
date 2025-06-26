@@ -9,13 +9,36 @@ export default function ChatbotWidget() {
   const pageRef = useRef(pathname);
   pageRef.current = pathname;
 
+  // ─── FAQ state ───────────────────────────────────────────────────────────
+  const [faqs, setFaqs] = useState([]);
+  const [excludedFaqs, setExcludedFaqs] = useState([]);
+  // ─────────────────────────────────────────────────────────────────────────
+
   const [sessionId] = useState(() => crypto.randomUUID());
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const messagesContainerRef = useRef(null);
 
-  // Send (or re-send) page context whenever the URL changes
+  // ─── fetch top-4 FAQs ─────────────────────────────────────────────────────
+  useEffect(() => {
+    async function loadFaqs() {
+      let url = "/api/faq";
+      if (excludedFaqs.length) {
+        url += `?exclude=${excludedFaqs.join(",")}`;
+      }
+      try {
+        const res = await fetch(url);
+        if (res.ok) setFaqs(await res.json());
+      } catch (e) {
+        console.error("Failed to load FAQs", e);
+      }
+    }
+    loadFaqs();
+  }, [excludedFaqs]);
+  // ─────────────────────────────────────────────────────────────────────────
+
+  // send page slot to Rasa
   useEffect(() => {
     fetch(
       `${process.env.NEXT_PUBLIC_RASA_URL}/conversations/${sessionId}/tracker/events`,
@@ -33,7 +56,7 @@ export default function ChatbotWidget() {
     );
   }, [sessionId, pathname]);
 
-  // Scroll to bottom on new messages
+  // scroll to bottom on new messages
   useEffect(() => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop =
@@ -43,11 +66,9 @@ export default function ChatbotWidget() {
 
   async function sendMessage(text) {
     const fullMeta = { page: pageRef.current };
-
     if (text.trim()) {
       setMessages((prev) => [...prev, { from: "user", text }]);
     }
-
     try {
       const res = await fetch("/api/chatbot", {
         method: "POST",
@@ -58,12 +79,10 @@ export default function ChatbotWidget() {
           metadata: fullMeta,
         }),
       });
-
       if (!res.ok) {
         console.error("NextAPI /api/chatbot failed:", await res.text());
         return;
       }
-
       const botReplies = await res.json();
       botReplies.forEach((bot) => {
         setMessages((prev) => [...prev, { from: "bot", text: bot.text }]);
@@ -72,6 +91,17 @@ export default function ChatbotWidget() {
       console.error("Error sending message:", err);
     }
   }
+
+  // ─── handle FAQ pill click ───────────────────────────────────────────────
+  function handleFaqClick(faq) {
+    setMessages((prev) => [
+      ...prev,
+      { from: "user", text: faq.question },
+      { from: "bot", text: faq.answer },
+    ]);
+    setExcludedFaqs((prev) => [...prev, faq.id]);
+  }
+  // ─────────────────────────────────────────────────────────────────────────
 
   return (
     <div className="fixed bottom-4 right-4 flex flex-col-reverse items-end gap-2">
@@ -89,6 +119,7 @@ export default function ChatbotWidget() {
           className="p-4 bg-white shadow-lg rounded-lg flex flex-col"
           style={{ width: "30vw", minWidth: "400px", height: "75vh" }}
         >
+          {/* Message list */}
           <div
             ref={messagesContainerRef}
             className="flex-1 overflow-y-auto mb-2"
@@ -108,6 +139,22 @@ export default function ChatbotWidget() {
               </div>
             ))}
           </div>
+
+          {/* ─── FAQ pills at bottom, larger font ─────────────────────────── */}
+          <div className="mb-2 flex flex-wrap">
+            {faqs.map((f) => (
+              <button
+                key={f.id}
+                onClick={() => handleFaqClick(f)}
+                className="px-3 py-1 bg-gray-200 rounded-full text-base m-1 hover:bg-gray-300"
+              >
+                {f.question}
+              </button>
+            ))}
+          </div>
+          {/* ─────────────────────────────────────────────────────────────── */}
+
+          {/* Input form */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
