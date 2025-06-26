@@ -52,14 +52,15 @@ class ActionNoop(Action):
         return []
 
 class ActionProductInfo(Action):
-    def name(self) -> Text:
+    def name(self) -> str:
         return "action_product_info"
 
     def run(
-            self,
-            dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[SlotSet]:
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: dict
+    ) -> list:
         """
         Looks up a product by name or code, utters its description,
         and provides a direct link to the product page.
@@ -67,12 +68,18 @@ class ActionProductInfo(Action):
         user_msg = tracker.latest_message.get("text", "").lower()
         base_url = "http://localhost:3000/product"
 
-        # Search across all product collections
+        # Pre-cleaned user text for matching
+        clean_user = re.sub(r"[^a-z0-9 ]+", "", user_msg)
+
         for coll in ["polishers", "pads", "compounds"]:
             for doc in db[coll].find():
                 name_lower = doc.get("name", "").lower()
                 code_lower = doc.get("code", "").lower()
-                if (name_lower and re.search(rf"\b{re.escape(name_lower)}\b", user_msg)) or \
+
+                # Clean the stored name the same way
+                clean_name = re.sub(r"[^a-z0-9 ]+", "", name_lower)
+
+                if (clean_name and clean_name in clean_user) or \
                    (code_lower and re.search(rf"\b{re.escape(code_lower)}\b", user_msg)):
                     serial = bson_to_json(doc)
                     product_id = str(doc.get("_id"))
@@ -94,30 +101,40 @@ class ActionProductInfo(Action):
 
         dispatcher.utter_message(text="Sorry, I couldn’t find that product.")
         return []
-    
+
+
 class ActionProductLink(Action):
-    def name(self) -> Text:
+    def name(self) -> str:
         return "action_product_link"
 
-    def run(self,
-            dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[SlotSet]:
-
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: dict
+    ) -> list:
         user_msg = tracker.latest_message.get("text", "").lower()
         base_url = "http://localhost:3000/product"
+
+        # Pre-cleaned user text for matching
+        clean_user = re.sub(r"[^a-z0-9 ]+", "", user_msg)
 
         for coll in ["polishers", "pads", "compounds"]:
             for doc in db[coll].find():
                 name = doc.get("name", "").lower()
                 code = doc.get("code", "").lower()
-                if (name and re.search(rf"\b{re.escape(name)}\b", user_msg)) or \
+
+                # Clean the stored name the same way
+                clean_name = re.sub(r"[^a-z0-9 ]+", "", name)
+
+                if (clean_name and clean_name in clean_user) or \
                    (code and re.search(rf"\b{re.escape(code)}\b", user_msg)):
                     product_id = str(doc.get("_id"))
                     # singular route
                     route = coll[:-1]
                     link = f"{base_url}/{route}/{product_id}"
-                    dispatcher.utter_message(f"You can view it here: {link}")
+
+                    dispatcher.utter_message(text=f"You can view it here: {link}")
                     return [
                         SlotSet("product_doc", bson_to_json(doc)),
                         SlotSet("product_id", product_id),
@@ -125,9 +142,9 @@ class ActionProductLink(Action):
                         SlotSet("product_model", name),
                     ]
 
-        dispatcher.utter_message("Sorry, I couldn’t find the product link.")
+        dispatcher.utter_message(text="Sorry, I couldn’t find the product link.")
         return []
-
+    
 class ActionSetProductContext(Action):
     def name(self) -> Text:
         return "action_set_product_context"

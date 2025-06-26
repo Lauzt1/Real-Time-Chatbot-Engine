@@ -898,6 +898,10 @@ nlu:
     - this [D-A Microfiber Pad 3 inch Fine](product_model) for what ah?
     - gimme details for [D-A FINE Medium](product_model)
     - more info about [LHR15ES](product_model) got?
+    - tell me about da coarse small
+    - describe da coarse small
+    - what’s da coarse small used for?
+    - what is da coarse small?
 
 - intent: ask_weight
   examples: |
@@ -1131,4 +1135,5 @@ nlu:
     - help me find [D-A FINE Medium](product_model) page
     - faster link me [UNO PROTECT Large](product_model) pls
     - give me that [9.DA40S/6](product_model) one lah
+    - link for da coarse small
     
