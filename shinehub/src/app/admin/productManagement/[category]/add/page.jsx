@@ -3,107 +3,69 @@
 import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import CategorySidebar from "@/components/admin/CategorySidebar";
-import { CldUploadButton,  } from 'next-cloudinary';
-import { HiOutlinePhotograph, HiOutlineTrash } from "react-icons/hi";
+import { CldUploadButton } from 'next-cloudinary';
 import Image from "next/image";
 
 export default function AddItemPage() {
   const { category } = useParams();
   const router = useRouter();
-  const [imageUrl, setImageUrl] = useState("");
-  const [publicId, setPublicId] = useState("");
 
-  // Human-friendly titles
   const pretty = {
     polisher: "Polisher",
     pad:      "Pad",
     compound: "Compound",
   }[category] || "Item";
 
-  // Initial form state per category
   const getInitial = (cat) => {
     switch (cat) {
       case "polisher":
-        return {
-          name: "",
-          backingpad: "",
-          orbit: "",
-          power: "",
-          rpm: "",
-          weight: "",
-          description: "",
-          imageUrl: "",
-        };
+        return { name: "", backingpad: "", orbit: "", power: "", rpm: "", weight: "", description: "", images: [] };
       case "pad":
-        return {
-          name: "",
-          code: "",
-          size: "",
-          colour: "",
-          description: "",
-          imageUrl: "",
-        };
+        return { name: "", code: "", size: "", colour: "", description: "", images: [] };
       case "compound":
-        return {
-          name: "",
-          code: "",
-          size: "",
-          description: "",
-          imageUrl: "",
-        };
+        return { name: "", code: "", size: "", description: "", images: [] };
       default:
         return {};
     }
   };
 
   const [form, setForm] = useState(getInitial(category));
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm(prev => ({ ...prev, [name]: value }));
   };
 
   const handleImageUpload = (result) => {
     const info = result.info;
-
-    if ('secure_url' in info && 'public_id' in info) {
-      const url = info.secure_url;
-      const publicId = info.public_id;
-      setImageUrl(url);
-      setPublicId(publicId);
-      setForm((prev) => ({
+    if (info.secure_url && info.public_id) {
+      setForm(prev => ({
         ...prev,
-        imageUrl: info.secure_url,
+        images: [...prev.images, { url: info.secure_url, publicId: info.public_id }],
       }));
     }
   };
 
-    const removeImage = async (e) => {
-      e.preventDefault();
-  
-      const res = await fetch('/api/removeImage', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ publicId }),
-      });
-  
-      if (res.ok) {
-        setImageUrl("");
-        setPublicId("");
-      }
-    };
+  const handleRemoveImage = async (publicIdToRemove) => {
+    await fetch('/api/removeImage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ publicId: publicIdToRemove })
+    });
+    setForm(prev => ({
+      ...prev,
+      images: prev.images.filter(img => img.publicId !== publicIdToRemove)
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // simple required-fields check
     for (let key in form) {
-      if (form[key] === "") {
+      if (key !== 'images' && form[key] === "") {
         alert("All fields are required.");
         return;
       }
     }
-
-    // convert numeric fields
     let body = { ...form };
     if (category === "polisher") {
       body = {
@@ -113,11 +75,8 @@ export default function AddItemPage() {
         power:      parseFloat(body.power),
         weight:     parseFloat(body.weight),
       };
-    } else if (category === "pad" || category === "compound") {
-      body = {
-        ...body,
-        size: parseFloat(body.size),
-      };
+    } else {
+      body.size = parseFloat(body.size);
     }
 
     const res = await fetch(`/api/${category}`, {
@@ -127,11 +86,10 @@ export default function AddItemPage() {
     });
 
     if (res.ok) {
-      window.alert(`${pretty} added successfully.`);
+      alert(`${pretty} added successfully.`);
       router.push(`/admin/productManagement/${category}`);
     } else {
-      const err = await res.json();
-      console.error(err);
+      console.error(await res.text());
       alert("Failed to add item.");
     }
   };
@@ -144,40 +102,36 @@ export default function AddItemPage() {
         <h1 className="text-2xl font-semibold mb-4">Add a new {pretty}</h1>
         <form
           onSubmit={handleSubmit}
-          className="bg-white p-6 rounded-lg shadow space-y-4 max-w-lg"
+          className="bg-white p-6 rounded-lg shadow space-y-4 max-w-lg text-center"
         >
-          {/* Polisher fields */}
+
           {category === "polisher" && (
             <>
-            <div className="space-y-2">
-              <label className="block font-medium">Upload Image</label>
-              <CldUploadButton
-                uploadPreset="polisher"
-                className={`h-36 w-full border grid place-items-center bg-slate-100 rounded-md relative ${imageUrl && "pointer-events-none"}`}
-                name="imageUrl"
-                onSuccess={handleImageUpload}
-              >
-                <HiOutlinePhotograph />
-                {imageUrl && (
-                  <Image
-                    src={imageUrl}
-                    fill
-                    className="adsolute object-cover inset-0"
-                    alt={form.name}
-                  />
-                )}
-              </CldUploadButton>
-                {publicId && (
-                  <button
-                    type="button"
-                    onClick={removeImage}
-                    className="flex items-center gap-2 py-2 px-4 rounded bg-red-600 text-white"
-                  >
-                    <HiOutlineTrash />
-                    Remove Image
-                  </button>
-              )}
+          <div className="flex flex-wrap gap-2">
+            {form.images.map(img => (
+              <div key={img.publicId} className="relative w-24 h-24">
+                <Image src={img.url} fill className="object-cover rounded" alt="" />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveImage(img.publicId)}
+                  className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1"
+                >
+                  &times;
+                </button>
               </div>
+            ))}
+          </div>
+
+          <div className="mb-4 text-sm text-center">
+            <CldUploadButton
+              uploadPreset="polisher"
+              onSuccess={handleImageUpload}
+              options={{ multiple: true, maxFiles: 5 }}
+              className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+              >
+              Upload Images
+            </CldUploadButton>
+          </div>
               <input
                 name="name"
                 value={form.name}
@@ -235,52 +189,47 @@ export default function AddItemPage() {
             </>
           )}
 
-          {/* Pad fields */}
           {category === "pad" && (
             <>
-            <div className="space-y-2">
-              <label className="block font-medium">Upload Image</label>
-              <CldUploadButton
-                uploadPreset="polishingpad"
-                className={`h-36 w-full border grid place-items-center bg-slate-100 rounded-md relative ${imageUrl && "pointer-events-none"}`}
-                name="imageUrl"
-                onSuccess={handleImageUpload}
-              >
-                <HiOutlinePhotograph />
-                {imageUrl && (
-                  <Image
-                    src={imageUrl}
-                    fill
-                    className="adsolute object-cover inset-0"
-                    alt={form.name}
-                  />
-                )}
-              </CldUploadButton>
-                {publicId && (
-                  <button
-                    type="button"
-                    onClick={removeImage}
-                    className="flex items-center gap-2 py-2 px-4 rounded bg-red-600 text-white"
-                  >
-                    <HiOutlineTrash />
-                    Remove Image
-                  </button>
-              )}
+            <div className="flex flex-wrap gap-2">
+            {form.images.map(img => (
+              <div key={img.publicId} className="relative w-24 h-24">
+                <Image src={img.url} fill className="object-cover rounded" alt="" />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveImage(img.publicId)}
+                  className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1"
+                >
+                  &times;
+                </button>
               </div>
+            ))}
+          </div>
+
+          <div className="mb-4 text-sm text-center">
+            <CldUploadButton
+              uploadPreset="polishingpad"
+              onSuccess={handleImageUpload}
+              options={{ multiple: true, maxFiles: 5 }}
+              className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+              >
+              Upload Images
+            </CldUploadButton>
+          </div>
               <input
                 name="name"
                 value={form.name}
                 onChange={handleChange}
                 className="w-full border px-3 py-2 rounded"
                 placeholder="Name"
-              />
+                />
               <input
                 name="code"
                 value={form.code}
                 onChange={handleChange}
                 className="w-full border px-3 py-2 rounded"
                 placeholder="Code"
-              />
+                />
               <input
                 name="size"
                 value={form.size}
@@ -307,38 +256,33 @@ export default function AddItemPage() {
             </>
           )}
 
-          {/* Compound fields */}
           {category === "compound" && (
             <>
-            <div className="space-y-2">
-              <label className="block font-medium">Upload Image</label>
-              <CldUploadButton
-                uploadPreset="compound"
-                className={`h-36 w-full border grid place-items-center bg-slate-100 rounded-md relative ${imageUrl && "pointer-events-none"}`}
-                name="imageUrl"
-                onSuccess={handleImageUpload}
-              >
-                <HiOutlinePhotograph />
-                {imageUrl && (
-                  <Image
-                    src={imageUrl}
-                    fill
-                    className="adsolute object-cover inset-0"
-                    alt={form.name}
-                  />
-                )}
-              </CldUploadButton>
-                {publicId && (
-                  <button
-                    type="button"
-                    onClick={removeImage}
-                    className="flex items-center gap-2 py-2 px-4 rounded bg-red-600 text-white"
-                  >
-                    <HiOutlineTrash />
-                    Remove Image
-                  </button>
-              )}
+            <div className="flex flex-wrap gap-2">
+            {form.images.map(img => (
+              <div key={img.publicId} className="relative w-24 h-24">
+                <Image src={img.url} fill className="object-cover rounded" alt="" />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveImage(img.publicId)}
+                  className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1"
+                >
+                  &times;
+                </button>
               </div>
+            ))}
+          </div>
+
+          <div className="mb-4 text-sm text-center">
+            <CldUploadButton
+              uploadPreset="compound"
+              onSuccess={handleImageUpload}
+              options={{ multiple: true, maxFiles: 5 }}
+              className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+              >
+              Upload Images
+            </CldUploadButton>
+          </div>
               <input
                 name="name"
                 value={form.name}
@@ -352,7 +296,7 @@ export default function AddItemPage() {
                 onChange={handleChange}
                 className="w-full border px-3 py-2 rounded"
                 placeholder="Code"
-              />
+                />
               <input
                 name="size"
                 value={form.size}
@@ -368,7 +312,7 @@ export default function AddItemPage() {
                 className="w-full border px-3 py-2 rounded"
                 placeholder="Description"
                 rows={3}
-              />
+                />
             </>
           )}
 

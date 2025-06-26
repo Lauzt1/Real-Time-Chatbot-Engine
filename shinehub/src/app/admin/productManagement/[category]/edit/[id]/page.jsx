@@ -10,7 +10,6 @@ export default function EditItemPage() {
   const router = useRouter();
   const { category, id } = useParams();
 
-  // Human‐readable singular
   const pretty = {
     polisher: "Polisher",
     pad:      "Pad",
@@ -18,14 +17,14 @@ export default function EditItemPage() {
   }[category] || "Item";
 
   // Initial empty shape
-  const getInitial = (cat) => {
+    const getInitial = (cat) => {
     switch (cat) {
       case "polisher":
-        return { name: "", backingpad: "", orbit: "", power: "", rpm: "", weight: "", description: "", imageUrl: "" };
+        return { name: "", backingpad: "", orbit: "", power: "", rpm: "", weight: "", description: "", images: [] };
       case "pad":
-        return { name: "", code: "", size: "", colour: "", description: "", imageUrl: "" };
+        return { name: "", code: "", size: "", colour: "", description: "", images: [] };
       case "compound":
-        return { name: "", code: "", size: "", description: "", imageUrl: "" };
+        return { name: "", code: "", size: "", description: "", images: [] };
       default:
         return {};
     }
@@ -34,36 +33,53 @@ export default function EditItemPage() {
   const [form, setForm] = useState(getInitial(category));
   const [loading, setLoading] = useState(true);
 
-  const [publicId, setPublicId] = useState("");
-  const handleImageUpload = (result) => {
-    const info = result.info;
-    if (info.secure_url) {
-      setForm(prev => ({ ...prev, imageUrl: info.secure_url }));
-      if (info.public_id) setPublicId(info.public_id);
-    }
-  };
-
-  // fetch existing data
+  // load existing item
   useEffect(() => {
     async function load() {
       try {
         const res = await fetch(`/api/${category}/${id}`);
-        if (res.ok) {
-          const data = await res.json();
-          const item = data[category] || data;
-          setForm({ ...getInitial(category), ...item });
-          if (item.imageUrl) setPublicId(item.publicId || '');
-        } else {
-          console.error("Failed to load item");
-        }
+        if (!res.ok) throw new Error("Load failed");
+        const data = await res.json();
+        const item = data[category] || data;
+        setForm({ ...getInitial(category), ...item });
       } catch (err) {
         console.error(err);
+        alert("Failed to load item");
       } finally {
         setLoading(false);
       }
     }
     load();
   }, [category, id]);
+
+  // handle new image uploads (append)
+  const handleImageUpload = (result) => {
+    const info = result.info;
+    if (info.secure_url && info.public_id) {
+      setForm((prev) => ({
+        ...prev,
+        images: [...prev.images, { url: info.secure_url, publicId: info.public_id }],
+      }));
+    }
+  };
+
+  // remove a single image
+  const handleRemoveImage = async (publicIdToRemove) => {
+    try {
+      await fetch('/api/removeImage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ publicId: publicIdToRemove })
+      });
+      setForm(prev => ({
+        ...prev,
+        images: prev.images.filter(img => img.publicId !== publicIdToRemove)
+      }));
+    } catch (err) {
+      console.error('Remove failed:', err);
+      alert('Failed to remove image');
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,12 +89,12 @@ export default function EditItemPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     for (let key in form) {
-      if (form[key] === "") {
+      if ((key !== 'images') && form[key] === "") {
         alert("All fields are required.");
         return;
       }
     }
-    
+
     let body = { ...form };
     if (category === "polisher") {
       body = {
@@ -89,7 +105,7 @@ export default function EditItemPage() {
         weight:     parseFloat(body.weight),
       };
     } else {
-      body = { ...body, size: parseFloat(body.size) };
+      body.size = parseFloat(body.size);
     }
 
     const res = await fetch(`/api/${category}/${id}`, {
@@ -99,7 +115,7 @@ export default function EditItemPage() {
     });
 
     if (res.ok) {
-      window.alert(`${pretty} updated successfully.`);
+      alert(`${pretty} updated successfully.`);
       router.push(`/admin/productManagement/${category}`);
     } else {
       console.error(await res.text());
@@ -107,9 +123,7 @@ export default function EditItemPage() {
     }
   };
 
-  if (loading) {
-    return <p className="p-6">Loading…</p>;
-  }
+  if (loading) return <p className="p-6">Loading…</p>;
 
   return (
     <div className="flex">
@@ -125,21 +139,31 @@ export default function EditItemPage() {
         >
           {category === "polisher" && (
             <>
-              {form.imageUrl && (
-                <div className="relative w-full h-48 mb-4">
-                  <Image src={form.imageUrl} alt={`${pretty} image`} fill className="object-cover rounded" />
-                </div>
-              )}
-              <div className="mb-4 text-sm text-center">
-                <CldUploadButton
-                  uploadPreset="polisher"
-                  onSuccess={handleImageUpload}
-                  className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+          <div className="flex flex-wrap gap-2">
+            {form.images.map(img => (
+              <div key={img.publicId} className="relative w-24 h-24">
+                <Image src={img.url} alt="" fill className="object-cover rounded" />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveImage(img.publicId)}
+                  className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1"
                 >
-                  Update Image
-                </CldUploadButton>
+                  &times;
+                </button>
               </div>
-              <input
+            ))}
+          </div>
+          <div className="mb-4 text-sm text-center">
+            <CldUploadButton
+              uploadPreset="polisher"
+              onSuccess={handleImageUpload}
+              options={{ multiple: true, maxFiles: 5 }}
+              className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+            >
+              Upload Images
+            </CldUploadButton>
+          </div>
+            <input
                 name="name"
                 value={form.name}
                 onChange={handleChange}
@@ -198,21 +222,31 @@ export default function EditItemPage() {
 
           {category === "pad" && (
             <>
-              {form.imageUrl && (
-                <div className="relative w-full h-48 mb-4">
-                  <Image src={form.imageUrl} alt={`${pretty} image`} fill className="object-cover rounded" />
-                </div>
-              )}
-              <div className="mb-4">
-                <CldUploadButton
-                  uploadPreset="polishingpad"
-                  onSuccess={handleImageUpload}
-                  className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+            <div className="flex flex-wrap gap-2">
+            {form.images.map(img => (
+              <div key={img.publicId} className="relative w-24 h-24">
+                <Image src={img.url} alt="" fill className="object-cover rounded" />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveImage(img.publicId)}
+                  className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1"
                 >
-                  Upload New Image
-                </CldUploadButton>
+                  &times;
+                </button>
               </div>
-              <input
+            ))}
+          </div>
+          <div className="mb-4 text-sm text-center">
+            <CldUploadButton
+              uploadPreset="polishingpad"
+              onSuccess={handleImageUpload}
+              options={{ multiple: true, maxFiles: 5 }}
+              className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+            >
+              Upload Images
+            </CldUploadButton>
+          </div>
+            <input
                 name="name"
                 value={form.name}
                 onChange={handleChange}
@@ -251,24 +285,34 @@ export default function EditItemPage() {
               />
             </>
           )}
-
+          
           {category === "compound" && (
             <>
-              {form.imageUrl && (
-                <div className="relative w-full h-48 mb-4">
-                  <Image src={form.imageUrl} alt={`${pretty} image`} fill className="object-cover rounded" />
-                </div>
-              )}
-              <div className="mb-4">
-                <CldUploadButton
-                  uploadPreset="compound"
-                  onSuccess={handleImageUpload}
-                  className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+            <div className="flex flex-wrap gap-2">
+            {form.images.map(img => (
+              <div key={img.publicId} className="relative w-24 h-24">
+                <Image src={img.url} alt="" fill className="object-cover rounded" />
+                <button
+                  type="button"
+                  onClick={() => handleRemoveImage(img.publicId)}
+                  className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1"
                 >
-                  Upload New Image
-                </CldUploadButton>
+                  &times;
+                </button>
               </div>
-              <input
+            ))}
+          </div>
+          <div className="mb-4 text-sm text-center">
+            <CldUploadButton
+              uploadPreset="compound"
+              onSuccess={handleImageUpload}
+              options={{ multiple: true, maxFiles: 5 }}
+              className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+            >
+              Upload Images
+            </CldUploadButton>
+          </div>
+            <input
                 name="name"
                 value={form.name}
                 onChange={handleChange}
@@ -304,7 +348,7 @@ export default function EditItemPage() {
             <button
               type="submit"
               className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
-            >
+              >
               Save Changes
             </button>
           </div>

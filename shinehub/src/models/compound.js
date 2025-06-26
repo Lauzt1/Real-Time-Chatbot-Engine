@@ -6,7 +6,10 @@ const compoundSchema = new Schema(
         code:           {type: String, required: true},
         size:           {type: Number, required: true},
         description:    {type: String, required: true},
-        imageUrl:       {type: String, required: false},
+        images: [{
+            url:      { type: String, required: true },
+            publicId: { type: String, required: true },
+        }],
     }, {
         timestamps: true,
     }

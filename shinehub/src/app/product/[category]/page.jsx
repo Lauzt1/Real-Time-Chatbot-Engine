@@ -1,4 +1,4 @@
-// src/app/admin/productManagement/[category]/page.jsx
+// src/app/product/[category]/page.jsx
 import CategorySidebar from "@/components/CategorySidebar"
 import Link from "next/link"
 import connectMongoDB from "@/libs/mongodb"
@@ -21,7 +21,7 @@ async function getproductFor(category) {
 }
 
 export default async function CategoryPage({ params }) {
-  const { category } = await params
+  const { category } = params
   let product
   try {
     product = await getproductFor(category)
@@ -43,16 +43,23 @@ export default async function CategoryPage({ params }) {
         <h1 className="text-2xl mb-4">{pretty}</h1>
 
         <div className="grid grid-cols-3 gap-6">
-          {product.map((item) => (
-            <div key={item._id} className="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-              <Link href={`/product/${category}/${item._id}`}>
-                <img src={item.imageUrl} alt={item.name} className="w-full h-48 object-cover" />
-                <div className="p-4 text-center">
-                  <h2 className="font-medium">{item.name}</h2>
-                </div>
-              </Link>
-            </div>
-          ))}
+          {product.map((item) => {
+            const firstUrl = item.images?.[0]?.url || '/placeholder.png';
+            return (
+              <div key={item._id} className="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+                <Link href={`/product/${category}/${item._id}`}>
+                  <img
+                    src={firstUrl}
+                    alt={item.name}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4 text-center">
+                    <h2 className="font-medium">{item.name}</h2>
+                  </div>
+                </Link>
+              </div>
+            )
+          })}
         </div>
       </main>
     </div>

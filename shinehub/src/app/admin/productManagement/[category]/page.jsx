@@ -2,7 +2,6 @@
 import CategorySidebar from "@/components/admin/CategorySidebar"
 import Link from "next/link"
 
-// import your models (or your helper functions that call your /api routes)
 import Polisher from "@/models/polisher"
 import Pad       from "@/models/pad"
 import Compound  from "@/models/compound"
@@ -23,7 +22,7 @@ async function getproductFor(category) {
 }
 
 export default async function CategoryPage({ params }) {
-  const { category } = await params
+  const { category } = params
   let product
   try {
     product = await getproductFor(category)
@@ -52,20 +51,27 @@ export default async function CategoryPage({ params }) {
         </Link>
 
         <div className="grid grid-cols-3 gap-6">
-          {product.map((item) => (
-            <div key={item._id} className="bg-white border rounded-lg overflow-hidden">
-              <img src={item.imageUrl} alt={item.name} className="w-full h-48 object-cover" />
-              <div className="p-4 text-center">
-                <h2 className="font-medium">{item.name}</h2>
+          {product.map((item) => {
+            const firstUrl = item.images?.[0]?.url || '/placeholder.png';
+            return (
+              <div key={item._id} className="bg-white border rounded-lg overflow-hidden">
+                <img
+                  src={firstUrl}
+                  alt={item.name}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4 text-center">
+                  <h2 className="font-medium">{item.name}</h2>
+                </div>
+                <div className="flex justify-center gap-4 p-2">
+                  <RemoveBtn id={item._id} resource={category} />
+                  <Link href={`/admin/productManagement/${category}/edit/${item._id}`}>
+                    <HiPencilAlt size={23} />
+                  </Link>
+                </div>
               </div>
-              <div className="flex justify-center gap-4 p-2">
-                <RemoveBtn id={item._id} resource={category} />
-                <Link href={`/admin/productManagement/${category}/edit/${item._id}`}>
-                  <HiPencilAlt size={23} />
-                </Link>
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </main>
     </div>

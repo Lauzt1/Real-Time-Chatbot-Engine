@@ -9,7 +9,10 @@ const polisherSchema = new Schema(
         rpm:            {type: String, required: true},
         weight:         {type: Number, required: true},
         description:    {type: String, required: true},
-        imageUrl:       {type: String, required: true},
+        images: [{
+            url:      { type: String, required: true },
+            publicId: { type: String, required: true },
+        }],
     }, {
         timestamps: true,
     }
