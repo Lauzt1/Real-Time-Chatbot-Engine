@@ -8,6 +8,7 @@ const polisherSchema = new Schema(
         power:          {type: Number, required: true},
         rpm:            {type: String, required: true},
         weight:         {type: Number, required: true},
+        type:           {type: String, required: true},
         description:    {type: String, required: true},
         images: [{
             url:      { type: String, required: true },

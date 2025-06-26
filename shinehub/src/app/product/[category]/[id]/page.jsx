@@ -50,6 +50,7 @@ export default async function DetailPage({ params }) {
                   <dt>Power:</dt><dd>{item.power} W</dd>
                   <dt>R.P.M.:</dt><dd>{item.power}</dd>
                   <dt>Weight:</dt><dd>{item.power} kg</dd>
+                  <dt>Type:</dt><dd>{item.type}</dd>``
                 </>
               )}
 
@@ -57,7 +58,9 @@ export default async function DetailPage({ params }) {
                 <>
                   <dt>Code:</dt><dd>{item.code}</dd>
                   <dt>Size:</dt><dd>{item.size}</dd>
+                  <dt>Properties:</dt><dd>{item.properties}</dd>
                   <dt>Colour:</dt><dd>{item.colour}</dd>
+                  <dt>Type:</dt><dd>{item.type}</dd>
                 </>
               )}
 
@@ -65,6 +68,8 @@ export default async function DetailPage({ params }) {
                 <>
                   <dt>Code:</dt><dd>{item.code}</dd>
                   <dt>Size:</dt><dd>{item.size}</dd>
+                  <dt>Properties:</dt><dd>{item.properties}</dd>
+                  <dt>Type:</dt><dd>{item.type}</dd>
                 </>
               )}
 

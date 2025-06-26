@@ -20,13 +20,13 @@ export default function EditItemPage() {
     const getInitial = (cat) => {
     switch (cat) {
       case "polisher":
-        return { name: "", backingpad: "", orbit: "", power: "", rpm: "", weight: "", description: "", images: [] };
+        return { name: "", backingpad: "", orbit: "", power: "", rpm: "", weight: "", type: "", description: "", images: [] };
       case "pad":
-        return { name: "", code: "", size: "", colour: "", description: "", images: [] };
+        return { name: "", code: "", size: "", properties: "", colour: "", type: "",description: "", images: [] };
       case "compound":
-        return { name: "", code: "", size: "", description: "", images: [] };
+        return { name: "", code: "", size: "", properties: "", type: "",description: "", images: [] };
       default:
-        return {};
+        return {};                  
     }
   };
 
@@ -209,6 +209,13 @@ export default function EditItemPage() {
                 placeholder="Weight (kg)"
                 className="w-full border px-3 py-2 rounded"
               />
+              <input
+                name="type"
+                value={form.type}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Type"
+              />
               <textarea
                 name="description"
                 value={form.description}
@@ -269,11 +276,25 @@ export default function EditItemPage() {
                 className="w-full border px-3 py-2 rounded"
               />
               <input
+                name="properties"
+                value={form.properties}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Properties"
+              />
+              <input
                 name="colour"
                 value={form.colour}
                 onChange={handleChange}
                 placeholder="Colour"
                 className="w-full border px-3 py-2 rounded"
+              />
+              <input
+                name="type"
+                value={form.type}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Type"
               />
               <textarea
                 name="description"
@@ -333,6 +354,20 @@ export default function EditItemPage() {
                 type="number"
                 placeholder="Size"
                 className="w-full border px-3 py-2 rounded"
+              />
+              <input
+                name="properties"
+                value={form.properties}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Properties"
+              />
+              <input
+                name="type"
+                value={form.type}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+                placeholder="Type"
               />
               <textarea
                 name="description"
