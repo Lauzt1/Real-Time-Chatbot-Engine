@@ -48,7 +48,10 @@ export default function FaqList() {
                   Answer: {f.answer}
                 </p>
                 <p className="mt-2 text-sm text-gray-500">
-                  Context: {f.context}
+                  Context Type: {f.contextType}
+                </p>
+                <p className="mt-1 text-sm text-gray-500">
+                  Context Key: {f.contextKey}
                 </p>
                 <p className="mt-1 text-sm text-gray-500">
                   Priority: {f.priority}
