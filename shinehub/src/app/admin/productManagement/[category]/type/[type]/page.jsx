@@ -1,33 +1,34 @@
-// src/app/admin/productManagement/[category]/page.jsx
+// src/app/admin/productManagement/[category]/type/[type]/page.jsx
 import CategorySidebar from "@/components/admin/CategorySidebar"
 import Link from "next/link"
-
 import Polisher from "@/models/polisher"
 import Pad       from "@/models/pad"
 import Compound  from "@/models/compound"
 import RemoveBtn from "@/components/admin/RemoveBtn"
-import { HiPencilAlt } from 'react-icons/hi';
+import { HiPencilAlt } from 'react-icons/hi'
 
-async function getproductFor(category) {
+async function getItemsForType(category, type) {
   switch (category) {
     case "polisher":
-      return Polisher.find().lean()
+      return Polisher.find({ type }).lean()
     case "pad":
-      return Pad.find().lean()
+      return Pad.find({ type }).lean()
     case "compound":
-      return Compound.find().lean()
+      return Compound.find({ type }).lean()
     default:
       throw new Error("Unknown category")
   }
 }
 
-export default async function CategoryPage({ params }) {
-  const { category } = params
-  let product
+export default async function TypePage({ params }) {
+  const { category, type } = params
+  const formattedType = type.replace(/_/g, " ")
+  let items
+
   try {
-    product = await getproductFor(category)
+    items = await getItemsForType(category, formattedType)
   } catch {
-    return <p>Category “{category}” not found</p>
+    return <p className="p-6">Category “{category}” not found</p>
   }
 
   const pretty = {
@@ -38,10 +39,12 @@ export default async function CategoryPage({ params }) {
 
   return (
     <div className="flex">
-      <CategorySidebar active={category} />
+      <CategorySidebar active={category} filter={formattedType} />
 
       <main className="flex-1 p-6 bg-purple-50">
-        <h1 className="text-2xl mb-4">{pretty}</h1>
+        <h1 className="text-2xl mb-4">
+          {pretty} : {formattedType.charAt(0).toUpperCase() + formattedType.slice(1)}
+        </h1>
 
         <Link
           href={`/admin/productManagement/${category}/add`}
@@ -51,10 +54,13 @@ export default async function CategoryPage({ params }) {
         </Link>
 
         <div className="grid grid-cols-3 gap-6">
-          {product.map((item) => {
-            const firstUrl = item.images?.[0]?.url || '/placeholder.png';
+          {items.map((item) => {
+            const firstUrl = item.images?.[0]?.url || "/placeholder.png"
             return (
-              <div key={item._id} className="bg-white border rounded-lg overflow-hidden">
+              <div
+                key={item._id}
+                className="bg-white border rounded-lg overflow-hidden"
+              >
                 <img
                   src={firstUrl}
                   alt={item.name}
@@ -64,7 +70,9 @@ export default async function CategoryPage({ params }) {
                   <h2 className="font-medium">{item.name}</h2>
                 </div>
                 <div className="flex justify-center gap-4 p-2">
+                  {/* Remove */}
                   <RemoveBtn id={item._id} resource={category} />
+                  {/* Edit */}
                   <Link href={`/admin/productManagement/${category}/edit/${item._id}`}>
                     <HiPencilAlt size={23} />
                   </Link>
