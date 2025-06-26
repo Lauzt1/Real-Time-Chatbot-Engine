@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export default function AddFaqPage() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer]     = useState("");
-  const [contexts, setContexts] = useState("");
+  const [context, setContexts] = useState("");
   const [priority, setPriority] = useState(0);
   const router = useRouter();
 
@@ -21,10 +21,7 @@ export default function AddFaqPage() {
     const payload = {
       question: question.trim(),
       answer: answer.trim(),
-      contexts: contexts
-        .split(",")
-        .map((s) => s.trim())
-        .filter((s) => s),
+      context: context.trim(),
       priority: Number(priority),
     };
 
@@ -72,13 +69,12 @@ export default function AddFaqPage() {
         </div>
 
         <div>
-          <label className="block mb-1 font-medium">Contexts (comma-separated)</label>
+          <label className="block mb-1 font-medium">Context</label>
           <input
             type="text"
-            value={contexts}
+            value={context}
             onChange={(e) => setContexts(e.target.value)}
             className="w-full border px-3 py-2 rounded"
-            placeholder="e.g., general, billing"
           />
         </div>
 

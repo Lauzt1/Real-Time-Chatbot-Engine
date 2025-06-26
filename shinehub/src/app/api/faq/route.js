@@ -19,13 +19,13 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const { question, answer, contexts, priority } = await request.json();
+    const { question, answer, context, priority } = await request.json();
 
     // Basic validation
     if (
       typeof question !== "string" ||
       typeof answer   !== "string" ||
-      !Array.isArray(contexts) ||
+      typeof context   !== "string" ||
       typeof priority !== "number"
     ) {
       return NextResponse.json(
@@ -38,7 +38,7 @@ export async function POST(request) {
     const created = await Faq.create({
       question,
       answer,
-      contexts,
+      context,
       priority,
     });
 

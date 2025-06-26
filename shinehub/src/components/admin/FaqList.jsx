@@ -12,10 +12,10 @@ export default function FaqList() {
   useEffect(() => {
     async function loadFaqs() {
       try {
-        const res = await fetch("http://localhost:3000/api/faq");
+        const res = await fetch("/api/faq");
         if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
         const data = await res.json();
-        // If your API returns { faq: [...] } or { faqs: [...] }, unwrap it
+        // unwrap either { faq: […] } or { faqs: […] } or a raw array
         const list = Array.isArray(data)
           ? data
           : data.faq || data.faqs || [];
@@ -30,15 +30,9 @@ export default function FaqList() {
     loadFaqs();
   }, []);
 
-  if (loading) {
-    return <p>Loading FAQs…</p>;
-  }
-  if (error) {
-    return <p className="text-red-500">Error: {error}</p>;
-  }
-  if (faqs.length === 0) {
-    return <p>No FAQs found.</p>;
-  }
+  if (loading) return <p>Loading FAQs…</p>;
+  if (error) return <p className="text-red-500">Error: {error}</p>;
+  if (faqs.length === 0) return <p>No FAQs found.</p>;
 
   return (
     <div className="space-y-4">
@@ -50,15 +44,15 @@ export default function FaqList() {
           <div className="flex justify-between items-start">
             <div>
               <h3 className="font-bold text-xl">{f.question}</h3>
-              <p className="mt-2 text-gray-700">{f.answer}</p>
-              {Array.isArray(f.context) && (
                 <p className="mt-2 text-sm text-gray-500">
-                  Context: {f.context.join(", ")}
+                  Answer: {f.answer}
                 </p>
-              )}
-              <p className="mt-1 text-sm text-gray-500">
-                Priority: {f.priority}
-              </p>
+                <p className="mt-2 text-sm text-gray-500">
+                  Context: {f.context}
+                </p>
+                <p className="mt-1 text-sm text-gray-500">
+                  Priority: {f.priority}
+                </p>
             </div>
             <RemoveBtn id={f._id.toString()} resource="faq" />
           </div>
