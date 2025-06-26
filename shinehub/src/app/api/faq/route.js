@@ -1,5 +1,3 @@
-// src/app/api/faq/route.js
-
 import connectMongoDB from "@/libs/mongodb";
 import Faq             from "@/models/faq";
 import { NextResponse } from "next/server";
@@ -9,38 +7,39 @@ export async function GET(request) {
   try {
     await connectMongoDB();
 
-    // parse optional "exclude" query param
     const { searchParams } = new URL(request.url);
+
+    // 1) pick up ?context=<general|polisher|pad|compound> (default to general)
+    const contextParam = searchParams.get("context") || "general";
+
+    // 2) parse optional ?exclude=<comma-separated-ids>
     const excludeParam = searchParams.get("exclude") || "";
     const excludeIds = excludeParam
       .split(",")
       .filter(Boolean)
       .map((id) => {
-        try {
-          return new ObjectId(id);
-        } catch {
-          return null;
-        }
+        try { return new ObjectId(id); }
+        catch { return null; }
       })
       .filter(Boolean);
 
-    // build query: no context filter, just exclude clicked IDs
-    const query = {};
+    // 3) build query: filter by contexts array, then exclude clicked ones
+    const query = { contexts: contextParam };
     if (excludeIds.length) {
       query._id = { $nin: excludeIds };
     }
 
-    // fetch top 4 by priority then createdAt
+    // 4) grab top-4 by priority, then createdAt
     const faqs = await Faq.find(query)
       .sort({ priority: 1, createdAt: 1 })
       .limit(4)
       .lean();
 
-    // return only id, question, answer
+    // 5) only send back what the widget needs
     const payload = faqs.map((f) => ({
-      id: f._id.toString(),
+      id:       f._id.toString(),
       question: f.question,
-      answer: f.answer,
+      answer:   f.answer,
     }));
 
     return NextResponse.json(payload);

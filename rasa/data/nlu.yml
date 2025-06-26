@@ -632,6 +632,32 @@ nlu:
     - Send quotation lah
     - Provide quote mah
     - Quotation please lah
+    - how much this one?
+    - how much you selling?
+    - price how much ah?
+    - give me price can?
+    - bro how much this?
+    - how much you quote me?
+    - can send price anot?
+    - got pricing for this?
+    - give me quotation can?
+    - how much leh?
+    - price can nego or not?
+    - can i get pricing?
+    - sell how much?
+    - any price list?
+    - how much this unit?
+    - boss, quote me la
+    - give me your best price leh
+    - can quote me fast fast?
+    - price pls
+    - need pricing details
+    - give me cost lah
+    - berapa harga ni?
+    - apa price dia?
+    - any quote can give?
+    - boleh send quotation?
+    - nak beli, send price
 
 - intent: agent_fallback
   examples: |
@@ -720,37 +746,117 @@ nlu:
     - let me speak to a real person
     - let me speak to a real person please
     - i want to talk to a real person
+    - i want to talk to human la
+    - can lah just give me a human
+    - bro get me someone real
+    - eh got human or not?
+    - can pass me to your team ah?
+    - don’t want bot la, real person can?
+    - real person can help or not?
+    - dun wan talk to bot
+    - got customer service to chat anot?
+    - can talk to your colleague?
+    - anyone human can help me?
+    - let me talk to your staff
+    - someone human pls
+    - aiya, bot cannot help lah
+    - give me real agent can?
+    - i wan real person leh
+    - pls pass me to your friend
+    - i want to talk to someone leh
+    - can talk to someone smarter anot?
+    - anyone real at your side?
+    - gimme someone real lah
+    - pass to human team leh
+    - can forward to ur side anot?
+    - pass me to someone else la
+    - i don’t want to talk to machine la
+    - faster pass me to human pls
+    - don’t bot me la, just human pls
+    - get human for me can?
+    - u got human friend there anot?
+    - i don’t wanna talk to AI la
+    - where is your team?
+    - can i talk to your team behind?
 
 - lookup: product_model
   examples: |
-    - LHR15 MarkV
     - LHR21 MarkV
-    - LHR15ES
-    - LHR21ES
-    - LH19E
-    - LHR15 MarkIII
+    - LHR15 MarkV
     - LHR21 MarkIII
-    - lhr15 markv
-    - lhr21 markv
-    - lhr15es
-    - lhr21es
-    - lh19e
-    - lhr15 markiii
-    - lhr21 markiii
-    - lhr15 mark5
-    - lhr21 mark5
-    - lhr15 mark3
-    - lhr21 mark3
+    - LHR15 MarkIII
+    - LHR21ES
+    - LHR15ES
+    - LH19E
+    - D-A Foam Pad (1.5" Coarse)
+    - D-A Foam Pad (1.5" Intermediate)
+    - D-A Foam Pad (1.5" Fine)
+    - D-A Foam Pad (1.5" Ultra Fine)
+    - D-A Foam Pad (3" Coarse)
+    - D-A Foam Pad (3" Intermediate)
+    - D-A Foam Pad (3" Fine)
+    - D-A Foam Pad (3" Ultra Fine)
+    - D-A Foam Pad (4" Coarse)
+    - D-A Foam Pad (4" Intermediate)
+    - D-A Foam Pad (4" Fine)
+    - D-A Foam Pad (4" Ultra Fine)
+    - D-A Foam Pad (6" Coarse)
+    - D-A Foam Pad (6" Intermediate)
+    - D-A Foam Pad (6" Fine)
+    - D-A Foam Pad (6" Ultra Fine)
+    - D-A Foam Pad (7" Coarse)
+    - D-A Foam Pad (7" Intermediate)
+    - D-A Foam Pad (7" Fine)
+    - D-A Foam Pad (7" Ultra Fine)
+    - D-A Wool Pad (3" Coarse)
+    - D-A Wool Pad (3" Medium)
+    - D-A Wool Pad (5" Coarse)
+    - D-A Wool Pad (5" Medium)
+    - D-A Wool Pad (6" Coarse)
+    - D-A Wool Pad (6" Medium)
+    - D-A Microfiber Pad (3" Coarse)
+    - D-A Microfiber Pad (3" Fine)
+    - D-A Microfiber Pad (3" Ultra Fine)
+    - Microfiber Pad (5" Coarse)
+    - Microfiber Pad (5" Fine)
+    - Microfiber Pad (5" Ultra Fine)
+    - Microfiber Pad (6" Coarse)
+    - Microfiber Pad (6" Fine)
+    - Microfiber Pad (6" Ultra Fine)
+    - D-A COARSE (Small)
+    - D-A COARSE (Medium)
+    - D-A COARSE (Large)
+    - D-A FINE (Small)
+    - D-A FINE (Medium)
+    - D-A FINE (Large)
+    - UNO PURE (Small)
+    - UNO PURE (Medium)
+    - UNO PURE (Large)
+    - UNO PROTECT (Small)
+    - UNO PROTECT (Medium)
+    - UNO PROTECT (Large)
+    - UNO ADVANCED (Small)
+    - UNO ADVANCED (Medium)
+    - UNO ADVANCED (Large)
+    - MILLE COARSE (Small)
+    - MILLE COARSE (Large)
+    - MILLE FINE (Small)
+    - MILLE FINE (Large)
+    - MILLE Black Line (Large)
 
 - intent: ask_product_info
   examples: |
+    - lhr21 markv
+    - lh19e
+    - lhr21es
+    - da01-250
+    - uno pure
     - Tell me about the LHR15 MarkV
     - Specs for LHR21 MarkIII lah
     - I want info on LHR21ES
     - What’s the power rating of LH19E?
     - Details for LHR15ES please
     - Show me specs for LHR21 mah
-    - Tell me about the LHR15 MarkV
     - LHR15
     - LHR21ES
     - What’s LHR21?
@@ -770,12 +876,42 @@ nlu:
     - Show me details on [DA02-500](product_model)
     - Info on compound [DA01-1000](product_model)
     - Describe product [D-A COARSE 250](product_model)
+    - what’s this [LHR21 MarkV](product_model) for ah?
+    - this [UNO PURE](product_model) use for what?
+    - what does [DA01-250](product_model) do lah?
+    - can tell me about [D-A Wool Pad 3 inch Coarse](product_model)?
+    - got info for [LH19E](product_model) anot?
+    - explain [9.NW160M](product_model) to me la
+    - [UNO ADVANCED Large](product_model) for what one?
+    - what this [D-A COARSE](product_model) use for?
+    - eh this [LHR15](product_model) good or not?
+    - [MILLE COARSE Large](product_model), what it do?
+    - what can [9.DA70H/4](product_model) do?
+    - this pad [9.DA40H/6](product_model) for what surface?
+    - [UNO01-250](product_model), use how?
+    - how to use [DA01-1000](product_model)?
+    - [UNO PROTECT Small](product_model) got info?
+    - what this compound [DA02-500](product_model) for?
+    - describe [UNO PURE](product_model) lah
+    - what spec [D-A Foam Pad 6 inch Coarse](product_model)?
+    - how this [LHR21ES](product_model) work?
+    - this [D-A Microfiber Pad 3 inch Fine](product_model) for what ah?
+    - gimme details for [D-A FINE Medium](product_model)
+    - more info about [LHR15ES](product_model) got?
 
 - intent: ask_weight
   examples: |
     - how heavy is the [LHR21 MarkV](product) 
     - whats the weight of [LHR15 MarkV](product)?
     - weight?
+    - weight how much?
+    - how many kg?
+    - got weight?
+    - eh heavy or not?
+    - what’s the weight ah?
+    - berapa berat this one?
+    - is it heavy?
+    - can tell me the weight?
 
 ## intent:ask_power
 - intent: ask_power
@@ -783,6 +919,13 @@ nlu:
     - whats the power of [LHR21ES](product)?
     - how many watts does [LHR15 MarkIII](product) have?
     - power?
+    - how strong the motor?
+    - wattage how much?
+    - got power spec?
+    - berapa watt?
+    - this one how powerful?
+    - what power rating?
+    - got power number or not?
 
 ## intent:ask_orbit
 - intent: ask_orbit
@@ -790,6 +933,13 @@ nlu:
     - whats the orbit on [LHR21 MarkIII](product)?
     - how big is the orbit of [LH19E](product)?
     - orbit?
+    - orbit size?
+    - orbit how many mm?
+    - got orbit spec?
+    - orbit range?
+    - orbit dia berapa?
+    - mm orbit?
+    - is the orbit big?
 
 ## intent:ask_backingpad
 - intent: ask_backingpad
@@ -797,6 +947,13 @@ nlu:
     - whats the backing pad size of [LHR21ES](product)?
     - backing pad?
     - how large is the pad on [LHR15ES](product)?
+    - pad size ah?
+    - backing pad how big?
+    - this one use what backing pad?
+    - use 5 inch or 6 inch pad?
+    - pad base size?
+    - got pad measurement?
+    - apa backing pad dia pakai?
 
 # — COMPOUNDS — 
 ## intent:ask_size
@@ -805,6 +962,16 @@ nlu:
     - whats the size of [DA01-500](product)?
     - how many ml is [D-A COARSE 1000](product)?
     - size?
+    - berapa ml?
+    - bottle how big?
+    - compound size?
+    - pad size?
+    - how big is the pad?
+    - got size info?
+    - how many inch?
+    - inch berapa?
+    - what size this one?
+    - size got different one or not?
 
 ## intent:ask_code
 - intent: ask_code
@@ -812,6 +979,14 @@ nlu:
     - whats the code for [D-A FINE 250](product)?
     - code?
     - product code?
+    - product code?
+    - got model number?
+    - item code please?
+    - what's the SKU?
+    - model ID what?
+    - alamak what’s the code again?
+    - do you have product code?
+    - that code ah?
 
 # — PADS — 
 ## intent:ask_size
@@ -820,6 +995,16 @@ nlu:
     - whats the size of [9.DA40H/6](product)?
     - pad size?
     - how big is the pad?
+    - berapa ml?
+    - bottle how big?
+    - compound size?
+    - pad size?
+    - how big is the pad?
+    - got size info?
+    - how many inch?
+    - inch berapa?
+    - what size this one?
+    - size got different one or not?
 
 ## intent:ask_colour
 - intent: ask_colour
@@ -827,6 +1012,14 @@ nlu:
     - what color is [9.DA40M/6](product)?
     - pad colour?
     - colour?
+    - color what?
+    - this one blue ah?
+    - colour got?
+    - got different colour?
+    - is it yellow pad?
+    - what shade?
+    - apa warna ni?
+    - use blue or white?
 
 ## intent:ask_code
 - intent: ask_code
@@ -834,308 +1027,108 @@ nlu:
     - whats the code for [9.DA70H/4](product)?
     - pad code?
     - code?
+    - product code?
+    - got model number?
+    - item code please?
+    - what's the SKU?
+    - model ID what?
+    - alamak what’s the code again?
+    - do you have product code?
+    - that code ah?
 
 # — ALL PRODUCTS — 
 ## intent:ask_description
 - intent: ask_description
   examples: |
     - what is this product?
-    - tell me about it
-    - tell me about this product
+    - tell me more about it
+    - tell me more about this product
     - describe this
-    - what is this product
     - what can you tell me about this?
     - give me the description
-    
-# - intent: ask_faq
-#   examples: |
-#     - What is your warranty policy lah?
-#     - Can you tell me about returns mah?
-#     - FAQ on shipping lah
-#     - Do you offer warranty mah?
-#     - How long is the warranty lah?
-#     - Return policy mah?
-#     - FAQs on delivery lah
-#     - Tell me about support mah
-#     - Shipping info lah?
-#     - Delivery times mah?
-#     - Maintenance FAQs lah
+    - what this do ah?
+    - what’s this for?
+    - ini untuk apa?
+    - can explain this one?
+    - got description?
+    - this do what one?
+    - show me the purpose
+    - usage how?
 
-# - intent: out_of_scope
-#   examples: |
-#     - asdfasdf
-#     - qwertyuiop
-#     - slslslsl
-#     - foobar
-#     - random text lah
-#     - 123123 mah
-#     - ??? lah
-#     - what am i?
-#     - nonsense mah
-#     - lalala lah
-#     - zzzz mah
-#     - i am asking you an out of scope question
-#     - 4 + 2 = ?
-#     - 4 + 2
-#     - 1 + 1 = ?
-#     - 1 + 1
-#     - can i die
-#     - can YouTube talk?
-#     - can you call me back ?
-#     - can you give me your datacenter's password
-#     - can you give me your datacenter's password?
-#     - can you please send me an uber
-#     - do i have to accept?
-#     - have we met before?
-#     - i already told you! i'm a shitmuncher
-#     - i am User
-#     - i am an opioid addic
-#     - i am an opioid addict
-#     - i am trying to build one, and did some research before, but I have not do hand-on work yet
-#     - i ned a GP in 94301
-#     - i need a GP in 94301
-#     - i need a girl friend!
-#     - i wan to buy a plane
-#     - i wanna marry you
-#     - i want a new laptop
-#     - i want book a hotel
-#     - i want to die
-#     - i want to use pipe
-#     - i will check
-#     - i'm a shitmuncher
-#     - is today saturday?
-#     - NLW
-#     - nice name
-#     - now?
-#     - recharge
-#     - the Try it out is not working
-#     - the weather is good
-#     - today
-#     - try it out broken
-#     - what day is it today?
-#     - what do you prefer?
-#     - what is todays date
-#     - what is your hobbies?
-#     - what's 1 + 1?
-#     - what's do YouTube do
-#     - what's your backend system?
-#     - Who are your customers
-#     - Why don’t you answer?
-#     - won't you ask me how I am?
-#     - you'r blue.
-#     - a tamed mouse will arrive at your doorstep in the next couple of days
-#     - again?
-#     - are the newsletter worth the subscription?
-#     - are u facebook
-#     - are u, facebook?
-#     - are you single?
-#     - are you dev?
-#     - are you russian?
-#     - are you sick
-#     - are you vegan
-#     - better than you
-#     - book a ticket
-#     - but I just told you that :(
-#     - call me father
-#     - can you cheer me up
-#     - can you give me a cup of coffee
-#     - can you help me with the docs?
-#     - can you help me with your docs
-#     - can you help me with your docs?
-#     - can you learn from our conversation?
-#     - can you speak about politic ?
-#     - can you understand ?
-#     - cannot see
-#     - chgfhgh
-#     - colder
-#     - common, just try
-#     - connect to alexa
-#     - cr
-#     - custom service
-#     - did i break you
-#     - do you believe in god?
-#     - do you have a phone number?
-#     - do you have your photo?
-#     - do you know me
-#     - do you know ras
-#     - do you like football
-#     - do you like movies
-#     - do you sell vacuum robots?
-#     - do you want to marry me?
-#     - docs
-#     - doctor
-#     - everything
-#     - genocide
-#     - get me a club mate
-#     - give me a girl friend
-#     - go back
-#     - google?
-#     - great, I'd like to buy a house
-#     - hang on let me find it
-#     - help with my life
-#     - hey little mama let em whisper in your ear
-#     - how about NYC
-#     - how are the kids
-#     - how can i get them?
-#     - how can i test this
-#     - how come you say ok ?
-#     - how do you learn
-#     - how many lines of codes
-#     - how much is 10 + 89 ?
-#     - how much is 10 + 89
-#     - how to get rasa studio
-#     - how to go to newyork ?
-#     - i am hungry, what should i do?
-#     - i am not a developer but need this for business
-#     - i am qq
-#     - i can't deal with _your_ request
-#     - i hope you will be better
-#     - i immediately need help with implementing the coolest bot you can imagine
-#     - i m looking for job
-#     - i told you already
-#     - i wanna party
-#     - i want good flycam
-#     - i want more of you in my life!
-#     - i want to book a hotel
-#     - i want to buy a roomba for my grandson
-#     - i want to find new friends
-#     - i want to find out what you can build with rasa
-#     - i want to fly
-#     - i want to know current situtation in pakistan
-#     - i want to see your happy customers
-#     - i will tame a mouse for you
-#     - is it a wasteland full of broken robot parts?
-#     - is it allow to
-#     - is rasa a studio?
-#     - is rasa any good
-#     - is that any of your business
-#     - isn't the newsletter just spam?
-#     - it's a pity
-#     - license
-#     - ljljl
-#     - mascot means?
-#     - more
-#     - mountain
-#     - my name k
-#     - oh my god, not again!
-#     - ok one then
-#     - on wiche nlp based system are you build?
-#     - only that?
-#     - personal or work?
-#     - please play music
-#     - really? you're so touchy?
-#     - refresh
-#     - region with no. of records
-#     - search wikipedia
-#     - shitmuncher
-#     - show me a picture of a chicken
-#     - silly bot
-#     - sing me a song
-#     - some thing else
-#     - someone call the police i think the bot died
-#     - sorry, i cannot rephrase
-#     - tell me about yourself
-#     - tell me more about next best action
-#     - that doesn't sound like a joke
-#     - the one that is better than you
-#     - tricked ya
-#     - turn off my stove
-#     - umm
-#     - wait a bit i am still reading
-#     - what about wheather
-#     - what are you doing now?
-#     - what are your uses for universities
-#     - what did you eat for lunch?
-#     - what does your soul feel my friend
-#     - what doing
-#     - what else?
-#     - what films do you like
-#     - what is a discourse?
-#     - what is a mascot
-#     - what is adlingo
-#     - what is evolution ?
-#     - what is google rcs
-#     - what is machine learning
-#     - what is nice?
-#     - what is the capital of delhi
-#     - what is the capital of india
-#     - what is the current petrol price
-#     - what is the day ?
-#     - what is the real use case where we can use this one
-#     - what is your address?
-#     - what is your purpose
-#     - what lnu mean?
-#     - what the latest news ?
-#     - what you ate today?
-#     - what's 5 + 5
-#     - what's a newsletter?
-#     - what's gingerale
-#     - what's your wife doing this weekend
-#     - what?
-#     - whats that
-#     - whats the sign
-#     - when is the next train is coming?
-#     - where do i get install files for mac?
-#     - where is Oslo?
-#     - where is mexico?
-#     - wheres the party?
-#     - which city are you talking about?
-#     - which is the LNU asynchronism ?
-#     - which kind
-#     - who are they?
-#     - who is the MD of samsung bangalore ?
-#     - who is the president of india ?
-#     - who is your favourite robot?
-#     - who let the dogs out
-#     - who's Bill Gates?
-#     - whta you think about gdpr?
-#     - why do you need that?
-#     - will u kill me
-#     - will u kill me?
-#     - winter is already leaving
-#     - with you recommend me?
-#     - yeah, my dog was drinking a couple of litres of water per day and tried drinking the swimming pool
-#     - you already have that
-#     - you can learn how to make a coffe
-#     - you have children?
-#     - you have job opening
-#     - you lock sweety
-#     - you should learn to count
-#     - you will know it from the single red rose it carries between its teeth
-#     - ı am learning python
-#     - CALL THE POLICE
-#     - tertyryutyi
-#     - wsdrcftvgybhnj
-#     - why sky is blue?
-#     - what kind of bird are you?
-#     - contextua
-#     - contextual
-#     - talk to me about voulette
-#     - voulette voulette
-#     - do you have a demo?
-#     - cars
-#     - please voulette
-#     - out of scope question.
-#     - i need money
-#     - no, i need cash, money! do you have it ?
-#     - the beatles
-#     - Hi i want to go palghar
-#     - I want to go palghar
-#     - gsaf
-#     - expert of rasa
-#     - i want play ball
-#     - flight catch up
-#     - coronavirus
-#     - have you heard of corona?
-#     - where do i type in commandy
-#     - where to type in commands
-#     - kiss me
-#     - you have to
-#     - sfasd
-#     - asdkjasdhjkasd
-#     - j  bhbhj
-#     - eshdtjfjfyk
-#     - drhdtjfjfyj
-#     - sudo reboot
-#     - asdfgasd
-#     - asdfgasdas
+- intent: request_product_link
+  examples: |
+    - show me [LHR21 MarkV](product_model)
+    - show me the [LH19E](product_model)
+    - give me the link to [LH19E](product_model)
+    - show me [9.DA40H/6](product_model)
+    - link to [9.DA40H/6](product_model)
+    - i want the page for [9.NW160M](product_model)
+    - show me [9.NW80H](product_model)
+    - can you give me the product link for [9.NW80H](product_model)
+    - give me the link to [DA01-250](product_model)
+    - show me [DA01-250](product_model)
+    - show me the page for [UNO01-250](product_model)
+    - i need the link for [UNO01-250](product_model)
+    - i want to see [UNO PURE](product_model)
+    - open [UNO PURE](product_model)
+    - show me the [D-A Wool Pad 3 inch Coarse](product_model)
+    - get me a link to [D-A Foam Pad 1.5 inch Coarse](product_model)
+    - show [D-A Wool Pad 6 inch Medium](product_model)
+    - give link to [D-A COARSE Small](product_model)
+    - I want info on the [LHR21 MarkIII](product_model)
+    - Give me information about [LH19E](product_model)
+    - Specs for [LHR15ES](product_model)
+    - Got specs for [LHR21](product_model)?
+    - What’s [LH19E](product_model) like?
+    - Can you describe [LHR15 MarkV](product_model)?
+    - What kind of product is [9.DA40H/6](product_model)?
+    - Any info about [D-A Foam Pad 6 inch Coarse](product_model)?
+    - [DA01-250](product_model)
+    - [UNO PURE](product_model)
+    - [D-A COARSE](product_model)
+    - Info [DA02-500](product_model)
+    - [9.DA70H/4](product_model) specs
+    - I need the full description for [UNO PURE Small](product_model)
+    - What does [DA01-1000](product_model) do?
+    - Please show me the technical details of [MILLE COARSE Large](product_model)
+    - I'd like specs for the pad [D-A Wool Pad 6 inch Medium](product_model)
+    - What’s the description of [D-A Foam Pad 3 inch Coarse](product_model)?
+    - Describe [UNO PROTECT Medium](product_model)
+    - Tell me what [MILLE FINE Small](product_model) is for
+    - What is [UNO ADVANCED Large](product_model) used for?
+    - Can I get some info on [UNO01-250](product_model)?
+    - Anything interesting about [9.NW80H](product_model)?
+    - Explain [D-A COARSE Large](product_model) to me
+    - What's the point of [UNO PROTECT Small](product_model)?
+    - eh got link for [LHR15 MarkV](product_model) or not?
+    - can send me [LH19E](product_model) page?
+    - gimme [UNO PURE](product_model) link lah
+    - where’s the page for [9.DA40H/6](product_model)?
+    - got product page for [D-A COARSE](product_model)?
+    - show me the website for [9.NW160M](product_model)
+    - [UNO PROTECT Medium](product_model) link pls
+    - can find me the [DA01-250](product_model) page?
+    - i want the info page for [9.DA70H/4](product_model)
+    - send me website link for [UNO01-250](product_model)
+    - can see more about [LHR15ES](product_model) anot?
+    - any product page for [MILLE COARSE Large](product_model)?
+    - where can i view [D-A Foam Pad 6 inch Coarse](product_model)?
+    - link me the pad [D-A Wool Pad 3 inch Medium](product_model)
+    - open the [DA01-500](product_model) product page
+    - got website for [9.NW80H](product_model)?
+    - where can i check [UNO ADVANCED Large](product_model)?
+    - show me [UNO PURE](product_model) link can?
+    - where’s the [DA01-250](product_model) link?
+    - [UNO01-250](product_model) product link?
+    - show [D-A COARSE](product_model) lah
+    - send link pls
+    - product page pls
+    - got site for this one?
+    - website page can?
+    - show me [LHR21 MarkIII](product_model) la
+    - link for [LH19E](product_model) leh?
+    - this [UNO PURE Small](product_model) got product page anot?
+    - help me find [D-A FINE Medium](product_model) page
+    - faster link me [UNO PROTECT Large](product_model) pls
+    - give me that [9.DA40S/6](product_model) one lah
+    

@@ -17,16 +17,12 @@ rules:
   - action: utter_fallback
   - action: action_listen
 
-- rule: Handle product info requests
+- rule: Connect to human after fallback + affirm
   steps:
-  - intent: ask_product_info
-  - action: action_product_info
-  - action: action_listen
-
-- rule: respond with product info
-  steps:
-  - intent: ask_product_info
-  - action: action_product_info
+    - intent: nlu_fallback
+    - action: utter_fallback
+    - intent: affirm
+    - action: utter_agent_fallback
 
 - rule: Quote request
   steps:
@@ -47,15 +43,11 @@ rules:
     - action: action_product_info
     - action: action_listen
 
-  # 1) Whenever the `page` slot is set (i.e. on every route change),
-  #    pull in the new product context
-- rule: Update product context on page change
-  condition:
-    - slot_was_set:
-        - page
+# product link req
+- rule: Handle product link request
   steps:
-    - action: action_set_product_context
-    - action: action_listen
+    - intent: request_product_link
+    - action: action_product_link
 
 # — On a product page, answer attribute questions —
 - rule: Answer description questions on product page
@@ -104,6 +96,16 @@ rules:
   steps:
     - intent: ask_colour
     - action: action_query_product_attribute
+    - action: action_listen
+
+  # 1) Whenever the `page` slot is set (i.e. on every route change),
+  #    pull in the new product context
+- rule: Update product context on page change
+  condition:
+    - slot_was_set:
+        - page
+  steps:
+    - action: action_set_product_context
     - action: action_listen
 
 # -------------------------

@@ -1,18 +1,26 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { HiChat } from "react-icons/hi";
 
 export default function ChatbotWidget() {
   const pathname = usePathname();
+  const router = useRouter();
   const pageRef = useRef(pathname);
   pageRef.current = pathname;
 
-  // ─── FAQ state ───────────────────────────────────────────────────────────
+  // ─── 1) determine FAQ context from URL ──────────────────────────────
+  const productMatch = pathname.match(
+    /^\/product\/(polisher|pad|compound)\/[^/]+$/
+  );
+  const contextType = productMatch ? productMatch[1] : "general";
+  // ────────────────────────────────────────────────────────────────────
+
+  // ─── 2) FAQ state ───────────────────────────────────────────────────
   const [faqs, setFaqs] = useState([]);
   const [excludedFaqs, setExcludedFaqs] = useState([]);
-  // ─────────────────────────────────────────────────────────────────────────
+  // ────────────────────────────────────────────────────────────────────
 
   const [sessionId] = useState(() => crypto.randomUUID());
   const [messages, setMessages] = useState([]);
@@ -20,25 +28,33 @@ export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const messagesContainerRef = useRef(null);
 
-  // ─── fetch top-4 FAQs ─────────────────────────────────────────────────────
+  // ─── 3) when context changes, reset exclusions ──────────────────────
+  useEffect(() => {
+    setExcludedFaqs([]);
+  }, [contextType]);
+  // ────────────────────────────────────────────────────────────────────
+
+  // ─── 4) fetch top-4 FAQs for this context ──────────────────────────
   useEffect(() => {
     async function loadFaqs() {
-      let url = "/api/faq";
+      let url = `/api/faq?context=${contextType}`;
       if (excludedFaqs.length) {
-        url += `?exclude=${excludedFaqs.join(",")}`;
+        url += `&exclude=${excludedFaqs.join(",")}`;
       }
       try {
         const res = await fetch(url);
-        if (res.ok) setFaqs(await res.json());
+        if (res.ok) {
+          setFaqs(await res.json());
+        }
       } catch (e) {
         console.error("Failed to load FAQs", e);
       }
     }
     loadFaqs();
-  }, [excludedFaqs]);
-  // ─────────────────────────────────────────────────────────────────────────
+  }, [contextType, excludedFaqs]);
+  // ────────────────────────────────────────────────────────────────────
 
-  // send page slot to Rasa
+  // send page slot to Rasa (unchanged)
   useEffect(() => {
     fetch(
       `${process.env.NEXT_PUBLIC_RASA_URL}/conversations/${sessionId}/tracker/events`,
@@ -51,12 +67,10 @@ export default function ChatbotWidget() {
           value: pathname,
         }),
       }
-    ).catch((err) =>
-      console.error("Failed to send page context slot:", err)
-    );
+    ).catch((err) => console.error("Failed to send page context slot:", err));
   }, [sessionId, pathname]);
 
-  // scroll to bottom on new messages
+  // auto-scroll (unchanged)
   useEffect(() => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop =
@@ -84,15 +98,15 @@ export default function ChatbotWidget() {
         return;
       }
       const botReplies = await res.json();
-      botReplies.forEach((bot) => {
-        setMessages((prev) => [...prev, { from: "bot", text: bot.text }]);
-      });
+      botReplies.forEach((bot) =>
+        setMessages((prev) => [...prev, { from: "bot", text: bot.text }])
+      );
     } catch (err) {
       console.error("Error sending message:", err);
     }
   }
 
-  // ─── handle FAQ pill click ───────────────────────────────────────────────
+  // ─── 5) handle FAQ pill click (unchanged) ───────────────────────────
   function handleFaqClick(faq) {
     setMessages((prev) => [
       ...prev,
@@ -101,7 +115,10 @@ export default function ChatbotWidget() {
     ]);
     setExcludedFaqs((prev) => [...prev, faq.id]);
   }
-  // ─────────────────────────────────────────────────────────────────────────
+  // ────────────────────────────────────────────────────────────────────
+
+  // regex to detect URLs
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
 
   return (
     <div className="fixed bottom-4 right-4 flex flex-col-reverse items-end gap-2">
@@ -119,28 +136,53 @@ export default function ChatbotWidget() {
           className="p-4 bg-white shadow-lg rounded-lg flex flex-col"
           style={{ width: "30vw", minWidth: "400px", height: "75vh" }}
         >
-          {/* Message list */}
+          {/* Messages */}
           <div
             ref={messagesContainerRef}
             className="flex-1 overflow-y-auto mb-2"
           >
-            {messages.map((m, i) => (
-              <div
-                key={i}
-                className={m.from === "user" ? "text-right" : "text-left"}
-              >
-                <span
-                  className={`inline-block p-2 my-1 rounded ${
-                    m.from === "user" ? "bg-purple-100" : "bg-gray-100"
-                  }`}
+            {messages.map((m, i) => {
+              const parts = m.text.split(urlRegex);
+              return (
+                <div
+                  key={i}
+                  className={m.from === "user" ? "text-right" : "text-left"}
                 >
-                  {m.text}
-                </span>
-              </div>
-            ))}
+                  <span
+                    className={`inline-block p-2 my-1 rounded ${
+                      m.from === "user" ? "bg-purple-100" : "bg-gray-100"
+                    }`}
+                  >
+                    {parts.map((part, idx) => {
+                      if (urlRegex.test(part)) {
+                        try {
+                          const urlObj = new URL(part);
+                          return (
+                            <a
+                              key={idx}
+                              href={part}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                router.push(urlObj.pathname);
+                              }}
+                              className="underline text-blue-600 hover:text-blue-800"
+                            >
+                              {urlObj.pathname}
+                            </a>
+                          );
+                        } catch {
+                          return part;
+                        }
+                      }
+                      return part;
+                    })}
+                  </span>
+                </div>
+              );
+            })}
           </div>
 
-          {/* ─── FAQ pills at bottom, larger font ─────────────────────────── */}
+          {/* FAQ pills */}
           <div className="mb-2 flex flex-wrap">
             {faqs.map((f) => (
               <button
@@ -152,7 +194,6 @@ export default function ChatbotWidget() {
               </button>
             ))}
           </div>
-          {/* ─────────────────────────────────────────────────────────────── */}
 
           {/* Input form */}
           <form

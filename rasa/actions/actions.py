@@ -55,30 +55,77 @@ class ActionProductInfo(Action):
     def name(self) -> Text:
         return "action_product_info"
 
+    def run(
+            self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[SlotSet]:
+        """
+        Looks up a product by name or code, utters its description,
+        and provides a direct link to the product page.
+        """
+        user_msg = tracker.latest_message.get("text", "").lower()
+        base_url = "http://localhost:3000/product"
+
+        # Search across all product collections
+        for coll in ["polishers", "pads", "compounds"]:
+            for doc in db[coll].find():
+                name_lower = doc.get("name", "").lower()
+                code_lower = doc.get("code", "").lower()
+                if (name_lower and re.search(rf"\b{re.escape(name_lower)}\b", user_msg)) or \
+                   (code_lower and re.search(rf"\b{re.escape(code_lower)}\b", user_msg)):
+                    serial = bson_to_json(doc)
+                    product_id = str(doc.get("_id"))
+                    # use singular route (drop the trailing 's')
+                    route = coll[:-1]
+                    product_link = f"{base_url}/{route}/{product_id}"
+
+                    # Send description and link
+                    dispatcher.utter_message(text=serial.get("description", "No description available."))
+                    dispatcher.utter_message(text=f"View full details here: {product_link}")
+
+                    # Set context slots for follow-up
+                    return [
+                        SlotSet("product_doc", serial),
+                        SlotSet("product_id", product_id),
+                        SlotSet("product_category", coll),
+                        SlotSet("product_model", name_lower),
+                    ]
+
+        dispatcher.utter_message(text="Sorry, I couldn’t find that product.")
+        return []
+    
+class ActionProductLink(Action):
+    def name(self) -> Text:
+        return "action_product_link"
+
     def run(self,
             dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[SlotSet]:
-        # Use raw user message to match against name or code
+
         user_msg = tracker.latest_message.get("text", "").lower()
-        # search only in the three product collections
+        base_url = "http://localhost:3000/product"
+
         for coll in ["polishers", "pads", "compounds"]:
             for doc in db[coll].find():
                 name = doc.get("name", "").lower()
                 code = doc.get("code", "").lower()
                 if (name and re.search(rf"\b{re.escape(name)}\b", user_msg)) or \
                    (code and re.search(rf"\b{re.escape(code)}\b", user_msg)):
-                    serial = bson_to_json(doc)
-                    # utter description
-                    dispatcher.utter_message(serial.get("description", "No description."))
-                    # set context slots
+                    product_id = str(doc.get("_id"))
+                    # singular route
+                    route = coll[:-1]
+                    link = f"{base_url}/{route}/{product_id}"
+                    dispatcher.utter_message(f"You can view it here: {link}")
                     return [
-                        SlotSet("product_doc", serial),
-                        SlotSet("product_id", str(doc.get("_id"))),
+                        SlotSet("product_doc", bson_to_json(doc)),
+                        SlotSet("product_id", product_id),
                         SlotSet("product_category", coll),
                         SlotSet("product_model", name),
                     ]
-        dispatcher.utter_message("Sorry, I couldn’t find that product.")
+
+        dispatcher.utter_message("Sorry, I couldn’t find the product link.")
         return []
 
 class ActionSetProductContext(Action):
@@ -115,7 +162,6 @@ class ActionSetProductContext(Action):
             SlotSet("product_id", pid),
             SlotSet("product_doc", serial),
         ]
-
 
 class ActionQueryProductAttribute(Action):
     def name(self) -> Text:
@@ -185,7 +231,6 @@ class ActionQueryProductAttribute(Action):
             dispatcher.utter_message(f"**{name}** {field} is {value}{unit}.")
 
         return slot_events
-    
     
 class ActionSessionStart(Action):
     def name(self) -> Text:
