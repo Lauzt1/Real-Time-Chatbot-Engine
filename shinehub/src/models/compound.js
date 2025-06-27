@@ -8,6 +8,7 @@ const compoundSchema = new Schema(
         properties:     {type: String, required: true},
         type:           {type: String, required: true},
         description:    {type: String, required: true},
+        featured:       {type: Boolean, default: false},
         images: [{
             url:      { type: String, required: true },
             publicId: { type: String, required: true },
