@@ -58,7 +58,7 @@ export default async function CategoryPage({ params }) {
                 key={item._id}
                 className="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
               >              
-                  <div className="w-full h-48 bg-white flex items-center justify-center">
+                  <div className="w-full h-48 mt-2 bg-white flex items-center justify-center">
                     <img
                       src={firstUrl}
                       alt={item.name}

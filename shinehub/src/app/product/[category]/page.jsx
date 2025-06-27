@@ -50,9 +50,8 @@ export default async function CategoryPage({ params }) {
                 key={item._id}
                 className="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
               >
-                <Link href={`/product/${category}/${item._id}`}>                
-                  {/* wrap the image in a dark box so extra width shows as background */}
-                  <div className="w-full h-48 bg-white flex items-center justify-center">
+                <Link href={`/product/${category}/${item._id}`}>
+                  <div className="w-full h-48 mt-2 bg-white flex items-center justify-center">
                     <img
                       src={firstUrl}
                       alt={item.name}

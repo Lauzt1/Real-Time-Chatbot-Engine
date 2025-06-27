@@ -46,14 +46,19 @@ export default async function HomePage() {
                 href={`/product/${item.category}/${item._id}`}
                 className="block bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
               >
-                <img
-                  src={firstUrl}
-                  alt={item.name}
-                  className="w-full h-48 object-cover"
-                />
+                <div className="w-full h-48 mt-2 bg-white flex items-center justify-center">
+                  <img
+                    src={firstUrl}
+                    alt={item.name}
+                    className="h-full object-contain"
+                  />
+                </div>
+
                 <div className="p-4 text-center">
                   <h2 className="font-medium">{item.name}</h2>
-                  <p className="text-sm text-gray-500">{prettyName[item.category]}</p>
+                  <p className="text-sm text-gray-500">
+                    {prettyName[item.category]}
+                  </p>
                 </div>
               </Link>
             );
