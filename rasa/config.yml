@@ -24,10 +24,7 @@ pipeline:
 
 policies:
   - name: RulePolicy
-    core_fallback_threshold: 0.70   # ← raised from 0.30
-    core_fallback_action_name: utter_fallback
-    enable_fallback_prediction: true
-    wait_for_user_input_after_fallback: true
+    enable_fallback_prediction: false
   - name: MemoizationPolicy
   - name: TEDPolicy
     max_history: 5

@@ -365,3 +365,10 @@ class ActionSessionStart(Action):
         # hand control back to the rule
         events.append(ActionExecuted("action_listen"))
         return events
+    
+class ActionMarkFallback(Action):
+    def name(self) -> str:
+        return "action_mark_fallback"
+
+    async def run(self, dispatcher, tracker, domain):
+        return [SlotSet("just_failed", True)]

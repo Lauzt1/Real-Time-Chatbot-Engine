@@ -5,3 +5,12 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
+
+- story: escalate after fallback and affirm
+  steps:
+    - intent: nlu_fallback
+    - action: utter_fallback
+    - action: action_listen
+    - intent: affirm
+    - action: utter_agent_fallback
+    - action: action_listen
