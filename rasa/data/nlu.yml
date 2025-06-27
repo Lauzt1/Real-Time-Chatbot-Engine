@@ -849,17 +849,17 @@ nlu:
     - lhr21es
     - da01-250
     - uno pure
-    - Tell me about the LHR15 MarkV
+    - tell me about the lhr15 markv
     - Specs for LHR21 MarkIII lah
     - I want info on LHR21ES
-    - What’s the power rating of LH19E?
+    - Whats the power rating of LH19E?
     - Details for LHR15ES please
     - Show me specs for LHR21 mah
     - LHR15
     - LHR21ES
-    - What’s LHR21?
+    - Whats LHR21?
     - Specs for LH19E
-    - Tell me about the [LHR15 MarkV](product_model)
+    - Tell me about [LHR15 MarkV](product_model)
     - What are the specs of [LHR21ES](product_model)?
     - Give me info on [LH19E](product_model)
     - [LHR15ES](product_model)

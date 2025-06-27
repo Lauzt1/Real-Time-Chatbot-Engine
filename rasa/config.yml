@@ -19,7 +19,7 @@ pipeline:
   - name: EntitySynonymMapper
   - name: ResponseSelector
   - name: FallbackClassifier    # ← raised from 0.30
-    threshold: 0.70
+    threshold: 0.80
     ambiguity_threshold: 0.10
 
 policies:
