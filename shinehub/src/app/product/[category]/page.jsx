@@ -42,17 +42,24 @@ export default async function CategoryPage({ params }) {
       <main className="flex-1 p-6 bg-purple-50">
         <h1 className="text-2xl mb-4">{pretty}</h1>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {product.map((item) => {
             const firstUrl = item.images?.[0]?.url || '/placeholder.png';
             return (
-              <div key={item._id} className="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                <Link href={`/product/${category}/${item._id}`}>
-                  <img
-                    src={firstUrl}
-                    alt={item.name}
-                    className="w-full h-48 object-cover"
-                  />
+              <div
+                key={item._id}
+                className="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+              >
+                <Link href={`/product/${category}/${item._id}`}>                
+                  {/* wrap the image in a dark box so extra width shows as background */}
+                  <div className="w-full h-48 bg-white flex items-center justify-center">
+                    <img
+                      src={firstUrl}
+                      alt={item.name}
+                      className="h-full object-contain"
+                    />
+                  </div>
+
                   <div className="p-4 text-center">
                     <h2 className="font-medium">{item.name}</h2>
                   </div>
