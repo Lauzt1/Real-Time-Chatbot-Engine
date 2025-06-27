@@ -18,6 +18,21 @@ export default function ChatbotWidget() {
   const contextType = productMatch ? productMatch[1] : "general";
   // ────────────────────────────────────────────────────────────────────
 
+  // ─── 1a) fetch the current product’s data for placeholder substitution ───
+  const [productData, setProductData] = useState(null);
+  useEffect(() => {
+    if (productMatch) {
+      const [, type, id] = productMatch;
+      fetch(`/api/${type}s/${id}`)
+        .then((res) => res.json())
+        .then((data) => setProductData(data))
+        .catch((err) => console.error("Failed to load product data:", err));
+    } else {
+      setProductData(null);
+    }
+  }, [productMatch]);
+  // ────────────────────────────────────────────────────────────────────
+
   // ─── 2) FAQ state ───────────────────────────────────────────────────
   const [faqs, setFaqs] = useState([]);
   const [excludedFaqs, setExcludedFaqs] = useState([]);
@@ -112,12 +127,19 @@ export default function ChatbotWidget() {
     }
   }
 
-  // ─── 5) handle FAQ pill click (unchanged) ───────────────────────────
+  // ─── 5) handle FAQ pill click ───────────────────────────────────────
   function handleFaqClick(faq) {
+    // interpolate any {{key}} in faq.answer against productData
+    let filled = faq.answer.replace(/\{\{([^}]+)\}\}/g, (_, key) => {
+      if (!productData) return "";
+      const val = productData[key.trim()];
+      return val != null ? String(val) : "";
+    });
+
     setMessages((prev) => [
       ...prev,
       { from: "user", text: faq.question },
-      { from: "bot", text: faq.answer },
+      { from: "bot", text: filled },
     ]);
     setExcludedFaqs((prev) => [...prev, faq.id]);
   }

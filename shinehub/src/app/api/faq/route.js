@@ -25,22 +25,23 @@ export async function GET(request) {
       })
       .filter(Boolean);
 
-    // if we have a productId, load the product to get its lookup key
-    let keyValue;
+    // 1a) load full product document for placeholder substitution
+    let productDoc = null;
+    let keyValue   = null;
     if (productId) {
       if (contextParam === "polisher") {
-        const p = await Polisher.findById(productId).lean();
-        keyValue = p?.name;
+        productDoc = await Polisher.findById(productId).lean();
+        keyValue   = productDoc?.name;
       } else if (contextParam === "pad") {
-        const p = await Pad.findById(productId).lean();
-        keyValue = p?.code;
+        productDoc = await Pad.findById(productId).lean();
+        keyValue   = productDoc?.code;
       } else if (contextParam === "compound") {
-        const p = await Compound.findById(productId).lean();
-        keyValue = p?.code;
+        productDoc = await Compound.findById(productId).lean();
+        keyValue   = productDoc?.code;
       }
     }
 
-    // build OR conditions
+    // 2) build OR conditions
     const orConditions = [];
     if (contextParam === "general") {
       orConditions.push({ contextType: "general" });
@@ -48,9 +49,9 @@ export async function GET(request) {
       const singular = contextParam;
       const plural   = `${contextParam}s`;
 
-      // generic product FAQ
+      // generic product-level FAQ
       orConditions.push({ contextType: singular });
-      // any blank-key FAQ
+      // any blank-key FAQ for this type
       orConditions.push({ contextType: plural, contextKey: "" });
       // page-specific FAQ
       if (keyValue) {
@@ -58,23 +59,33 @@ export async function GET(request) {
       }
     }
 
-    // assemble final query
+    // 3) assemble final query, excluding clicked FAQs
     const query = { $or: orConditions };
     if (excludeIds.length) {
       query._id = { $nin: excludeIds };
     }
 
-    // fetch top-4
+    // 4) fetch top-4 FAQs
     const faqs = await Faq.find(query)
       .sort({ priority: 1, createdAt: 1 })
       .limit(4)
       .lean();
 
-    const payload = faqs.map((f) => ({
-      id:       f._id.toString(),
-      question: f.question,
-      answer:   f.answer,
-    }));
+    // 5) interpolate any {{field}} placeholders using productDoc
+    const payload = faqs.map((f) => {
+      let answer = f.answer;
+      if (productDoc) {
+        answer = answer.replace(/\{\{([^}]+)\}\}/g, (_, key) => {
+          const val = productDoc[key.trim()];
+          return val != null ? String(val) : "";
+        });
+      }
+      return {
+        id:       f._id.toString(),
+        question: f.question,
+        answer,
+      };
+    });
 
     return NextResponse.json(payload);
   } catch (err) {
@@ -92,11 +103,11 @@ export async function POST(request) {
 
     // Basic validation
     if (
-      typeof question !== "string" ||
-      typeof answer   !== "string" ||
-      typeof contextType !== "string" ||
-      typeof contextKey  !== "string" ||
-      typeof priority !== "number"
+      typeof question   !== "string" ||
+      typeof answer     !== "string" ||
+      typeof contextType!== "string" ||
+      typeof contextKey !== "string" ||
+      typeof priority   !== "number"
     ) {
       return NextResponse.json(
         { error: "Invalid payload" },
