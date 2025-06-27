@@ -919,7 +919,6 @@ nlu:
     - got info for [UNO01-250](product_model) anot?
     - i wan details on [D-A Wool Pad 6 inch Medium](product_model)
     - [LHR15 MarkV](product_model) good or not?
-    - what can [9.DA70H/4](product_model) do?
     - describe [9.NW80H](product_model) to me la
 
 - intent: ask_specs_contextual

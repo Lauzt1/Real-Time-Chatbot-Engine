@@ -372,3 +372,42 @@ class ActionMarkFallback(Action):
 
     async def run(self, dispatcher, tracker, domain):
         return [SlotSet("just_failed", True)]
+    
+class ActionAskQuote(Action):
+    def name(self) -> Text:
+        return "action_ask_quote"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        """
+        If the user is on /product/<category>/<id>, append #enquiry
+        and send them the link. Otherwise prompt them to move to a
+        product page first.
+        """
+        # 1) Try metadata first (your frontend should send { metadata: { page } })
+        metadata = tracker.latest_message.get("metadata", {}) or {}
+        page_url = metadata.get("page")
+
+        # 2) Fallback to slot if metadata isn't present
+        if not page_url:
+            page_url = tracker.get_slot("page")
+
+        # 3) Check for a product URL
+        if page_url and "/product/" in page_url:
+            # strip any existing hash, then add #enquiry
+            base = page_url.split("#", 1)[0]
+            enquiry_link = f"{base}#enquiry"
+
+            dispatcher.utter_message(
+                text=f"Sure! Here’s the enquiry link for this product: {enquiry_link}"
+            )
+        else:
+            dispatcher.utter_message(
+                text="Please ask for a quote while on a product page, and I’ll give you the enquiry link!"
+            )
+
+        return []

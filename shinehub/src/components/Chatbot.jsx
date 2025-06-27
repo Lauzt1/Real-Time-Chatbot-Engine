@@ -11,7 +11,6 @@ export default function ChatbotWidget() {
   pageRef.current = pathname;
 
   // ─── 1) determine FAQ context from URL ──────────────────────────────
-  // now capturing both type and id
   const productMatch = pathname.match(
     /^\/product\/(polisher|pad|compound)\/([^/]+)$/
   );
@@ -54,7 +53,6 @@ export default function ChatbotWidget() {
   useEffect(() => {
     async function loadFaqs() {
       let url = `/api/faq?context=${contextType}`;
-      // if on a product page, include its ID
       if (productMatch) {
         const productId = productMatch[2];
         url += `&id=${productId}`;
@@ -129,7 +127,6 @@ export default function ChatbotWidget() {
 
   // ─── 5) handle FAQ pill click ───────────────────────────────────────
   function handleFaqClick(faq) {
-    // interpolate any {{key}} in faq.answer against productData
     let filled = faq.answer.replace(/\{\{([^}]+)\}\}/g, (_, key) => {
       if (!productData) return "";
       const val = productData[key.trim()];
@@ -145,8 +142,8 @@ export default function ChatbotWidget() {
   }
   // ────────────────────────────────────────────────────────────────────
 
-  // regex to detect URLs
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  // regex to detect full URLs or /product/... paths (including hash/query)
+  const urlRegex = /(https?:\/\/[^\s]+|\/product\/[^\s#?]*(?:[#?][^\s]*)?)/g;
 
   return (
     <div className="fixed bottom-4 right-4 flex flex-col-reverse items-end gap-2">
@@ -183,24 +180,26 @@ export default function ChatbotWidget() {
                   >
                     {parts.map((part, idx) => {
                       if (urlRegex.test(part)) {
-                        try {
-                          const urlObj = new URL(part);
-                          return (
-                            <a
-                              key={idx}
-                              href={part}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                router.push(urlObj.pathname);
-                              }}
-                              className="underline text-blue-600 hover:text-blue-800"
-                            >
-                              {urlObj.pathname}
-                            </a>
-                          );
-                        } catch {
-                          return part;
-                        }
+                        const urlObj = part.startsWith("http")
+                          ? new URL(part)
+                          : new URL(part, window.location.origin);
+                        const destination =
+                          urlObj.pathname +
+                          urlObj.search +
+                          urlObj.hash;
+                        return (
+                          <a
+                            key={idx}
+                            href={urlObj.toString()}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              router.push(destination);
+                            }}
+                            className="underline text-blue-600 hover:text-blue-800"
+                          >
+                            {urlObj.pathname}
+                          </a>
+                        );
                       }
                       return part;
                     })}

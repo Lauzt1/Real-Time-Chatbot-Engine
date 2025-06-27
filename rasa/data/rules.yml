@@ -20,7 +20,7 @@ rules:
 - rule: Quote request
   steps:
     - intent: ask_quote
-    - action: utter_ask_quote
+    - action: action_ask_quote
 
 - rule: Human handoff
   steps:

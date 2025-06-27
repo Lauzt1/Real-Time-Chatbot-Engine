@@ -69,8 +69,6 @@ responses:
     - text: "I’m not sure how to help with that. Would you like me to connect you with our support team?"
   utter_noop:
     - text: ""
-  utter_ask_quote:
-    - text: "Of course! You can request a quote directly on the product page — just scroll down to the inquiry section. (Coming soon!)"
   utter_agent_fallback:
     - text: "No worries — our human team is here to help. Please reach out to them here: http://localhost:3000/contactUs"
 
@@ -84,6 +82,7 @@ actions:
   - action_global_product_specs
   - action_contextual_product_specs
   - action_mark_fallback
+  - action_ask_quote
 
 session_config:
   session_expiration_time: 60
