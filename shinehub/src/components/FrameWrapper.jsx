@@ -12,10 +12,17 @@ export default function FrameWrapper({ children }) {
 
   return (
     <>
-      {!isAdmin && <Navbar />}
-      {children}
-      {!isAdmin && <Chatbot />}
-      {!isAdmin && <Footer />}
+      {!isAdmin ? (
+        <>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Chatbot />
+          <Footer />
+        </>
+     ) : (
+       // admin layout will handle its own navbar and footer
+       children
+     )}
     </>
   )
 }
