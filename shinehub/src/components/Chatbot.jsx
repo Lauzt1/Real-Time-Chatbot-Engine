@@ -11,8 +11,9 @@ export default function ChatbotWidget() {
   pageRef.current = pathname;
 
   // ─── 1) determine FAQ context from URL ──────────────────────────────
+  // now capturing both type and id
   const productMatch = pathname.match(
-    /^\/product\/(polisher|pad|compound)\/[^/]+$/
+    /^\/product\/(polisher|pad|compound)\/([^/]+)$/
   );
   const contextType = productMatch ? productMatch[1] : "general";
   // ────────────────────────────────────────────────────────────────────
@@ -38,6 +39,11 @@ export default function ChatbotWidget() {
   useEffect(() => {
     async function loadFaqs() {
       let url = `/api/faq?context=${contextType}`;
+      // if on a product page, include its ID
+      if (productMatch) {
+        const productId = productMatch[2];
+        url += `&id=${productId}`;
+      }
       if (excludedFaqs.length) {
         url += `&exclude=${excludedFaqs.join(",")}`;
       }
