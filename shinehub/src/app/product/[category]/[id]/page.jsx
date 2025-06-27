@@ -79,6 +79,14 @@ export default async function DetailPage({ params }) {
                 <dt>Description</dt>
                 <dd>{item.description}</dd>
               </dl>
+              <p className="mb-6">
+                <a
+                  href="#enquiry"
+                  className="text-purple-600 underline hover:text-purple-800"
+                >
+                  Enquire about this product ↓
+                </a>
+              </p>
             </div>
 
           </div>
