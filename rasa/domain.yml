@@ -5,9 +5,11 @@ intents:
   - goodbye
   - affirm
   - deny
-  - ask_product_info
   - agent_fallback
   - ask_quote
+  - ask_product_info
+  - ask_product_specs
+  - ask_specs_contextual
 
 # — ATTRIBUTE INTENTS —
   - ask_weight
@@ -19,22 +21,24 @@ intents:
   - ask_colour
   - ask_description
 
+  - request_product_link
+
 entities:
   - product_model
 
 slots:
+  page:
+    type: text
+    influence_conversation: false
+    mappings: []
+
   product_model:
     type: text
     influence_conversation: false
     mappings:
       - type: from_entity        # ← when entity is annotated
         entity: product_model
-      - type: from_text          # ← e.g. “tell me about lhr15 markv”
-
-  page:
-    type: text
-    influence_conversation: false
-    mappings: [] 
+      - type: from_text          # ← e.g. “tell me about lhr15 markv” 
 
   product_id:
     type: text
@@ -51,19 +55,24 @@ slots:
     influence_conversation: false
     mappings: []
 
+  just_failed:
+    type: bool
+    initial_value: false
+    mappings: []
+
 responses:
   utter_greet:
-    - text: "Hi there lah – ask me anything about our products or quotes!"
+    - text: "Hi there! I'm here to help with any questions you have about our products or pricing."
   utter_goodbye:
-    - text: "Bye lah! Feel free to ping me again."
+    - text: "Goodbye! Feel free to reach out again anytime."
   utter_fallback:
-    - text: "Sorry, I can’t help with that. Would you like to talk to a human?"
+    - text: "I’m not sure how to help with that. Would you like me to connect you with our support team?"
   utter_noop:
     - text: ""
-  utter_ask_quote:      # ← placeholder quote link
-    - text: "Sure thing lah – you can request your price quote here: https://example.com/quote"
-  utter_agent_fallback: # ← placeholder human-handoff link
-    - text: "No problem lah – our human support is ready. Please click: https://example.com/human-support"
+  utter_ask_quote:
+    - text: "Of course! You can request a quote directly on the product page — just scroll down to the inquiry section. (Coming soon!)"
+  utter_agent_fallback:
+    - text: "No worries — our human team is here to help. Please reach out to them here: http://localhost:3000/contactUs"
 
 actions:
   - action_product_info
@@ -71,6 +80,10 @@ actions:
   - action_set_product_context
   - action_query_product_attribute
   - action_session_start
+  - action_product_link
+  - action_global_product_specs
+  - action_contextual_product_specs
+  - action_mark_fallback
 
 session_config:
   session_expiration_time: 60

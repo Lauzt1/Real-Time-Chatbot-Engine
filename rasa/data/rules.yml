@@ -17,17 +17,6 @@ rules:
   - action: utter_fallback
   - action: action_listen
 
-- rule: Handle product info requests
-  steps:
-  - intent: ask_product_info
-  - action: action_product_info
-  - action: action_listen
-
-- rule: respond with product info
-  steps:
-  - intent: ask_product_info
-  - action: action_product_info
-
 - rule: Quote request
   steps:
     - intent: ask_quote
@@ -47,17 +36,25 @@ rules:
     - action: action_product_info
     - action: action_listen
 
-  # 1) Whenever the `page` slot is set (i.e. on every route change),
-  #    pull in the new product context
-- rule: Update product context on page change
-  condition:
-    - slot_was_set:
-        - page
+# product link req
+- rule: Handle product link request
   steps:
-    - action: action_set_product_context
-    - action: action_listen
+    - intent: request_product_link
+    - action: action_product_link
+
+# specs on homepage
+- rule: Global specs lookup
+  steps:
+    - intent: ask_product_specs
+    - action: action_global_product_specs
 
 # — On a product page, answer attribute questions —
+- rule: Contextual specs lookup
+  steps:
+    - intent: ask_specs_contextual
+    - action: action_contextual_product_specs
+    - action: action_listen
+
 - rule: Answer description questions on product page
   steps:
     - intent: ask_description
@@ -104,6 +101,16 @@ rules:
   steps:
     - intent: ask_colour
     - action: action_query_product_attribute
+    - action: action_listen
+
+  # 1) Whenever the `page` slot is set (i.e. on every route change),
+  #    pull in the new product context
+- rule: Update product context on page change
+  condition:
+    - slot_was_set:
+        - page
+  steps:
+    - action: action_set_product_context
     - action: action_listen
 
 # -------------------------

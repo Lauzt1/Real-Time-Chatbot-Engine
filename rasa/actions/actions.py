@@ -52,35 +52,158 @@ class ActionNoop(Action):
         return []
 
 class ActionProductInfo(Action):
-    def name(self) -> Text:
+    def name(self) -> str:
         return "action_product_info"
 
-    def run(self,
-            dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[SlotSet]:
-        # Use raw user message to match against name or code
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: dict
+    ) -> list:
+        """
+        Looks up a product by name or code, utters its description,
+        and provides a direct link to the product page.
+        """
         user_msg = tracker.latest_message.get("text", "").lower()
-        # search only in the three product collections
+        base_url = "http://localhost:3000/product"
+
+        # Pre-cleaned user text for matching
+        clean_user = re.sub(r"[^a-z0-9 ]+", "", user_msg)
+
+        for coll in ["polishers", "pads", "compounds"]:
+            for doc in db[coll].find():
+                name_lower = doc.get("name", "").lower()
+                code_lower = doc.get("code", "").lower()
+
+                # Clean the stored name the same way
+                clean_name = re.sub(r"[^a-z0-9 ]+", "", name_lower)
+
+                if (clean_name and clean_name in clean_user) or \
+                   (code_lower and re.search(rf"\b{re.escape(code_lower)}\b", user_msg)):
+                    serial = bson_to_json(doc)
+                    product_id = str(doc.get("_id"))
+                    # use singular route (drop the trailing 's')
+                    route = coll[:-1]
+                    product_link = f"{base_url}/{route}/{product_id}"
+
+                    # Send description and link
+                    dispatcher.utter_message(text=serial.get("description", "No description available."))
+                    dispatcher.utter_message(text=f"View full details here: {product_link}")
+
+                    # Set context slots for follow-up
+                    return [
+                        SlotSet("product_doc", serial),
+                        SlotSet("product_id", product_id),
+                        SlotSet("product_category", coll),
+                        SlotSet("product_model", name_lower),
+                    ]
+
+        dispatcher.utter_message(text="Sorry, I couldn’t find that product.")
+        return []
+    
+class ActionGlobalProductSpecs(Action):
+    def name(self) -> str:
+        return "action_global_product_specs"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: dict
+    ) -> list:
+        """Lookup a product by name or code anywhere, then utter its key specs + link."""
+        user_msg = tracker.latest_message.get("text", "").lower()
+        base_url = "http://localhost:3000/product"
+        clean_user = re.sub(r"[^a-z0-9 ]+", "", user_msg)
+
+        for coll in ["polishers", "pads", "compounds"]:
+            for doc in db[coll].find():
+                name_lower = doc.get("name", "").lower()
+                code_lower = doc.get("code", "").lower()
+                clean_name = re.sub(r"[^a-z0-9 ]+", "", name_lower)
+
+                if (clean_name and clean_name in clean_user) or \
+                   (code_lower and re.search(rf"\b{re.escape(code_lower)}\b", user_msg)):
+
+                    serial = bson_to_json(doc)
+                    pid = str(doc.get("_id"))
+                    route = coll[:-1]
+                    link = f"{base_url}/{route}/{pid}"
+
+                    # build specs
+                    specs = []
+                    if "power" in serial:
+                        specs.append(f"Power: {serial['power']} W")
+                    if "rpm" in serial:
+                        specs.append(f"RPM: {serial['rpm']}")
+                    if "weight" in serial:
+                        specs.append(f"Weight: {serial['weight']} kg")
+                    if "orbit" in serial:
+                        specs.append(f"Orbit: {serial['orbit']} mm")
+                    # backingpad for polishers, size for pads/compounds
+                    if "backingpad" in serial:
+                        specs.append(f"Backing pad: {serial['backingpad']} inch")
+                    elif "size" in serial:
+                        unit = "ml" if route == "compound" else "inch"
+                        specs.append(f"Size: {serial['size']} {unit}")
+
+                    dispatcher.utter_message(text=f"**{serial['name']}** specs:\n" + "\n".join(f"- {s}" for s in specs))
+                    dispatcher.utter_message(text=f"View full details here: {link}")
+
+                    return [
+                        SlotSet("product_doc", serial),
+                        SlotSet("product_id", pid),
+                        SlotSet("product_category", coll),
+                        SlotSet("product_model", name_lower),
+                    ]
+
+        dispatcher.utter_message(text="Sorry, I couldn’t find that product.")
+        return []
+
+
+class ActionProductLink(Action):
+    def name(self) -> str:
+        return "action_product_link"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: dict
+    ) -> list:
+        user_msg = tracker.latest_message.get("text", "").lower()
+        base_url = "http://localhost:3000/product"
+
+        # Pre-cleaned user text for matching
+        clean_user = re.sub(r"[^a-z0-9 ]+", "", user_msg)
+
         for coll in ["polishers", "pads", "compounds"]:
             for doc in db[coll].find():
                 name = doc.get("name", "").lower()
                 code = doc.get("code", "").lower()
-                if (name and re.search(rf"\b{re.escape(name)}\b", user_msg)) or \
+
+                # Clean the stored name the same way
+                clean_name = re.sub(r"[^a-z0-9 ]+", "", name)
+
+                if (clean_name and clean_name in clean_user) or \
                    (code and re.search(rf"\b{re.escape(code)}\b", user_msg)):
-                    serial = bson_to_json(doc)
-                    # utter description
-                    dispatcher.utter_message(serial.get("description", "No description."))
-                    # set context slots
+                    product_id = str(doc.get("_id"))
+                    # singular route
+                    route = coll[:-1]
+                    link = f"{base_url}/{route}/{product_id}"
+
+                    dispatcher.utter_message(text=f"You can view it here: {link}")
                     return [
-                        SlotSet("product_doc", serial),
-                        SlotSet("product_id", str(doc.get("_id"))),
+                        SlotSet("product_doc", bson_to_json(doc)),
+                        SlotSet("product_id", product_id),
                         SlotSet("product_category", coll),
                         SlotSet("product_model", name),
                     ]
-        dispatcher.utter_message("Sorry, I couldn’t find that product.")
-        return []
 
+        dispatcher.utter_message(text="Sorry, I couldn’t find the product link.")
+        return []
+    
 class ActionSetProductContext(Action):
     def name(self) -> Text:
         return "action_set_product_context"
@@ -115,7 +238,6 @@ class ActionSetProductContext(Action):
             SlotSet("product_id", pid),
             SlotSet("product_doc", serial),
         ]
-
 
 class ActionQueryProductAttribute(Action):
     def name(self) -> Text:
@@ -186,6 +308,42 @@ class ActionQueryProductAttribute(Action):
 
         return slot_events
     
+class ActionContextualProductSpecs(Action):
+    def name(self) -> str:
+        return "action_contextual_product_specs"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: dict
+    ) -> list:
+        """When on a product page, read the product_doc slot and utter its key specs."""
+        doc = tracker.get_slot("product_doc") or {}
+        if not doc:
+            dispatcher.utter_message(text="I don’t see which product you mean—can you tap on its page first?")
+            return []
+
+        # build specs
+        specs = []
+        if doc.get("power") is not None:
+            specs.append(f"Power: {doc['power']} W")
+        if doc.get("rpm") is not None:
+            specs.append(f"RPM: {doc['rpm']}")
+        if doc.get("weight") is not None:
+            specs.append(f"Weight: {doc['weight']} kg")
+        if doc.get("orbit") is not None:
+            specs.append(f"Orbit: {doc['orbit']} mm")
+        if doc.get("backingpad") is not None:
+            specs.append(f"Backing pad: {doc['backingpad']} inch")
+        elif doc.get("size") is not None:
+            # determine unit by category slot
+            route = tracker.get_slot("product_category")[:-1]  # e.g. "compound"
+            unit = "ml" if route == "compound" else "inch"
+            specs.append(f"Size: {doc['size']} {unit}")
+
+        dispatcher.utter_message(text=f"**{doc.get('name','This product')}** specs:\n" + "\n".join(f"- {s}" for s in specs))
+        return []
     
 class ActionSessionStart(Action):
     def name(self) -> Text:
@@ -207,3 +365,10 @@ class ActionSessionStart(Action):
         # hand control back to the rule
         events.append(ActionExecuted("action_listen"))
         return events
+    
+class ActionMarkFallback(Action):
+    def name(self) -> str:
+        return "action_mark_fallback"
+
+    async def run(self, dispatcher, tracker, domain):
+        return [SlotSet("just_failed", True)]
