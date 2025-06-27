@@ -5,9 +5,11 @@ intents:
   - goodbye
   - affirm
   - deny
-  - ask_product_info
   - agent_fallback
   - ask_quote
+  - ask_product_info
+  - ask_product_specs
+  - ask_specs_contextual
 
 # — ATTRIBUTE INTENTS —
   - ask_weight
@@ -74,6 +76,8 @@ actions:
   - action_query_product_attribute
   - action_session_start
   - action_product_link
+  - action_global_product_specs
+  - action_contextual_product_specs
 
 session_config:
   session_expiration_time: 60

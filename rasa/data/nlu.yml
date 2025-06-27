@@ -438,7 +438,6 @@ nlu:
     - yep thats cool
     - yep, will do thank you
     - yep. :/
-    - yes
     - yes ...
     - yes I do
     - yes accept please
@@ -482,7 +481,6 @@ nlu:
     - yyeeeh
     - Okay cool
     - sounds good!
-    - really
 
 - intent: deny
   examples: |
@@ -902,6 +900,50 @@ nlu:
     - describe da coarse small
     - what’s da coarse small used for?
     - what is da coarse small?
+
+- intent: ask_product_specs
+  examples: |
+    - specs for [LHR15 MarkV](product_model)
+    - tell me the specs of [LHR21 MarkIII](product_model)
+    - i want to know the specs for [LH19E](product_model)
+    - what are the specifications of [LHR21ES](product_model)?
+    - show me the specs for [UNO PURE](product_model)
+    - what’s [DA01-250](product_model) specs?
+    - give me product details for [9.NW160M](product_model)
+    - specs for [LHR15 MarkV](product_model) can?
+    - can show specs for [LH19E](product_model)?
+    - what this [LHR21ES](product_model) got ah?
+    - eh [9.NW160M](product_model) got what spec?
+    - show me what [DA01-250](product_model) can do
+    - gimme specs of [UNO PURE](product_model)
+    - got info for [UNO01-250](product_model) anot?
+    - i wan details on [D-A Wool Pad 6 inch Medium](product_model)
+    - [LHR15 MarkV](product_model) good or not?
+    - what can [9.DA70H/4](product_model) do?
+    - describe [9.NW80H](product_model) to me la
+
+- intent: ask_specs_contextual
+  examples: |
+    - specs for this product?
+    - tell me its specs
+    - what are the specifications?
+    - can you show the specs?
+    - details please
+    - product details?
+    - what does it have?
+    - specs can anot?
+    - this one got what spec?
+    - show me this product info
+    - eh, what this got?
+    - what details this one have?
+    - gimme spec
+    - got product info anot?
+    - can tell me specs for this?
+    - what this thing can do?
+    - how powerful this one?
+    - got description or not?
+    - what’s in this product ah?
+    - show me product spec la
 
 - intent: ask_weight
   examples: |

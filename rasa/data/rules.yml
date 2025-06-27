@@ -17,13 +17,6 @@ rules:
   - action: utter_fallback
   - action: action_listen
 
-- rule: Connect to human after fallback + affirm
-  steps:
-    - intent: nlu_fallback
-    - action: utter_fallback
-    - intent: affirm
-    - action: utter_agent_fallback
-
 - rule: Quote request
   steps:
     - intent: ask_quote
@@ -49,7 +42,19 @@ rules:
     - intent: request_product_link
     - action: action_product_link
 
+# specs on homepage
+- rule: Global specs lookup
+  steps:
+    - intent: ask_product_specs
+    - action: action_global_product_specs
+
 # — On a product page, answer attribute questions —
+- rule: Contextual specs lookup
+  steps:
+    - intent: ask_specs_contextual
+    - action: action_contextual_product_specs
+    - action: action_listen
+
 - rule: Answer description questions on product page
   steps:
     - intent: ask_description

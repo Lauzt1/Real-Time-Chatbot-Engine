@@ -5,4 +5,3 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
-
