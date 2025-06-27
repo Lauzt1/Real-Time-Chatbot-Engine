@@ -20,11 +20,11 @@ export default function EditItemPage() {
     const getInitial = (cat) => {
     switch (cat) {
       case "polisher":
-        return { name: "", backingpad: "", orbit: "", power: "", rpm: "", weight: "", type: "", description: "", images: [] };
+        return { name: "", backingpad: "", orbit: "", power: "", rpm: "", weight: "", type: "", description: "", featured: false, images: [] };
       case "pad":
-        return { name: "", code: "", size: "", properties: "", colour: "", type: "",description: "", images: [] };
+        return { name: "", code: "", size: "", properties: "", colour: "", type: "", description: "", featured: false, images: [] };
       case "compound":
-        return { name: "", code: "", size: "", properties: "", type: "",description: "", images: [] };
+        return { name: "", code: "", size: "", properties: "", type: "", description: "", featured: false, images: [] };
       default:
         return {};                  
     }
@@ -41,7 +41,7 @@ export default function EditItemPage() {
         if (!res.ok) throw new Error("Load failed");
         const data = await res.json();
         const item = data[category] || data;
-        setForm({ ...getInitial(category), ...item });
+        setForm({ ...getInitial(category), ...item, featured: Boolean(item.featured) });
       } catch (err) {
         console.error(err);
         alert("Failed to load item");
@@ -51,6 +51,12 @@ export default function EditItemPage() {
     }
     load();
   }, [category, id]);
+
+     // handle a boolean checkbox
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setForm((prev) => ({ ...prev, [name]: checked }));
+  };
 
   // handle new image uploads (append)
   const handleImageUpload = (result) => {
@@ -224,6 +230,19 @@ export default function EditItemPage() {
                 rows={3}
                 className="w-full border px-3 py-2 rounded"
               />
+              <div className="flex items-center space-x-2">
+                <input
+                  id="featured"
+                  name="featured"
+                  type="checkbox"
+                  checked={form.featured}
+                  onChange={handleCheckboxChange}
+                  className="h-4 w-4 rounded border-gray-300"
+                />
+                <label htmlFor="featured" className="text-sm font-medium">
+                  Featured
+                </label>
+              </div>
             </>
           )}
 
@@ -304,6 +323,19 @@ export default function EditItemPage() {
                 rows={3}
                 className="w-full border px-3 py-2 rounded"
               />
+              <div className="flex items-center space-x-2">
+                <input
+                  id="featured"
+                  name="featured"
+                  type="checkbox"
+                  checked={form.featured}
+                  onChange={handleCheckboxChange}
+                  className="h-4 w-4 rounded border-gray-300"
+                />
+                <label htmlFor="featured" className="text-sm font-medium">
+                  Featured
+                </label>
+              </div>
             </>
           )}
           
@@ -377,6 +409,19 @@ export default function EditItemPage() {
                 rows={3}
                 className="w-full border px-3 py-2 rounded"
               />
+              <div className="flex items-center space-x-2">
+                <input
+                  id="featured"
+                  name="featured"
+                  type="checkbox"
+                  checked={form.featured}
+                  onChange={handleCheckboxChange}
+                  className="h-4 w-4 rounded border-gray-300"
+                />
+                <label htmlFor="featured" className="text-sm font-medium">
+                  Featured
+                </label>
+              </div>
             </>
           )}
           <div className="text-center">

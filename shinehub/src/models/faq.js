@@ -4,7 +4,8 @@ const faqSchema = new Schema(
     {
         question:   { type: String, required: true },
         answer:     { type: String, required: true },
-        context:    { type: String, required: true },
+        contextType:{ type: String, required: true },
+        contextKey: { type: String, required: false },
         priority:   { type: Number, default: 0 },
     }, {
         timestamps: true,

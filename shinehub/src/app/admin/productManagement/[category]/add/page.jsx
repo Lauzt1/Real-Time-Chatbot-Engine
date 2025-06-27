@@ -19,11 +19,11 @@ export default function AddItemPage() {
   const getInitial = (cat) => {
     switch (cat) {
       case "polisher":
-        return { name: "", backingpad: "", orbit: "", power: "", rpm: "", weight: "", type: "", description: "", images: [] };
+        return { name: "", backingpad: "", orbit: "", power: "", rpm: "", weight: "", type: "", description: "", featured: false, images: [] };
       case "pad":
-        return { name: "", code: "", size: "", properties: "", colour: "", type: "",description: "", images: [] };
+        return { name: "", code: "", size: "", properties: "", colour: "", type: "",description: "", featured: false, images: [] };
       case "compound":
-        return { name: "", code: "", size: "", properties: "", type: "",description: "", images: [] };
+        return { name: "", code: "", size: "", properties: "", type: "",description: "", featured: false, images: [] };
       default:
         return {};
     }
@@ -55,6 +55,15 @@ export default function AddItemPage() {
     setForm(prev => ({
       ...prev,
       images: prev.images.filter(img => img.publicId !== publicIdToRemove)
+    }));
+  };
+  
+  const handleCheckBoxChange = async (e) => {
+    e.preventDefault();
+    const { name, value, type, checked } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value
     }));
   };
 
@@ -193,6 +202,16 @@ export default function AddItemPage() {
                 placeholder="Description"
                 rows={3}
               />
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="featured"
+                  checked={form.featured}
+                  onChange={handleCheckBoxChange}
+                  className="h-4 w-4"
+                />
+                <span className="select-none">Featured?</span>
+              </label>
             </>
           )}
 
@@ -274,6 +293,16 @@ export default function AddItemPage() {
                 placeholder="Description"
                 rows={3}
               />
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="featured"
+                  checked={form.featured}
+                  onChange={handleCheckBoxChange}
+                  className="h-4 w-4"
+                />
+                <span className="select-none">Featured?</span>
+              </label>
             </>
           )}
 
@@ -348,6 +377,16 @@ export default function AddItemPage() {
                 placeholder="Description"
                 rows={3}
                 />
+                <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  name="featured"
+                  checked={form.featured}
+                  onChange={handleCheckBoxChange}
+                  className="h-4 w-4"
+                />
+                <span className="select-none">Featured?</span>
+              </label>
             </>
           )}
 
