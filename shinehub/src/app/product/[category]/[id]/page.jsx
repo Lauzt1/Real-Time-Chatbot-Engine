@@ -82,13 +82,13 @@ export default async function DetailPage({ params }) {
             </div>
 
           </div>
-          <div className="p-6 bg-purple-50 text-center">
+          <section id="enquiry" className="p-6 bg-purple-50 rounded-lg shadow">
             <ProductEnquiryForm
               category={category}
               productId={id}
               productName={item.name}
             />
-          </div>
+          </section>
         </main>
       </div>
     </>
