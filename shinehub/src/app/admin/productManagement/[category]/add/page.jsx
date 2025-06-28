@@ -136,7 +136,7 @@ export default function AddItemPage() {
               uploadPreset="polisher"
                 onSuccess={handleImageUpload}
                 options={{ multiple: true, maxFiles: 5 }}
-                className="underline text-black"
+                className="underline text-black cursor-pointer"
               >
               Upload Images
             </CldUploadButton>
