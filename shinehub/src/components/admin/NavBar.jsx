@@ -25,7 +25,7 @@ export default function AdminNavbar() {
         <Link href="/admin/productManagement">
           <span className="hover:underline cursor-pointer">Products Management</span>
         </Link>
-        <Link href="/admin/enquiryMgt">
+        <Link href="/admin/enquiryManagement">
           <span className="hover:underline cursor-pointer">Enquiry Management</span>
         </Link>
         <Link href="/admin/faqManagement">

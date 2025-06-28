@@ -21,9 +21,9 @@ export default function AddItemPage() {
       case "polisher":
         return { name: "", backingpad: "", orbit: "", power: "", rpm: "", weight: "", type: "", description: "", featured: false, images: [] };
       case "pad":
-        return { name: "", code: "", size: "", properties: "", colour: "", type: "",description: "", featured: false, images: [] };
+        return { name: "", code: "", size: "", properties: "", colour: "", type: "", description: "", featured: false, images: [] };
       case "compound":
-        return { name: "", code: "", size: "", properties: "", type: "",description: "", featured: false, images: [] };
+        return { name: "", code: "", size: "", properties: "", type: "", description: "", featured: false, images: [] };
       default:
         return {};
     }
@@ -34,6 +34,11 @@ export default function AddItemPage() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCheckBoxChange = (e) => {
+    const { name, checked } = e.target;
+    setForm(prev => ({ ...prev, [name]: checked }));
   };
 
   const handleImageUpload = (result) => {
@@ -55,15 +60,6 @@ export default function AddItemPage() {
     setForm(prev => ({
       ...prev,
       images: prev.images.filter(img => img.publicId !== publicIdToRemove)
-    }));
-  };
-  
-  const handleCheckBoxChange = async (e) => {
-    e.preventDefault();
-    const { name, value, type, checked } = e.target;
-    setForm(prev => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value
     }));
   };
 
@@ -107,36 +103,40 @@ export default function AddItemPage() {
     <div className="flex">
       <CategorySidebar active={category} />
 
-      <main className="flex-1 p-6 bg-purple-50">
-        <h1 className="text-2xl font-semibold mb-4">Add a new {pretty}</h1>
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white p-6 rounded-lg shadow space-y-4 max-w-lg text-center"
-        >
+      <main className="flex-1 p-6">
+        <div className="flex flex-col items-center bg-purple-50 rounded-lg p-6 mx-auto max-w-3xl">
+          <h1 className="text-xl font-semibold mb-4 text-purple-600">
+            Add a new {pretty}
+          </h1>
+
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white p-6 rounded-lg shadow space-y-4 w-full text-left"
+          >
 
           {category === "polisher" && (
             <>
           <div className="flex flex-wrap gap-2">
-            {form.images.map(img => (
-              <div key={img.publicId} className="relative w-24 h-24">
-                <Image src={img.url} fill className="object-cover rounded" alt="" />
-                <button
-                  type="button"
-                  onClick={() => handleRemoveImage(img.publicId)}
-                  className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1"
-                >
-                  &times;
-                </button>
-              </div>
-            ))}
-          </div>
+              {form.images.map(img => (
+                <div key={img.publicId} className="relative w-24 h-24">
+                  <Image src={img.url} fill className="object-cover rounded" alt="" />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(img.publicId)}
+                    className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1"
+                  >
+                    &times;
+                  </button>
+                </div>
+              ))}
+            </div>
 
           <div className="mb-4 text-sm text-center">
-            <CldUploadButton
+              <CldUploadButton
               uploadPreset="polisher"
-              onSuccess={handleImageUpload}
-              options={{ multiple: true, maxFiles: 5 }}
-              className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+                onSuccess={handleImageUpload}
+                options={{ multiple: true, maxFiles: 5 }}
+                className="underline text-black"
               >
               Upload Images
             </CldUploadButton>
@@ -210,7 +210,7 @@ export default function AddItemPage() {
                   onChange={handleCheckBoxChange}
                   className="h-4 w-4"
                 />
-                <span className="select-none">Featured?</span>
+                <span className="select-none">Featured</span>
               </label>
             </>
           )}
@@ -301,7 +301,7 @@ export default function AddItemPage() {
                   onChange={handleCheckBoxChange}
                   className="h-4 w-4"
                 />
-                <span className="select-none">Featured?</span>
+                <span className="select-none">Featured</span>
               </label>
             </>
           )}
@@ -385,18 +385,20 @@ export default function AddItemPage() {
                   onChange={handleCheckBoxChange}
                   className="h-4 w-4"
                 />
-                <span className="select-none">Featured?</span>
+                <span className="select-none">Featured</span>
               </label>
             </>
           )}
-
-          <button
-            type="submit"
-            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
-          >
-            Add {pretty}
-          </button>
-        </form>
+            <div className="text-center">
+              <button
+                type="submit"
+                className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                >
+                Add {pretty}
+              </button>
+            </div>
+          </form>
+        </div>
       </main>
     </div>
   );

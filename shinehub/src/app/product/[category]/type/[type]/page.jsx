@@ -33,7 +33,7 @@ export default async function TypePage({ params }) {
     <div className="flex">
       <CategorySidebar active={category} filter={formattedType} />
 
-      <main className="flex-1 p-6 bg-purple-50">
+      <main className="flex-1 p-6 bg-purple-50 rounded-lg m-3">
         <h1 className="text-2xl mb-4">
           {pretty} : {formattedType.charAt(0).toUpperCase() + formattedType.slice(1)}
         </h1>

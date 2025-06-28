@@ -43,12 +43,12 @@ export default async function SearchPage({ searchParams }) {
 
   return (
     <main className="p-6">
-      <h1 className="text-2xl font-semibold my-4">
+      <h1 className="text-5xl text-white font-semibold my-3">
         Search Results for: {q}
       </h1>
 
       {results.length === 0 ? (
-        <p className="text-gray-600">No products found.</p>
+        <p className="text-black text-xl">Sorry, no product found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {results.map((item) => {

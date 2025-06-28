@@ -137,7 +137,7 @@ export default async function DetailPage({ params }) {
         {/* Enquiry Form */}
         <section
           id="enquiry"
-          className="mt-12 bg-gray-50 p-6 rounded-lg shadow-lg max-w-2xl mx-auto"
+          className="mt-12 rounded-lg shadow-lg max-w-2xl mx-auto"
         >
           <ProductEnquiryForm
             category={category}

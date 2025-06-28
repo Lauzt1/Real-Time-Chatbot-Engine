@@ -32,7 +32,7 @@ export default function CategorySidebar({ active }) {
   };
 
   return (
-    <aside className="w-48 bg-purple-200 p-4">
+    <aside className="w-48 bg-purple-200 p-4 rounded-lg ml-5 mt-3 mb-3">
       <h2 className="text-purple-700 text-lg font-medium mb-4">Product Categories</h2>
       <ul className="space-y-2">
         {categories.map((cat) => {

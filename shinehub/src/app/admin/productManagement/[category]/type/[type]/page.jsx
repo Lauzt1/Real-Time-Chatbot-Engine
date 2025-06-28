@@ -41,14 +41,14 @@ export default async function TypePage({ params }) {
     <div className="flex">
       <CategorySidebar active={category} filter={formattedType} />
 
-      <main className="flex-1 p-6 bg-purple-50">
+      <main className="flex-1 p-6 bg-purple-50 rounded-lg m-3">
         <h1 className="text-2xl mb-4">
           {pretty} : {formattedType.charAt(0).toUpperCase() + formattedType.slice(1)}
         </h1>
 
         <Link
           href={`/admin/productManagement/${category}/add`}
-          className="mb-6 inline-block bg-purple px-4 py-2 rounded shadow"
+          className="mb-6 inline-block bg-purple-400 text-white px-4 py-2 rounded shadow"
         >
           Add {pretty.slice(0, -1)}
         </Link>

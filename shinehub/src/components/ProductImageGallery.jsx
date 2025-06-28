@@ -21,7 +21,6 @@ export default function ProductImageGallery({ images, alt }) {
 
   return (
     <div>
-      {/* Big image in a dark box */}
       <div className="mb-4 w-full aspect-video bg-white flex items-center justify-center rounded-lg overflow-hidden">
         <img
           src={images[selected].url}
