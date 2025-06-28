@@ -3,14 +3,15 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 import SearchBar from './SearchBar'
 
 export default function AdminNavbar() {
   const router = useRouter()
 
   const handleLogout = async () => {
-    // call your logout API route (adjust path if needed)
-    await fetch('/api/auth/logout', { method: 'POST' })
+    // Sign out and then redirect to the admin login page
+    await signOut({ redirect: false })
     router.push('/admin/login')
   }
 
@@ -37,7 +38,7 @@ export default function AdminNavbar() {
       </div>
 
       {/* Search, theme, logout */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 gap-5">
         <SearchBar />
         <button
           onClick={handleLogout}
