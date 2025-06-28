@@ -4,10 +4,13 @@ import Enquiry from "@/models/enquiry";
 import React from "react";
 import RemoveBtn from "@/components/admin/RemoveBtn";
 import EnquirySidebar from "@/components/admin/EnquirySidebar";
+import ResponseBtn from "@/components/admin/ResponseBtn";
 
 export default async function EnquiryManagementPage() {
   await connectMongoDB();
-  const enquiries = await Enquiry.find().sort({ createdAt: -1 }).lean();
+  const enquiries = await Enquiry.find()
+    .sort({ status: 1, createdAt: -1 })
+    .lean();
 
   return (
     <div className="flex">
@@ -27,6 +30,9 @@ export default async function EnquiryManagementPage() {
               >
                 {/* Header */}
                 <div className="p-4 border-b">
+                  <p className="text-sm text-gray-500 mb-2">
+                    received: {new Date(enq.createdAt).toLocaleString()}
+                  </p>
                   <h2 className="font-medium text-2xl text-black">
                     {enq.productName}
                   </h2>
@@ -35,9 +41,6 @@ export default async function EnquiryManagementPage() {
                   </p>
                   <p className="text-sm text-gray-500">
                     product id: {enq.productId}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    received: {new Date(enq.createdAt).toLocaleString()}
                   </p>
                 </div>
 
@@ -66,6 +69,7 @@ export default async function EnquiryManagementPage() {
                   >
                     Send Email
                   </a>
+                  <ResponseBtn id={enq._id.toString()} status={enq.status} inquiry="enquiry" />
                   <RemoveBtn id={enq._id.toString()} resource="enquiry" />
                 </div>
               </div>

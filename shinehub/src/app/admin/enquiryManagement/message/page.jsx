@@ -4,12 +4,12 @@ import Message from "@/models/message";
 import React from "react";
 import RemoveBtn from "@/components/admin/RemoveBtn";
 import EnquirySidebar from "@/components/admin/EnquirySidebar";
+import ResponseBtn from "@/components/admin/ResponseBtn";
 
 export default async function MessageManagementPage() {
-  // connect & load all messages, most recent first
   await connectMongoDB();
   const messages = await Message.find()
-    .sort({ createdAt: -1 })
+    .sort({ status: 1, createdAt: -1 })
     .lean();
 
   return (
@@ -56,6 +56,7 @@ export default async function MessageManagementPage() {
                   >
                     Send Email
                   </a>
+                  <ResponseBtn id={msg._id.toString()} status={msg.status} inquiry="message" />
                   <RemoveBtn id={msg._id.toString()} resource="message" />
                 </div>
               </div>
