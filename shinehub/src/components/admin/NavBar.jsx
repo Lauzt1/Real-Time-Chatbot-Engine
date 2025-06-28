@@ -3,7 +3,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import SearchBar from '../SearchBar'
+import SearchBar from './SearchBar'
 
 export default function AdminNavbar() {
   const router = useRouter()

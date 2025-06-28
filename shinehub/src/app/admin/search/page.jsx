@@ -1,9 +1,11 @@
-// src/app/search/page.jsx
+// src/app/admin/search/page.jsx
 import connectMongoDB from "@/libs/mongodb";
+import Link from "next/link";
 import Polisher from "@/models/polisher";
 import Pad from "@/models/pad";
 import Compound from "@/models/compound";
-import Link from "next/link";
+import RemoveBtn from "@/components/admin/RemoveBtn"
+import { HiPencilAlt } from 'react-icons/hi';
 
 export default async function SearchPage({ searchParams }) {
   const q = searchParams.query?.trim() || "";
@@ -55,9 +57,8 @@ export default async function SearchPage({ searchParams }) {
             const firstUrl = item.images?.[0]?.url || "/placeholder.png";
             const catLabel = prettyName[item.category];
             return (
-              <Link
+              <div
                 key={`${item.category}-${item._id}`}
-                href={`/product/${item.category}/${item._id}`}
                 className="block bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
               >
                 <div className="w-full h-48 mt-2 bg-white flex items-center justify-center">
@@ -71,7 +72,13 @@ export default async function SearchPage({ searchParams }) {
                   <h2 className="font-medium">{item.name}</h2>
                   <p className="text-sm text-gray-500">{catLabel}</p>
                 </div>
-              </Link>
+                <div className="flex justify-center gap-4 p-2">
+                  <Link href={`/admin/productManagement/${item.category}/edit/${item._id}`}>
+                    <HiPencilAlt size={23} />
+                  </Link>
+                  <RemoveBtn id={item._id} resource={item.category} />
+                </div>
+              </div>
             );
           })}
         </div>
