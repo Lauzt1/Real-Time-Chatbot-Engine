@@ -392,7 +392,7 @@ export default function AddItemPage() {
             <div className="text-center">
               <button
                 type="submit"
-                className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 cursor-pointer"
                 >
                 Add {pretty}
               </button>

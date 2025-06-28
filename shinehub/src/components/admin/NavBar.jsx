@@ -42,7 +42,7 @@ export default function AdminNavbar() {
         <SearchBar />
         <button
           onClick={handleLogout}
-          className="px-3 py-1 bg-red-500 rounded hover:bg-red-600"
+          className="px-3 py-1 bg-red-500 rounded hover:bg-red-600 cursor-pointer"
         >
           Logout
         </button>
