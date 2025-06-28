@@ -62,7 +62,7 @@ slots:
 
 responses:
   utter_greet:
-    - text: "Hi there! I'm here to help with any questions you have about our products or pricing."
+    - text: "Hi there! I'm here to help with any questions you have about our products."
   utter_goodbye:
     - text: "Goodbye! Feel free to reach out again anytime."
   utter_fallback:

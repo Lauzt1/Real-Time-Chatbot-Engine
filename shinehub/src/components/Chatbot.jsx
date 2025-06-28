@@ -38,7 +38,12 @@ export default function ChatbotWidget() {
   // ────────────────────────────────────────────────────────────────────
 
   const [sessionId] = useState(() => crypto.randomUUID());
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    {
+      from: "bot",
+      text: "Hi there! I'm here to help with any questions you have about our products."
+    }
+  ]);
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const messagesContainerRef = useRef(null);
