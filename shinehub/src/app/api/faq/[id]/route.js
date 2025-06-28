@@ -1,7 +1,36 @@
 // src/app/api/faq/[id]/route.js
 import connectMongoDB from "@/libs/mongodb";
-import Faq        from "@/models/faq";
+import Faq from "@/models/faq";
 import { NextResponse } from "next/server";
+
+export async function GET(request, { params }) {
+  const { id } = params;
+  await connectMongoDB();
+
+  const faq = await Faq.findById(id).lean();
+  if (!faq) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  return NextResponse.json(faq);
+}
+
+export async function PUT(request, { params }) {
+  const { id } = params;
+  const body = await request.json();
+  await connectMongoDB();
+
+  const updated = await Faq.findByIdAndUpdate(id, body, {
+    new: true,
+    runValidators: true,
+  }).lean();
+
+  if (!updated) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  return NextResponse.json(updated);
+}
 
 export async function DELETE(request, { params }) {
   const { id } = params;
@@ -10,6 +39,6 @@ export async function DELETE(request, { params }) {
   if (!deleted) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
-  // 204 No Content is idiomatic for a successful delete
+  // 204: success, no content
   return new NextResponse(null, { status: 204 });
 }

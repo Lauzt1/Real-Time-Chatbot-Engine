@@ -1,16 +1,43 @@
-// src/app/admin/faqManagement/add/page.jsx
-"use client";
+// src/app/admin/faqManagement/edit/[id]/page.jsx
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 
-export default function AddFaqPage() {
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
-  const [contextType, setContextType] = useState("");
-  const [contextKey, setContextKey] = useState("");
-  const [priority, setPriority] = useState(0);
+export default function EditFaqPage() {
   const router = useRouter();
+  const { id } = useParams();
+
+  const [question,   setQuestion]   = useState("");
+  const [answer,     setAnswer]     = useState("");
+  const [contextType,setContextType]= useState("");
+  const [contextKey, setContextKey] = useState("");
+  const [priority,   setPriority]   = useState(0);
+  const [loading,    setLoading]    = useState(true);
+
+  useEffect(() => {
+    async function loadFaq() {
+      try {
+        const res = await fetch(`/api/faq/${id}`);
+        if (!res.ok) throw new Error("Load failed");
+        const data = await res.json();
+        // data might be the FAQ object itself
+        setQuestion(data.question);
+        setAnswer(data.answer);
+        setContextType(data.contextType);
+        setContextKey(data.contextKey || "");
+        setPriority(data.priority || 0);
+      } catch (err) {
+        console.error(err);
+        alert("Failed to load FAQ");
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadFaq();
+  }, [id]);
+
+  if (loading) return <p className="p-6">Loading…</p>;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,36 +45,31 @@ export default function AddFaqPage() {
       alert("Question and answer are required.");
       return;
     }
-
-    const payload = {
-      question: question.trim(),
-      answer: answer.trim(),
-      contextType: contextType.trim(),
-      contextKey: contextKey.trim(),
-      priority: Number(priority),
-    };
-
     try {
-      const res = await fetch("/api/faq", {
-        method: "POST",
+      const res = await fetch(`/api/faq/${id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          question: question.trim(),
+          answer: answer.trim(),
+          contextType: contextType.trim(),
+          contextKey: contextKey.trim(),
+          priority: Number(priority),
+        }),
       });
-
-      if (!res.ok) throw new Error("Failed to add FAQ");
-
-      alert("FAQ added successfully.");
+      if (!res.ok) throw new Error();
+      alert("FAQ updated successfully.");
       router.push("/admin/faqManagement");
     } catch (err) {
       console.error(err);
-      alert("Error adding FAQ. Please try again.");
+      alert("Error updating FAQ. Please try again.");
     }
   };
 
   return (
     <main className="m-5 flex flex-col items-center bg-purple-50 rounded-lg p-6 mx-auto max-w-3xl">
       <h1 className="text-xl font-semibold mb-4 text-purple-600">
-        Add New FAQ
+        Edit FAQ
       </h1>
       <form
         onSubmit={handleSubmit}
@@ -104,12 +126,13 @@ export default function AddFaqPage() {
             className="w-full border px-3 py-2 rounded"
           />
         </div>
+
         <div className="text-center">
           <button
             type="submit"
             className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
           >
-            Add FAQ
+            Save Changes
           </button>
         </div>
       </form>

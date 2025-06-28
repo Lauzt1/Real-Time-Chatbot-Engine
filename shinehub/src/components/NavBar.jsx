@@ -4,7 +4,7 @@ import SearchBar from './SearchBar'
 
 export default function Navbar() {
   return (
-    <nav className="bg-purple-600 text-white rounded-full mx-4 p-1 flex items-center justify-between px-6">
+    <nav className="mt-3 mb-3 bg-purple-600 text-white rounded-full mx-4 p-3 flex items-center justify-between px-6">
       <Link href="/">
         <span className="font-bold text-lg cursor-pointer">Shine Hub</span>
       </Link>

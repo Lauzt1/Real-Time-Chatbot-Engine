@@ -1,9 +1,9 @@
-// src/components/AdminNavbar.js
+// src/components/admin/Navbar.js
 'use client'
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import SearchBar from '../SearchBar'
+import SearchBar from './SearchBar'
 
 export default function AdminNavbar() {
   const router = useRouter()
@@ -15,18 +15,20 @@ export default function AdminNavbar() {
   }
 
   return (
-    <nav className="bg-purple-600 text-white px-6 py-3 flex items-center justify-between rounded-full mx-4">
-      {/* Logo */}
-      <Link href="/">
+    <nav className="mt-3 mb-3 bg-purple-600 text-white rounded-full mx-4 p-3 flex items-center justify-between px-6">
+      <Link href="/" target="_blank">
         <span className="font-bold text-lg cursor-pointer">Shine Hub</span>
       </Link>
 
       {/* Nav links */}
       <div className="flex items-center space-x-6">
-        <Link href="/admin/productManagement">
-          <span className="hover:underline cursor-pointer">Products Management</span>
+        <Link href="/admin">
+          <span className="hover:underline cursor-pointer">Dashboard</span>
         </Link>
-        <Link href="/admin/enquiryMgt">
+        <Link href="/admin/productManagement">
+          <span className="hover:underline cursor-pointer">Product Management</span>
+        </Link>
+        <Link href="/admin/enquiryManagement">
           <span className="hover:underline cursor-pointer">Enquiry Management</span>
         </Link>
         <Link href="/admin/faqManagement">

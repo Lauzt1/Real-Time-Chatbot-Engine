@@ -23,7 +23,7 @@ export default function RemoveBtn({ id, resource }) {
   };
 
   return (
-    <button onClick={handleDelete} className="text-red-400">
+    <button onClick={handleDelete} className="text-red-400 cursor-pointer">
       <HiTrash size={23} />
     </button>
   );

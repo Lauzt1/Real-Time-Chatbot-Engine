@@ -52,7 +52,7 @@ export default function ProductEnquiryForm({ category, productId, productName })
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow space-y-4 max-w-lg">
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow space-y-4 text-center">
       <h2 className="text-2xl font-semibold">Enquire about {productName}</h2>
       <input
         type="text" placeholder="Your Name"
@@ -80,13 +80,15 @@ export default function ProductEnquiryForm({ category, productId, productName })
         rows={4}
         value={message} onChange={e=>setMessage(e.target.value)} required
       />
-      <button
-        type="submit"
-        disabled={submitting}
-        className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 disabled:opacity-50"
-      >
-        {submitting ? "Sending…" : "Send Enquiry"}
-      </button>
+      <div className="text-center">
+        <button
+          type="submit"
+          disabled={submitting}
+          className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 disabled:opacity-50"
+        >
+          {submitting ? "Sending…" : "Send Enquiry"}
+        </button>
+      </div>
     </form>
   );
 }
