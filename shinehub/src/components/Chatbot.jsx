@@ -159,8 +159,20 @@ export default function ChatbotWidget() {
       {isOpen && (
         <div
           className="p-4 bg-white shadow-lg rounded-lg flex flex-col"
-          style={{ width: "30vw", minWidth: "400px", height: "75vh" }}
+          style={{ width: "30vw", minWidth: "400px", height: "70vh" }}
         >
+          {/* HEADER */}
+          <div className="bg-purple-600 flex items-center px-6 py-2 rounded-t-lg -mt-4 -mx-4 mb-3">
+            <img
+              src="/quentin.png"
+              alt="Quentin"
+              className="h-14 w-14 rounded-full mr-3"
+            />
+            <span className="text-white font-semibold text-2xl">
+              Quentin
+            </span>
+          </div>
+
           {/* Messages */}
           <div
             ref={messagesContainerRef}
@@ -184,9 +196,7 @@ export default function ChatbotWidget() {
                           ? new URL(part)
                           : new URL(part, window.location.origin);
                         const destination =
-                          urlObj.pathname +
-                          urlObj.search +
-                          urlObj.hash;
+                          urlObj.pathname + urlObj.search + urlObj.hash;
                         return (
                           <a
                             key={idx}
