@@ -22,6 +22,9 @@ export default function AdminNavbar() {
 
       {/* Nav links */}
       <div className="flex items-center space-x-6">
+        <Link href="/admin">
+          <span className="hover:underline cursor-pointer">Dashboard</span>
+        </Link>
         <Link href="/admin/productManagement">
           <span className="hover:underline cursor-pointer">Product Management</span>
         </Link>
