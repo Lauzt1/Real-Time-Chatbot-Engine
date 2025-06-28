@@ -13,7 +13,7 @@ export default function SearchBar({ initialQuery = "" }) {
     e.preventDefault()
     const q = query.trim()
     if (!q) return
-    router.push(`admin/search?query=${encodeURIComponent(q)}`)
+    router.push(`/admin/search?query=${encodeURIComponent(q)}`)
     setQuery("")
   }
 
@@ -30,7 +30,7 @@ export default function SearchBar({ initialQuery = "" }) {
         type="submit"
         className="absolute right-3 top-1/2 transform -translate-y-1/2"
       >
-        <HiSearch className="h-5 w-5 text-gray-600" />
+        <HiSearch className="h-5 w-5 text-gray-600 cursor-pointer" />
       </button>
     </form>
   )

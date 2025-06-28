@@ -37,7 +37,7 @@ export default function AdminNavbar() {
         </Link>
       </div>
 
-      {/* Search, theme, logout */}
+      {/* Search, logout */}
       <div className="flex items-center space-x-4 gap-5">
         <SearchBar />
         <button
