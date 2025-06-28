@@ -287,7 +287,7 @@ export default function EditItemPage() {
                     uploadPreset="polishingpad"
                     onSuccess={handleImageUpload}
                     options={{ multiple: true, maxFiles: 5 }}
-                    className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+                    className="underline text-black cursor-pointer"
                   >
                     Upload Images
                   </CldUploadButton>
@@ -385,7 +385,7 @@ export default function EditItemPage() {
                     uploadPreset="compound"
                     onSuccess={handleImageUpload}
                     options={{ multiple: true, maxFiles: 5 }}
-                    className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+                    className="underline text-black cursor-pointer"
                   >
                     Upload Images
                   </CldUploadButton>
