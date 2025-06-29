@@ -842,6 +842,7 @@ nlu:
     - MILLE FINE (Large)
     - MILLE Black Line (Large)
 
+#check here.
 - intent: ask_product_info
   examples: |
     - lhr21 markv
@@ -850,17 +851,13 @@ nlu:
     - da01-250
     - uno pure
     - tell me about the lhr15 markv
-    - Specs for LHR21 MarkIII lah
     - I want info on LHR21ES
     - Whats the power rating of LH19E?
     - Details for LHR15ES please
-    - Show me specs for LHR21 mah
     - LHR15
     - LHR21ES
     - Whats LHR21?
-    - Specs for LH19E
     - Tell me about [LHR15 MarkV](product_model)
-    - What are the specs of [LHR21ES](product_model)?
     - Give me info on [LH19E](product_model)
     - [LHR15ES](product_model)
     - [LHR21 MarkIII](product_model)
@@ -869,7 +866,6 @@ nlu:
     - Tell me about [D-A FINE 250](product_model)
     - Give me details on [9.DA40H/6](product_model)
     - Tell me about the foam pad [9.DA40M/6](product_model)
-    - I need specs for [9.DA70H/4](product_model)
     - What’s the description of [9.DA40S/6](product_model)?
     - Show me details on [DA02-500](product_model)
     - Info on compound [DA01-1000](product_model)
@@ -891,7 +887,6 @@ nlu:
     - [UNO PROTECT Small](product_model) got info?
     - what this compound [DA02-500](product_model) for?
     - describe [UNO PURE](product_model) lah
-    - what spec [D-A Foam Pad 6 inch Coarse](product_model)?
     - how this [LHR21ES](product_model) work?
     - this [D-A Microfiber Pad 3 inch Fine](product_model) for what ah?
     - gimme details for [D-A FINE Medium](product_model)
@@ -920,6 +915,12 @@ nlu:
     - i wan details on [D-A Wool Pad 6 inch Medium](product_model)
     - [LHR15 MarkV](product_model) good or not?
     - describe [9.NW80H](product_model) to me la
+    - Specs for LH19E
+    - Specs for LHR21 MarkIII lah
+    - Show me specs for LHR21 mah
+    - What are the specs of [LHR21ES](product_model)?
+    - I need specs for [9.DA70H/4](product_model)
+    - what spec [D-A Foam Pad 6 inch Coarse](product_model)?
 
 - intent: ask_specs_contextual
   examples: |
