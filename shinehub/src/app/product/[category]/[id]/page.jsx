@@ -125,7 +125,7 @@ export default async function DetailPage({ params }) {
               <div className="text-center">
                 <a
                   href="#enquiry"
-                  className="inline-block bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition"
+                  className="inline-block bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition mt-2"
                 >
                   Make An Enquiry
                 </a>

@@ -237,7 +237,7 @@ export default function AddItemPage() {
               uploadPreset="polishingpad"
               onSuccess={handleImageUpload}
               options={{ multiple: true, maxFiles: 5 }}
-              className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+              className="underline text-black cursor-pointer"
               >
               Upload Images
             </CldUploadButton>
@@ -328,7 +328,7 @@ export default function AddItemPage() {
               uploadPreset="compound"
               onSuccess={handleImageUpload}
               options={{ multiple: true, maxFiles: 5 }}
-              className="inline-flex items-center justify-center px-4 py-2 underline text-black rounded hover:bg-purple-300"
+              className="underline text-black cursor-pointer"
               >
               Upload Images
             </CldUploadButton>
@@ -392,7 +392,7 @@ export default function AddItemPage() {
             <div className="text-center">
               <button
                 type="submit"
-                className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 cursor-pointer"
                 >
                 Add {pretty}
               </button>
