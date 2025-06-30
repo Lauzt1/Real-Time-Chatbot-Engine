@@ -318,13 +318,34 @@ class ActionContextualProductSpecs(Action):
         tracker: Tracker,
         domain: dict
     ) -> list:
-        """When on a product page, read the product_doc slot and utter its key specs."""
+        # 1) Try to grab existing slot
         doc = tracker.get_slot("product_doc") or {}
+
+        # 2) If no slot, fall back to metadata lookup (just like in action_query_product_attribute)
+        if not doc:
+            meta = tracker.latest_message.get("metadata", {}) or {}
+            page = meta.get("page", "")
+            m = re.match(r"^/product/(?P<cat>[^/]+)/(?P<id>[0-9a-f]{24})$", page)
+            if m:
+                raw_cat, pid = m.group("cat"), m.group("id")
+                # normalize to your Mongo collections
+                if raw_cat in ["polishers", "pads", "compounds"]:
+                    coll = raw_cat
+                elif raw_cat + "s" in ["polishers", "pads", "compounds"]:
+                    coll = raw_cat + "s"
+                else:
+                    coll = None
+
+                if coll:
+                    db_doc = db[coll].find_one({"_id": ObjectId(pid)}) or {}
+                    doc = bson_to_json(db_doc)
+
+        # 3) If still no doc, bail out
         if not doc:
             dispatcher.utter_message(text="I don’t see which product you mean—can you tap on its page first?")
             return []
 
-        # build specs
+        # 4) Build and utter specs
         specs = []
         if doc.get("power") is not None:
             specs.append(f"Power: {doc['power']} W")
@@ -338,11 +359,14 @@ class ActionContextualProductSpecs(Action):
             specs.append(f"Backing pad: {doc['backingpad']} inch")
         elif doc.get("size") is not None:
             # determine unit by category slot
-            route = tracker.get_slot("product_category")[:-1]  # e.g. "compound"
-            unit = "ml" if route == "compound" else "inch"
+            route = tracker.get_slot("product_category") or ""
+            unit = "ml" if route.rstrip("s") == "compound" else "inch"
             specs.append(f"Size: {doc['size']} {unit}")
 
-        dispatcher.utter_message(text=f"**{doc.get('name','This product')}** specs:\n" + "\n".join(f"- {s}" for s in specs))
+        dispatcher.utter_message(
+            text=f"**{doc.get('name','This product')}** specs:\n" +
+                 "\n".join(f"- {s}" for s in specs)
+        )
         return []
     
 class ActionSessionStart(Action):
