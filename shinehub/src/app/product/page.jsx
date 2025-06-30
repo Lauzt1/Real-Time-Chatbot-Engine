@@ -1,9 +1,78 @@
 import CategorySidebar from "@/components/CategorySidebar";
+import connectMongoDB from "@/libs/mongodb";
+import Polisher from "@/models/polisher";
+import Pad from "@/models/pad";
+import Compound from "@/models/compound";
+import Link from "next/link";
 
-export default function ProductPage() {
-    return (
-        <>
-            <CategorySidebar />
-        </>
-    )
+async function getAllProducts(model) {
+  return model.find().lean();
+}
+
+export default async function ProductPage() {
+  await connectMongoDB();
+
+  // Fetch all products for each category
+  const [polishers, pads, compounds] = await Promise.all([
+    getAllProducts(Polisher),
+    getAllProducts(Pad),
+    getAllProducts(Compound),
+  ]);
+
+  // Flatten into a single array with category labels
+  const results = [
+    ...polishers.map((item) => ({ ...item, category: "polisher" })),
+    ...pads.map((item) => ({ ...item, category: "pad" })),
+    ...compounds.map((item) => ({ ...item, category: "compound" })),
+  ];
+
+  const prettyName = {
+    polisher: "Polishers",
+    pad: "Pads",
+    compound: "Compounds",
+  };
+
+  return (
+    <div className="flex">
+      <CategorySidebar />
+
+      <main className="flex-1 p-6 bg-purple-50 rounded-lg m-3">
+        <h1 className="text-4xl font-bold text-center uppercase mb-5 text-purple-600">
+          All Products
+        </h1>
+
+        {results.length === 0 ? (
+          <p className="text-gray-600">No products found.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {results.map((item) => {
+              const firstUrl = item.images?.[0]?.url || "/placeholder.png";
+              return (
+                <Link
+                  key={`${item.category}-${item._id}`}
+                  href={`/product/${item.category}/${item._id}`}
+                  className="block bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                >
+                  <div className="w-full h-48 mt-2 bg-white flex items-center justify-center">
+                    <img
+                      src={firstUrl}
+                      alt={item.name}
+                      className="h-full object-contain"
+                    />
+                  </div>
+
+                  <div className="p-4 text-center">
+                    <h2 className="font-medium">{item.name}</h2>
+                    <p className="text-sm text-gray-500">
+                      {prettyName[item.category]}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </main>
+    </div>
+  );
 }
