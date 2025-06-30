@@ -151,7 +151,7 @@ export default function EditItemPage() {
 
           <form
             onSubmit={handleSubmit}
-            className="bg-white p-6 rounded-lg shadow space-y-4 w-full text-left"
+            className="bg-white p-6 rounded-lg shadow space-y-4 w-full text-left text-black"
           >
             {category === "polisher" && (
               <>
