@@ -32,7 +32,9 @@ export default async function HomePage() {
 
   return (
     <main className="p-6">
-      <h1 className="text-2xl text-purple-600 font-bold my-4">Featured Products</h1>
+      <h1 className="text-4xl font-bold text-center uppercase mb-5 text-purple-600">
+        Featured Products
+      </h1>
 
       {results.length === 0 ? (
         <p className="text-gray-600">No featured products found.</p>
