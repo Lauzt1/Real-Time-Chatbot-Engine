@@ -15,7 +15,7 @@ function getModel(category) {
 }
 
 export default async function TypePage({ params }) {
-  const { category, type } = params
+  const { category, type } = await params
   const formattedType = type.replace(/_/g, ' ')
 
   await connectMongoDB()
