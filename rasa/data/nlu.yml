@@ -841,6 +841,50 @@ nlu:
     - MILLE FINE (Small)
     - MILLE FINE (Large)
     - MILLE Black Line (Large)
+    - HLR15
+    - LHR12E/STD
+    - LH18ENS
+    - LH22N
+    - LH22EN
+    - FR32ES
+    - LH16ES
+    - MILLE Black Edition (Large)
+    - Mark 3
+    - Mark 5
+    - Mark III
+    - Mark V
+    - ES
+    - STD
+    - HLR
+    - LHR
+    - LH
+    - FR
+    - da foam pad
+    - da wool pad
+    - da microfiber pad
+    - da coarse
+    - da fine
+    - uno pure
+    - uno protect
+    - uno advanced
+    - mille coarse
+    - mille fine
+    - mille black edition
+    - da foam pad 3 coarse
+    - da foam pad 3 intermediate
+    - da foam pad 3 fine
+    - da foam pad 3 ultra fine
+    - da wool pad 3 coarse
+    - da microfiber pad 3 fine
+    - microfiber pad 5 coarse
+    - da coarse small
+    - da coarse medium
+    - da fine large
+    - uno pure large
+    - uno protect medium
+    - uno advanced small
+    - mille coarse large
+    - mille fine small
 
 #check here.
 - intent: ask_product_info
@@ -895,6 +939,14 @@ nlu:
     - describe da coarse small
     - what’s da coarse small used for?
     - what is da coarse small?
+    - lhr15 markv
+    - lh18ens
+    - lh22en
+    - lhr12e
+    - LHR12E/STD
+    - tell me about lh18ens
+    - what is lh22en?
+    - show me details on lhr12e
 
 - intent: ask_product_specs
   examples: |
@@ -1141,7 +1193,6 @@ nlu:
 
 - intent: ask_properties
   examples: |
-    - what’s the cutting level for this [D-A Foam Pad (3" Coarse)](product)?
     - is this pad coarse or fine?
     - got what kind of aggressiveness?
     - boleh tahu dia punya property macam mana?

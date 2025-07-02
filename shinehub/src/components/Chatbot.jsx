@@ -23,9 +23,26 @@ export default function ChatbotWidget() {
     if (productMatch) {
       const [, type, id] = productMatch;
       fetch(`/api/${type}s/${id}`)
-        .then((res) => res.json())
-        .then((data) => setProductData(data))
-        .catch((err) => console.error("Failed to load product data:", err));
+        .then((res) => {
+          // If the response is not ok, log a message and return early
+          if (!res.ok) {
+            console.log(`Failed to load product data for ${id}: ${res.statusText}`);
+            return; // Skip the rest of the code if the response is not OK
+          }
+          return res.json(); // Only parse JSON if the response is valid
+        })
+        .then((data) => {
+          if (data) {
+            setProductData(data);
+          } else {
+            console.warn("Received empty product data");
+          }
+        })
+        .catch((err) => {
+          // Catch any network-related errors and log them without throwing
+          console.log("Failed to fetch product data:", err);
+          setProductData(null); // Set fallback data in case of failure
+        });
     } else {
       setProductData(null);
     }
@@ -78,10 +95,18 @@ export default function ChatbotWidget() {
   }, [contextType, excludedFaqs]);
   // ────────────────────────────────────────────────────────────────────
 
-  // send page slot to Rasa (unchanged)
+  // send page slot to Rasa (with check if Rasa server is available)
   useEffect(() => {
+    const rasaUrl = process.env.NEXT_PUBLIC_RASA_URL;
+
+    // If Rasa URL is not defined or is empty, do not attempt the fetch
+    if (!rasaUrl) {
+      console.warn("Rasa URL is not defined in the environment variables.");
+      return; // Skip the fetch if the Rasa URL is not available
+    }
+
     fetch(
-      `${process.env.NEXT_PUBLIC_RASA_URL}/conversations/${sessionId}/tracker/events`,
+      `${rasaUrl}/conversations/${sessionId}/tracker/events`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -91,8 +116,21 @@ export default function ChatbotWidget() {
           value: pathname,
         }),
       }
-    ).catch((err) => console.error("Failed to send page context slot:", err));
+    )
+      .then((res) => {
+        // If the response is not ok, do nothing instead of throwing an error
+        if (!res.ok) {
+          console.log("Rasa server responded with an error, skipping fetch.");
+          return; // Skip further processing if the response is not OK
+        }
+        return res.json(); // Only parse JSON if the response is valid
+      })
+      .catch((err) => {
+        // Catch any network-related errors and log them without throwing
+        console.log("Rasa server is unreachable or there was an error, skipping fetch.");
+      });
   }, [sessionId, pathname]);
+  // ────────────────────────────────────────────────────────────────────
 
   // auto-scroll (unchanged)
   useEffect(() => {
