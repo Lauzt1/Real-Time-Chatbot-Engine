@@ -1,40 +1,56 @@
 // src/app/admin/productManagement/[category]/page.jsx
 import CategorySidebar from "@/components/admin/CategorySidebar"
 import Link from "next/link"
-
 import Polisher from "@/models/polisher"
-import Pad       from "@/models/pad"
-import Compound  from "@/models/compound"
+import Pad from "@/models/pad"
+import Compound from "@/models/compound"
 import RemoveBtn from "@/components/admin/RemoveBtn"
 import { HiPencilAlt } from 'react-icons/hi';
 
-async function getproductFor(category) {
+async function getProductsFor(category) {
   switch (category) {
     case "polisher":
-      return Polisher.find().lean()
+      return Polisher.find().lean();
     case "pad":
-      return Pad.find().lean()
+      return Pad.find().lean();
     case "compound":
-      return Compound.find().lean()
+      return Compound.find().lean();
     default:
-      throw new Error("Unknown category")
+      throw new Error("Unknown category");
   }
 }
 
 export default async function CategoryPage({ params }) {
-  const { category } = params
-  let product
+  // await the params promise
+  const { category } = await params;
+
+  let products;
   try {
-    product = await getproductFor(category)
+    products = await getProductsFor(category);
   } catch {
-    return <p>Category “{category}” not found</p>
+    return <p>Category “{category}” not found</p>;
   }
+
+  // convert Mongoose docs to plain objects
+  const items = products.map(({ _id, images, ...rest }) => ({
+    id: _id.toString(),
+    images: Array.isArray(images)
+      ? images.map(({ _id: imgId, url, publicId, ...imgRest }) => ({
+          id: imgId.toString(),
+          url,
+          publicId,
+          ...imgRest,
+        }))
+      : [],
+    ...rest,
+    category,
+  }));
 
   const pretty = {
     polisher: "Polishers",
     pad:      "Pads",
     compound: "Compounds",
-  }[category]
+  }[category];
 
   return (
     <div className="flex">
@@ -50,14 +66,17 @@ export default async function CategoryPage({ params }) {
           Add {pretty.slice(0, -1)}
         </Link>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {product.map((item) => {
-            const firstUrl = item.images?.[0]?.url || '/placeholder.png';
-            return (
-            <div
-                key={item._id}
-                className="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
-              >              
+        {items.length === 0 ? (
+          <p className="text-gray-600">No {pretty.toLowerCase()} found.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {items.map((item) => {
+              const firstUrl = item.images[0]?.url || '/placeholder.png';
+              return (
+                <div
+                  key={item.id}
+                  className="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                >
                   <div className="w-full h-48 mt-2 bg-white flex items-center justify-center">
                     <img
                       src={firstUrl}
@@ -65,20 +84,21 @@ export default async function CategoryPage({ params }) {
                       className="h-full object-contain"
                     />
                   </div>
-                <div className="p-4 text-center">
-                  <h2 className="font-medium">{item.name}</h2>
+                  <div className="p-4 text-center">
+                    <h2 className="font-medium">{item.name}</h2>
+                  </div>
+                  <div className="flex justify-center gap-4 p-2">
+                    <Link href={`/admin/productManagement/${category}/edit/${item.id}`}>
+                      <HiPencilAlt size={23} />
+                    </Link>
+                    <RemoveBtn id={item.id} resource={category} />
+                  </div>
                 </div>
-                <div className="flex justify-center gap-4 p-2">
-                  <Link href={`/admin/productManagement/${category}/edit/${item._id}`}>
-                    <HiPencilAlt size={23} />
-                  </Link>
-                  <RemoveBtn id={item._id} resource={category} />
-                </div>
-              </div>
-            )
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </main>
     </div>
-  )
+  );
 }
