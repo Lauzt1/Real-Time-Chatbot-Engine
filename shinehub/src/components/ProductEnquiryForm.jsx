@@ -56,27 +56,27 @@ export default function ProductEnquiryForm({ category, productId, productName })
       <h2 className="text-2xl font-semibold">Enquire about {productName}</h2>
       <input
         type="text" placeholder="Your Name"
-        className="w-full border px-3 py-2 rounded"
+        className="w-full border px-3 py-2 rounded text-black"
         value={name} onChange={e=>setName(e.target.value)} required
       />
       <input
         type="email" placeholder="Email Address"
-        className="w-full border px-3 py-2 rounded"
+        className="w-full border px-3 py-2 rounded text-black"
         value={email} onChange={e=>setEmail(e.target.value)} required
       />
       <input
         type="text" placeholder="Phone Number"
-        className="w-full border px-3 py-2 rounded"
+        className="w-full border px-3 py-2 rounded text-black"
         value={phone} onChange={e=>setPhone(e.target.value)} required
       />
       <input
         type="text" placeholder="Company Name"
-        className="w-full border px-3 py-2 rounded"
+        className="w-full border px-3 py-2 rounded text-black"
         value={company} onChange={e=>setCompany(e.target.value)} required
       />
       <textarea
         placeholder="Your Enquiry"
-        className="w-full border px-3 py-2 rounded"
+        className="w-full border px-3 py-2 rounded text-black"
         rows={4}
         value={message} onChange={e=>setMessage(e.target.value)} required
       />

@@ -33,31 +33,33 @@ export default function LoginPage() {
       >
         <h2 className="text-center text-2xl font-semibold">Admin Sign In</h2>
         <div>
-          <label className="block text-sm font-medium mb-1">Username</label>
+          <label className="block text-sm font-medium mb-1 text-black">Username</label>
           <input
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             type="text"
             required
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border rounded text-black"
+            placeholder="username"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1">Password</label>
+          <label className="block text-sm font-medium mb-1 text-black">Password</label>
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             required
-            className="w-full px-3 py-2 border rounded"
+            className="w-full px-3 py-2 border rounded text-black"
+            placeholder="password"
           />
         </div>
         {error && <p className="text-red-600">{error}</p>}
 
         <button
           type="submit"
-          className="px-8 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 mx-auto block"
+          className="px-8 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 mx-auto block cursor-pointer"
         >
           Sign In
         </button>
