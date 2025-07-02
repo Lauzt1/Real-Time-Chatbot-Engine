@@ -4,11 +4,14 @@ import Link from "next/link";
 import Polisher from "@/models/polisher";
 import Pad from "@/models/pad";
 import Compound from "@/models/compound";
-import RemoveBtn from "@/components/admin/RemoveBtn"
-import { HiPencilAlt } from 'react-icons/hi';
+import RemoveBtn from "@/components/admin/RemoveBtn";
+import { HiPencilAlt } from "react-icons/hi";
+import SearchBar from "@/components/admin/SearchBar";
 
 export default async function SearchPage({ searchParams }) {
-  const q = searchParams.query?.trim() || "";
+  // await the searchParams promise before using its properties
+  const { query } = await searchParams;
+  const q = query?.trim() || "";
 
   // if no query, just show the bar
   if (!q) {
@@ -30,12 +33,23 @@ export default async function SearchPage({ searchParams }) {
     Compound.find({ name: regex }).lean(),
   ]);
 
-  // flatten into a single array with a `category` field
+  // flatten and convert each document to a plain object with string id
   const results = [
     ...polishers.map((item) => ({ ...item, category: "polisher" })),
     ...pads.map((item) => ({ ...item, category: "pad" })),
     ...compounds.map((item) => ({ ...item, category: "compound" })),
-  ];
+  ].map(({ _id, images, ...rest }) => ({
+    id: _id.toString(),
+    images: Array.isArray(images)
+      ? images.map(({ _id: imgId, url, publicId, ...imgRest }) => ({
+          id: imgId.toString(),
+          url,
+          publicId,
+          ...imgRest,
+        }))
+      : [],
+    ...rest,
+  }));
 
   const prettyName = {
     polisher: "Polishers",
@@ -54,11 +68,11 @@ export default async function SearchPage({ searchParams }) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {results.map((item) => {
-            const firstUrl = item.images?.[0]?.url || "/placeholder.png";
+            const firstUrl = item.images[0]?.url || "/placeholder.png";
             const catLabel = prettyName[item.category];
             return (
               <div
-                key={`${item.category}-${item._id}`}
+                key={`${item.category}-${item.id}`}
                 className="block bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
               >
                 <div className="w-full h-48 mt-2 bg-white flex items-center justify-center">
@@ -73,10 +87,12 @@ export default async function SearchPage({ searchParams }) {
                   <p className="text-sm text-gray-500">{catLabel}</p>
                 </div>
                 <div className="flex justify-center gap-4 p-2">
-                  <Link href={`/admin/productManagement/${item.category}/edit/${item._id}`}>
+                  <Link
+                    href={`/admin/productManagement/${item.category}/edit/${item.id}`}
+                  >
                     <HiPencilAlt size={23} />
                   </Link>
-                  <RemoveBtn id={item._id} resource={item.category} />
+                  <RemoveBtn id={item.id} resource={item.category} />
                 </div>
               </div>
             );
