@@ -1000,6 +1000,9 @@ nlu:
     - pad base size?
     - got pad measurement?
     - apa backing pad dia pakai?
+    - pad size
+    - whats the pad size
+    - backing how big?
 
 # — COMPOUNDS — 
 ## intent:ask_size
@@ -1100,6 +1103,59 @@ nlu:
     - this do what one?
     - show me the purpose
     - usage how?
+
+- intent: ask_rpm
+  examples: |
+    - how fast can the [LHR21 MarkV](product) spin ah?
+    - what's the RPM for this [LHR15 MarkV](product) polisher?
+    - got speed range for this one?
+    - berapa laju dia boleh pusing?
+    - RPM berapa ni?
+    - can tell me RPM spec for this [LHR21ES](product)?
+    - the speed of this one is how much ya?
+    - what’s the max and min rpm for this machine?
+    - how many RPM does it run?
+    - is the speed variable or fixed?
+    - got range for revolutions per minute?
+    - do you know the pusingan per minit for this?
+    - RPM?
+    - rpm?
+    - rpm
+
+- intent: ask_type
+  examples: |
+    - what type of machine is this [LHR15 MarkIII](product)?
+    - this one rotary or DA?
+    - got tell what category it falls under or not?
+    - this [LH19E](product), is it dual-action or rotary?
+    - boleh tahu ini jenis apa?
+    - type of polisher ni macam mana?
+    - is it forced rotation or free spinning?
+    - what’s the type of motion for this tool?
+    - this one is random orbital or direct drive?
+    - the polishing action is what type?
+    - is this a rotary type ke DA type?
+    - nak tahu this machine is apa jenis
+    - type?
+    - whats the type?
+
+- intent: ask_properties
+  examples: |
+    - what’s the cutting level for this [D-A Foam Pad (3" Coarse)](product)?
+    - is this pad coarse or fine?
+    - got what kind of aggressiveness?
+    - boleh tahu dia punya property macam mana?
+    - what kind of polishing effect does this one give?
+    - this compound is mild or aggressive?
+    - how strong the correction for this pad?
+    - this one for finishing or compounding?
+    - what is the buffing level of this compound?
+    - does this fall under cutting or finishing?
+    - properties of this item ah, you got?
+    - ni kasar or halus kind of polish?
+    - whats the properties?
+    - properties for this?
+    - properties?
 
 - intent: request_product_link
   examples: |

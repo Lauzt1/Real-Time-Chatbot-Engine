@@ -291,8 +291,42 @@ class ActionQueryProductAttribute(Action):
             "ask_size":        ("size", ""),
             "ask_code":        ("code", ""),
             "ask_colour":      ("colour", ""),
+            "ask_type":        ("type", ""),
+            "ask_properties":  ("properties", ""),
         }
 
+        # Adding specific conditions based on the category of the product
+        if intent == "ask_rpm" and doc.get("type") == "Dual-Action" and doc.get("rpm"):
+            field, unit = "rpm", ""
+            value = doc.get(field)
+            name  = doc.get("name", "This product")
+            if value is None:
+                dispatcher.utter_message("I don’t have that detail right now.")
+            else:
+                dispatcher.utter_message(f"**{name}** RPM is {value}.")
+            return slot_events
+
+        if intent == "ask_type" and doc.get("type"):
+            field, unit = "type", ""
+            value = doc.get(field)
+            name  = doc.get("name", "This product")
+            if value is None:
+                dispatcher.utter_message("I don’t have that detail right now.")
+            else:
+                dispatcher.utter_message(f"**{name}** type is {value}.")
+            return slot_events
+
+        if intent == "ask_properties" and doc.get("properties"):
+            field, unit = "properties", ""
+            value = doc.get(field)
+            name  = doc.get("name", "This product")
+            if value is None:
+                dispatcher.utter_message("I don’t have that detail right now.")
+            else:
+                dispatcher.utter_message(f"**{name}** properties are {value}.")
+            return slot_events
+
+        # Standard cases, using attribute mapping
         if intent not in attr_map:
             dispatcher.utter_message("Sorry, I’m not sure what you want to know.")
             return slot_events
@@ -307,6 +341,7 @@ class ActionQueryProductAttribute(Action):
             dispatcher.utter_message(f"**{name}** {field} is {value}{unit}.")
 
         return slot_events
+
     
 class ActionContextualProductSpecs(Action):
     def name(self) -> str:
