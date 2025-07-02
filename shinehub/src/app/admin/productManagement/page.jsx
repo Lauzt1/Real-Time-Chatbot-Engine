@@ -1,22 +1,42 @@
+// src/app/admin/productManagement/page.jsx
 import CategorySidebar from "@/components/admin/CategorySidebar";
 import Link from "next/link";
-
 import Polisher from "@/models/polisher";
 import Pad from "@/models/pad";
 import Compound from "@/models/compound";
 import RemoveBtn from "@/components/admin/RemoveBtn";
 import { HiPencilAlt } from 'react-icons/hi';
 
+// Fetch and convert products to plain objects
 async function getAllProducts() {
-  const polishers = await Polisher.find().lean();
-  const pads = await Pad.find().lean();
-  const compounds = await Compound.find().lean();
+  const [polishers, pads, compounds] = await Promise.all([
+    Polisher.find().lean(),
+    Pad.find().lean(),
+    Compound.find().lean(),
+  ]);
 
-  // Combine products from all categories
+  // Helper to map and stringify mongoose ObjectId and nested images
+  const mapItem = (item, category) => {
+    const { _id, images, ...rest } = item;
+    return {
+      id: _id.toString(),
+      images: Array.isArray(images)
+        ? images.map(({ _id: imgId, url, publicId, ...imgRest }) => ({
+            id: imgId.toString(),
+            url,
+            publicId,
+            ...imgRest,
+          }))
+        : [],
+      ...rest,
+      category,
+    };
+  };
+
   return [
-    ...polishers.map(item => ({ ...item, category: "polisher" })),
-    ...pads.map(item => ({ ...item, category: "pad" })),
-    ...compounds.map(item => ({ ...item, category: "compound" })),
+    ...polishers.map((item) => mapItem(item, "polisher")),
+    ...pads.map((item) => mapItem(item, "pad")),
+    ...compounds.map((item) => mapItem(item, "compound")),
   ];
 }
 
@@ -38,15 +58,15 @@ export default async function ProductManagement() {
           All Products
         </h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.length === 0 ? (
-            <p className="text-gray-600">No products found.</p>
-          ) : (
-            products.map((item) => {
+        {products.length === 0 ? (
+          <p className="text-gray-600">No products found.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {products.map((item) => {
               const firstUrl = item.images?.[0]?.url || '/placeholder.png';
               return (
                 <div
-                  key={item._id}
+                  key={item.id}
                   className="bg-white border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
                 >
                   <div className="w-full h-48 mt-2 bg-white flex items-center justify-center">
@@ -65,16 +85,16 @@ export default async function ProductManagement() {
                   </div>
 
                   <div className="flex justify-center gap-4 p-2">
-                    <Link href={`/admin/productManagement/${item.category}/edit/${item._id}`}>
+                    <Link href={`/admin/productManagement/${item.category}/edit/${item.id}`}>
                       <HiPencilAlt size={23} />
                     </Link>
-                    <RemoveBtn id={item._id} resource={item.category} />
+                    <RemoveBtn id={item.id} resource={item.category} />
                   </div>
                 </div>
               );
-            })
-          )}
-        </div>
+            })}
+          </div>
+        )}
       </main>
     </div>
   );
