@@ -20,12 +20,27 @@ async function getItem(category, id) {
 }
 
 export default async function DetailPage({ params }) {
-  const { category, id } = params;
-  const item = await getItem(category, id);
+  // await the params promise before destructuring
+  const { category, id } = await params;
 
-  if (!item) {
+  // fetch the raw document
+  const raw = await getItem(category, id);
+  if (!raw) {
     return <p className="p-6">Item not found</p>;
   }
+
+  // convert to a plain JS object, stringify ObjectIds and strip toJSON methods
+  const item = {
+    ...raw,
+    images: Array.isArray(raw.images)
+      ? raw.images.map(({ _id: imgId, url, publicId, ...rest }) => ({
+          id: imgId.toString(),
+          url,
+          publicId,
+          ...rest,
+        }))
+      : [],
+  };
 
   return (
     <div className="flex">
