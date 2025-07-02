@@ -1286,3 +1286,87 @@ nlu:
     - give me that [9.DA40S/6](product_model) one lah
     - link for da coarse small
     
+- intent: find_polishers
+  examples: |
+    - Can you show me your polishers?
+    - What polishers do you have in stock?
+    - Give me all the available DA polishers
+    - Got any rotary polishers ah?
+    - link to all your DA polishers
+    - show me your dual-action machines
+    - I want to see your rotary polisher models
+    - senarai semua polisher ada tak?
+    - show me polishers pls
+    - polishers got what type?
+    - DA polishers
+    - rotary polishers
+    - dual action polishers
+    - polishers list
+    - nak tengok your polisher model
+    - got any polishing machines?
+    - da polishers
+    - rotary polishers
+
+- intent: find_pads
+  examples: |
+    - Can I see all your polishing pads?
+    - What foam pads do you carry?
+    - Got any coarse foam pads?
+    - Show me your yellow pads
+    - blue pads
+    - need some fine pads for DA
+    - boleh listkan semua pad?
+    - show me all your da wool pads
+    - DA foam pads available?
+    - link to cutting pads please
+    - I want finishing pads
+    - got any blue cutting pads?
+    - da microfiber pad
+    - da wool pad 5 coarse
+    - pad warna apa ada?
+    - what pads got for 6 inch?
+    - need foam pads for DA machine
+    - polishing pad list pls
+    - Ultra Fine pads
+    - fine pads
+    - coarse pads
+    - intermediate pads
+    - 6 inch pads
+    - 3 inch pads
+    - 1.5 inch pads
+    - foam pads
+    - wool pads
+    - miocrofiber pads
+    - yellow pads
+    - azure pads
+    - white pads
+    - ultra fine pads
+    - 7 inch pads
+
+
+- intent: find_compounds
+  examples: |
+    - Can you show me the DA compound range?
+    - I want to check out your cutting compounds
+    - Got any UNO PURE?
+    - uno compounds
+    - Show me all the MILLE compounds please
+    - senarai compound ada tak?
+    - coarse compounds
+    - got small size compound?
+    - I want 250ml compound bottles
+    - give me fine compounds
+    - DA compounds list
+    - nak tengok compound mille
+    - link to all polishing compounds
+    - compound untuk finishing ada?
+    - show me compound please
+    - medium compound bottle got or not?
+    - compound 1L ada?
+    - DA Compounds
+    - MILLE Compounds
+    - UNO compounds
+    - small compounds
+    - medium compounds
+    - large compounds
+

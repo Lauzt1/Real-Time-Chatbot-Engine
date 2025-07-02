@@ -26,6 +26,10 @@ intents:
 
   - request_product_link
 
+  - find_polishers
+  - find_pads
+  - find_compounds
+
 entities:
   - product_model
 
@@ -86,6 +90,7 @@ actions:
   - action_contextual_product_specs
   - action_mark_fallback
   - action_ask_quote
+  - action_find_products
 
 session_config:
   session_expiration_time: 60

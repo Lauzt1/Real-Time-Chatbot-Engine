@@ -131,6 +131,24 @@ rules:
     - action: action_set_product_context
     - action: action_listen
 
+- rule: Search for polishers
+  steps:
+    - intent: find_polishers
+    - action: action_find_products
+    - action: action_listen
+
+- rule: Search for pads
+  steps:
+    - intent: find_pads
+    - action: action_find_products
+    - action: action_listen
+
+- rule: Search for compounds
+  steps:
+    - intent: find_compounds
+    - action: action_find_products
+    - action: action_listen
+
 # -------------------------
 # Fallback/no-op for unexpected page-context events
 # -------------------------

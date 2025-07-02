@@ -470,3 +470,90 @@ class ActionAskQuote(Action):
             )
 
         return []
+    
+class ActionFindProducts(Action):
+    def name(self) -> str:
+        return "action_find_products"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: dict
+    ) -> list:
+        user_msg = tracker.latest_message.get("text", "").lower()
+        base_url = "http://localhost:3000/product"
+        results = []
+
+        # Categories to search in: polishers, pads, compounds
+        categories = {
+            "polishers": db["polishers"],
+            "pads": db["pads"],
+            "compounds": db["compounds"]
+        }
+
+        # Clean up user message for matching keywords
+        clean_user = re.sub(r"[^a-z0-9 ]+", "", user_msg)
+
+        # Check for polishers, pads, and compounds in the query
+        category = None
+        if "polisher" in clean_user or "polishers" in clean_user:
+            category = "polishers"
+        elif "pad" in clean_user or "pads" in clean_user:
+            category = "pads"
+        elif "compound" in clean_user or "compounds" in clean_user:
+            category = "compounds"
+        
+        # If no specific category is found
+        if not category:
+            dispatcher.utter_message(text="Sorry, I couldn't understand which product you're asking for.")
+            return []
+
+        # Search for products in the selected category
+        if category == "polishers":
+            for doc in categories[category].find():
+                name = doc.get("name", "").lower()
+                type_ = doc.get("type", "").lower()
+                # Checking for matches in type and general name
+                if any(keyword in name for keyword in clean_user.split()) or any(keyword in type_ for keyword in clean_user.split()):
+                    product_id = str(doc.get("_id"))
+                    route = category[:-1]  # Singular route for the product
+                    link = f"{base_url}/{route}/{product_id}"
+                    results.append(f"{name.upper()}: {link}")
+        
+        elif category == "pads":
+            for doc in categories[category].find():
+                name = doc.get("name", "").lower()
+                properties = doc.get("properties", "").lower()
+                colour = doc.get("colour", "").lower()
+                # Check for matches in name, properties, or colour
+                if any(keyword in name for keyword in clean_user.split()) or \
+                   any(keyword in properties for keyword in clean_user.split()) or \
+                   any(keyword in colour for keyword in clean_user.split()):
+                    product_id = str(doc.get("_id"))
+                    route = category[:-1]  # Singular route for the product
+                    link = f"{base_url}/{route}/{product_id}"
+                    results.append(f"{name.upper()}: {link}")
+        
+        elif category == "compounds":
+            for doc in categories[category].find():
+                name = doc.get("name", "").lower()
+                type_ = doc.get("type", "").lower()
+                # Checking for matches in name and type
+                if any(keyword in name for keyword in clean_user.split()) or any(keyword in type_ for keyword in clean_user.split()):
+                    product_id = str(doc.get("_id"))
+                    route = category[:-1]  # Singular route for the product
+                    link = f"{base_url}/{route}/{product_id}"
+                    results.append(f"{name.upper()}: {link}")
+
+        # If products were found, show the links, each on a new line
+        if results:
+            # Join the results with "\n" to ensure each product appears on a new line
+            formatted_results = "\n".join(results)
+            dispatcher.utter_message(text=formatted_results)  
+        else:
+            dispatcher.utter_message(text="Sorry, I couldn't find any matching products.")
+
+        return []
+
+
