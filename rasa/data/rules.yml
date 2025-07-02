@@ -103,6 +103,24 @@ rules:
     - action: action_query_product_attribute
     - action: action_listen
 
+- rule: Answer RPM questions on product page
+  steps:
+    - intent: ask_rpm
+    - action: action_query_product_attribute
+    - action: action_listen
+
+- rule: Answer type questions on product page (for polishers and compounds)
+  steps:
+    - intent: ask_type
+    - action: action_query_product_attribute
+    - action: action_listen
+
+- rule: Answer properties questions on product page (for pads and compounds)
+  steps:
+    - intent: ask_properties
+    - action: action_query_product_attribute
+    - action: action_listen
+
   # 1) Whenever the `page` slot is set (i.e. on every route change),
   #    pull in the new product context
 - rule: Update product context on page change

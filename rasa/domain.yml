@@ -20,6 +20,9 @@ intents:
   - ask_code
   - ask_colour
   - ask_description
+  - ask_rpm
+  - ask_type
+  - ask_properties
 
   - request_product_link
 
