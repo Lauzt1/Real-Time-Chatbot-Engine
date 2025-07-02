@@ -1,3 +1,4 @@
+// src/app/api/[category]/[id]/route.js
 import { v2 as cloudinary } from 'cloudinary';
 import connectMongoDB from "@/libs/mongodb";
 import Polisher        from "@/models/polisher";
@@ -14,15 +15,23 @@ cloudinary.config({
 
 async function getModel(category) {
   switch (category) {
-    case "polisher": return Polisher;
-    case "pad":      return Pad;
-    case "compound": return Compound;
-    default:         throw new Error("Unknown category");
+    case "polisher":
+    case "polishers":
+      return Polisher;
+    case "pad":
+    case "pads":
+      return Pad;
+    case "compound":
+    case "compounds":
+      return Compound;
+    default:
+      throw new Error(`Unknown category: ${category}`);
   }
 }
 
 export async function GET(request, { params }) {
-  const { category, id } = params;
+  const { category, id } = await params;
+  console.log("API /api/[category]/[id] hit with category:", category);
   await connectMongoDB();
 
   const Model = await getModel(category);
@@ -34,7 +43,7 @@ export async function GET(request, { params }) {
 }
 
 export async function PUT(request, { params }) {
-  const { category, id } = params;
+  const { category, id } = await params;
   const updates = await request.json();
   await connectMongoDB();
 
@@ -47,7 +56,7 @@ export async function PUT(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
-  const { category, id } = params;
+  const { category, id } = await params;
   await connectMongoDB();
 
   const Model = await getModel(category);
