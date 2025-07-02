@@ -6,7 +6,8 @@ import Compound from "@/models/compound";
 import Link from "next/link";
 
 export default async function SearchPage({ searchParams }) {
-  const q = searchParams.query?.trim() || "";
+  const { query } = await searchParams;
+  const q = query?.trim() || "";
 
   // if no query, just show the bar
   if (!q) {
