@@ -21,7 +21,7 @@ async function getproductFor(category) {
 }
 
 export default async function CategoryPage({ params }) {
-  const { category } = params
+  const { category } = await params
   let product
   try {
     product = await getproductFor(category)
