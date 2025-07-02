@@ -5,8 +5,9 @@ import Pad       from "@/models/pad"
 import Compound  from "@/models/compound"
 import { NextResponse } from "next/server"
 
-async function GET(request, { params }) {
-  const { category } = params
+ export async function GET(request, { params }) {
+   // await the params promise before destructuring
+   const { category } = await params
   await connectMongoDB()
 
   let types = []
@@ -26,5 +27,3 @@ async function GET(request, { params }) {
 
   return NextResponse.json({ types })
 }
-
-export { GET }
