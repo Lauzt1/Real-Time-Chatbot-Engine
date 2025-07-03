@@ -202,7 +202,7 @@ export default function ChatbotWidget() {
       {isOpen && (
         <div
           className="p-4 bg-white shadow-lg rounded-lg flex flex-col"
-          style={{ width: "30vw", minWidth: "400px", height: "70vh" }}
+          style={{ width: "30vw", minWidth: "550px", height: "80vh" }}
         >
           {/* HEADER */}
           <div className="bg-purple-600 flex items-center px-6 py-2 rounded-t-lg -mt-4 -mx-4 mb-3">
