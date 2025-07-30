@@ -11,11 +11,42 @@ rules:
     - intent: goodbye
     - action: utter_goodbye
 
+# 1) ANY low-confidence utterance → fallback and set just_failed=true
 - rule: Handle low-confidence inputs
   steps:
-  - intent: nlu_fallback
-  - action: utter_fallback
-  - action: action_listen
+    - intent: nlu_fallback
+    - action: action_mark_fallback
+
+# 2) Immediately after that, if the user says “no” → clear flag, do nothing
+- rule: User declines support handover
+  condition:
+    - slot_was_set:
+        - just_failed: true
+  steps:
+    - intent: deny
+    - action: action_clear_failure
+    - action: utter_noop
+
+# 3) If they say “yes” → human handoff & clear flag
+- rule: User accepts support handover
+  condition:
+    - slot_was_set:
+        - just_failed: true
+  steps:
+    - intent: affirm
+    - action: action_agent_handoff
+
+# 4) Stray “yes” outside the flow → ignore
+- rule: Ignore stray affirm
+  steps:
+    - intent: affirm
+    - action: utter_noop
+
+# 5) Stray “no” outside the flow → ignore
+- rule: Ignore stray deny
+  steps:
+    - intent: deny
+    - action: utter_noop
 
 - rule: Quote request
   steps:

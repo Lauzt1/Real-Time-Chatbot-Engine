@@ -16,38 +16,38 @@ export default function ChatbotWidget() {
   );
   const contextType = productMatch ? productMatch[1] : "general";
   // ────────────────────────────────────────────────────────────────────
-
-  // ─── 1a) fetch the current product’s data for placeholder substitution ───
-  const [productData, setProductData] = useState(null);
-  useEffect(() => {
-    if (productMatch) {
-      const [, type, id] = productMatch;
-      fetch(`/api/${type}s/${id}`)
-        .then((res) => {
-          // If the response is not ok, log a message and return early
-          if (!res.ok) {
-            console.log(`Failed to load product data for ${id}: ${res.statusText}`);
-            return; // Skip the rest of the code if the response is not OK
-          }
-          return res.json(); // Only parse JSON if the response is valid
-        })
-        .then((data) => {
-          if (data) {
-            setProductData(data);
-          } else {
-            console.warn("Received empty product data");
-          }
-        })
-        .catch((err) => {
-          // Catch any network-related errors and log them without throwing
-          console.log("Failed to fetch product data:", err);
-          setProductData(null); // Set fallback data in case of failure
-        });
-    } else {
-      setProductData(null);
-    }
-  }, [productMatch]);
-  // ────────────────────────────────────────────────────────────────────
+  
+// ─── 1a) fetch the current product’s data for placeholder substitution ───
+const [productData, setProductData] = useState(null);
+useEffect(() => {
+  if (productMatch) {
+    const [, type, id] = productMatch;
+    fetch(`/api/${type}s/${id}`)
+      .then((res) => {
+        // If the response is not ok, log a message and return early
+        if (!res.ok) {
+          console.log(`Failed to load product data for ${id}: ${res.statusText}`);
+          return; // Skip the rest of the code if the response is not OK
+        }
+        return res.json(); // Only parse JSON if the response is valid
+      })
+      .then((data) => {
+        if (data) {
+          setProductData(data);
+        } else {
+          console.warn("Received empty product data");
+        }
+      })
+      .catch((err) => {
+        // Catch any network-related errors and log them without throwing
+        console.log("Failed to fetch product data:", err);
+        setProductData(null); // Set fallback data in case of failure
+      });
+  } else {
+    setProductData(null);
+  }
+}, [pathname]);
+// ────────────────────────────────────────────────────────────────────
 
   // ─── 2) FAQ state ───────────────────────────────────────────────────
   const [faqs, setFaqs] = useState([]);

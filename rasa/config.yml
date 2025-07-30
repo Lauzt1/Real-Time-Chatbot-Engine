@@ -18,9 +18,13 @@ pipeline:
   - name: DIETClassifier
   - name: EntitySynonymMapper
   - name: ResponseSelector
-  - name: FallbackClassifier    # ← raised from 0.30
+  # ── FallbackClassifier must come *after* DIETClassifier/ResponseSelector
+  - name: FallbackClassifier
+    # any intent whose confidence < 0.80 → nlu_fallback
     threshold: 0.80
     ambiguity_threshold: 0.10
+    # override the intent name it produces
+    fallback_intent_name: nlu_fallback
 
 policies:
   - name: RulePolicy

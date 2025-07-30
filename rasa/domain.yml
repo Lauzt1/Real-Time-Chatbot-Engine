@@ -30,6 +30,8 @@ intents:
   - find_pads
   - find_compounds
 
+  - nlu_fallback
+
 entities:
   - product_model
 
@@ -91,6 +93,8 @@ actions:
   - action_mark_fallback
   - action_ask_quote
   - action_find_products
+  - action_agent_handoff
+  - action_clear_failure
 
 session_config:
   session_expiration_time: 60

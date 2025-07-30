@@ -430,6 +430,8 @@ class ActionMarkFallback(Action):
         return "action_mark_fallback"
 
     async def run(self, dispatcher, tracker, domain):
+        # 1st-stage fallback message + mark that we’re waiting for yes/no
+        dispatcher.utter_message(template="utter_fallback")
         return [SlotSet("just_failed", True)]
     
 class ActionAskQuote(Action):
@@ -556,4 +558,18 @@ class ActionFindProducts(Action):
 
         return []
 
+class ActionAgentHandoff(Action):
+    def name(self) -> str:
+        return "action_agent_handoff"
 
+    async def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(template="utter_agent_fallback")
+        return [SlotSet("just_failed", False)]
+
+class ActionClearFailure(Action):
+    def name(self) -> str:
+        return "action_clear_failure"
+
+    async def run(self, dispatcher, tracker, domain):
+        # no message—just clear the slot
+        return [SlotSet("just_failed", False)]
